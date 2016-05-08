@@ -52,6 +52,7 @@ public class SupplierController {
         PageBean pageBean = new PageBean(Integer.parseInt(page), Integer.parseInt(rows));
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("supplierName", StringUtil.formatLike(s_supplier.getSupplierName()));
+        map.put("supplierState", StringUtil.formatLike(s_supplier.getStat()));
         map.put("start", pageBean.getStart());
         map.put("size", pageBean.getPageSize());
 

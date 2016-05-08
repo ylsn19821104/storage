@@ -117,7 +117,7 @@ public class RentController {
         ret.setDtlId(json.get("dtlId")==null?null:json.getInt("dtlId"));
         ret.setSkuId(json.getInt("skuId"));
         ret.setItemName(json.getString("itemName"));
-        ret.setStat(json.getInt("stat"));
+//        ret.setStat(json.getInt("stat"));
         ret.setItemPrice(BigDecimal.valueOf(json.getDouble("itemPrice")));
         ret.setItemAmount(json.getInt("itemAmount"));
         ret.setItemRent(BigDecimal.valueOf(json.getDouble("itemRent")));

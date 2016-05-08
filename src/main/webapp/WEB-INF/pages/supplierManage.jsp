@@ -11,7 +11,8 @@
 
         function searchSupplier() {
             $("#dg").datagrid('load', {
-                "supplierName": $("#s_supplierName").val()
+                "supplierName": $("#s_supplierName").val(),
+                "stat":$('#s_supplierState').val()
             });
         }
 
@@ -118,6 +119,8 @@
     </div>
     <div>
         &nbsp;供应商名称：&nbsp;<input type="text" id="s_supplierName" size="20"
+                                 onkeydown="if(event.keyCode==13) searchSupplier()"/>
+        &nbsp;状态：&nbsp;<input type="text" id="s_supplierState" size="20"
                                  onkeydown="if(event.keyCode==13) searchSupplier()"/>
         <a href="javascript:searchSupplier()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>

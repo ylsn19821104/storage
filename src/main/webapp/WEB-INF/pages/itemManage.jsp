@@ -77,7 +77,7 @@
         }
 
         function resetValue() {
-            $("#name").val("");
+            $('#fm').form('clear');
         }
 
         function closeItemDialog() {
@@ -191,7 +191,7 @@
         <a href="javascript:openItemAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">创建</a>
         <a href="javascript:openItemModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
         <a href="javascript:deleteItem()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
-        <a href="javascript:openItemSku()" class="easyui-linkbutton" iconCls="icon-jwjl" plain="true">Sku查看</a>
+        <%--<a href="javascript:openItemSku()" class="easyui-linkbutton" iconCls="icon-jwjl" plain="true">Sku查看</a>--%>
     </div>
     <div>
         &nbsp;商品编号：&nbsp;<input type="text" id="s_code" size="20" onkeydown="if(event.keyCode==13) searchItem()"/>

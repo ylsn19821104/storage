@@ -34,7 +34,7 @@
         <th data-options="field:'customerAddr',width:100">地址</th>
         <th data-options="field:'logisticsCompany',width:100">物流公司</th>
         <th data-options="field:'expressBillNo',width:100">快递单号</th>
-        <th data-options="field:'returnBillNo',width:100">归还出租单号</th>
+        <th data-options="field:'returnBillNo',width:100">出租快递单号</th>
         <th data-options="field:'beginDate',width:80,formatter:function(value,row){ if(value) value = new Date(value);return value?value.getFullYear()+'-'+value.getMonth()+'-'+value.getDate():'';}">
             使用开始时间
         </th>
@@ -111,7 +111,7 @@
                 </td>
             </tr>
             <tr>
-                <td>归还出租单号</td>
+                <td>出租快递单号</td>
                 <td><input class="easyui-textbox" type="text" name="returnBillNo" style="width:100px">
                 </td>
                 <td colspan="4">图片预览</td>
@@ -160,7 +160,7 @@
                 <th field="cb" checkbox="true" align="center"></th>
                 <th data-options="field:'id',width:80,hidden:true">id</th>
                 <th data-options="field:'dtlId',width:80,hidden:true">id</th>
-                <th data-options="field:'itemName',width:80">SKU</th>
+                <th data-options="field:'skuId',width:80">SKU</th>
                 <th data-options="field:'itemName',width:80">商品名称</th>
                 <th data-options="field:'itemPrice',width:80,align:'right'">单价</th>
                 <th data-options="field:'itemAmount',width:60,align:'right'">数量</th>
@@ -222,15 +222,6 @@
 
                         <td>押金</td>
                         <td><input class="easyui-numberbox" type="text" name="itemRepo" style="width:150px">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>状态</td>
-                        <td>
-                            <select class="easyui-combobox" name="stat" style="width:150px;" data-options="
-			                    valueField: 'valueField',textField: 'textField',method:'get',
-			                    url: '${pageContext.request.contextPath}/dic/rentStatus',editable:false">
-                            </select>
                         </td>
                     </tr>
                 </table>

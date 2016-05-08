@@ -12,7 +12,8 @@
         function searchWarehouse() {
             $("#dg").datagrid('load', {
                 "name": $("#s_warehouseName").val(),
-                "code": $("#s_warehouseCode").val()
+                "code": $("#s_warehouseCode").val(),
+                "stat": $("#s_warehouseState").val()
             });
         }
 
@@ -132,6 +133,8 @@
         &nbsp;仓库名称：&nbsp;<input type="text" id="s_warehouseName" size="20"
                                 onkeydown="if(event.keyCode==13) searchWarehouse()"/>
         &nbsp;仓库代码：&nbsp;<input type="text" id="s_warehouseCode" size="20"
+                                onkeydown="if(event.keyCode==13) searchWarehouse()"/>
+        &nbsp;仓库状态：&nbsp;<input type="text" id="s_warehouseState" size="20"
                                 onkeydown="if(event.keyCode==13) searchWarehouse()"/>
         <a href="javascript:searchWarehouse()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>

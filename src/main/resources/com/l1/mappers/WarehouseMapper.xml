@@ -27,6 +27,9 @@
             <if test="code!=null and code!='' ">
                 and code like #{code}
             </if>
+           <if test="stat!=null and stat!='' ">
+                and stat like #{stat}
+            </if>
         </where>
         <if test="start!=null and size!=null">
             limit #{start},#{size}

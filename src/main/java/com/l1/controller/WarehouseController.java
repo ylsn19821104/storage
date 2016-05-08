@@ -5,7 +5,6 @@ import com.l1.entity.Warehouse;
 import com.l1.service.WarehouseService;
 import com.l1.util.DateUtil;
 import com.l1.util.StringUtil;
-import javafx.geometry.Pos;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +50,7 @@ public class WarehouseController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", StringUtil.formatLike(s_warehouse.getName()));
         map.put("code", StringUtil.formatLike(s_warehouse.getCode()));
+        map.put("stat", StringUtil.formatLike(s_warehouse.getStat()));
         map.put("start", pageBean.getStart());
         map.put("size", pageBean.getPageSize());
 
