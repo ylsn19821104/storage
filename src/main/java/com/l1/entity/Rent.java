@@ -2,9 +2,15 @@ package com.l1.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.collections.Factory;
+import org.apache.commons.collections.FactoryUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections.list.LazyList;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.AutoPopulatingList;
 
 public class Rent {
   private Integer id;
@@ -40,7 +46,9 @@ public class Rent {
 
   private Date update_time;
 
-  public Integer getId() {
+
+
+    public Integer getId() {
     return id;
   }
 

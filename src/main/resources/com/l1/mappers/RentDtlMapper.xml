@@ -18,11 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</resultMap>
 	
-	<insert id="add" parameterType="RentDtl">
-		insert into tb_rentdtl(dtlid,id,skuId,itemName,itemPrice,itemAmount,itemRent,itemRepo,stat,statName) 
-		values(null,#{id},#{skuId},#{itemName},#{itemPrice},#{itemAmount},#{itemRent},#{itemRepo},#{stat},#{statName})
+	<insert id="add" parameterType="RentDtl" keyProperty="dtlId" keyColumn="dtlId" useGeneratedKeys="true">
+		insert into tb_rentdtl(id,skuId,itemName,itemPrice,itemAmount,itemRent,itemRepo,stat,statName)
+		values(#{id},#{skuId},#{itemName},#{itemPrice},#{itemAmount},#{itemRent},#{itemRepo},#{stat},#{statName})
 	</insert>
-	
+	<insert id="batchSave" parameterType="list">
+		insert into tb_rentdtl(id,skuId,itemName,itemPrice,itemAmount,itemRent,itemRepo,stat,statName)
+		values
+		<foreach item="item" index="index" collection="list"  separator=",">
+			(#{item.id},#{item.skuId},#{item.itemName},#{item.itemPrice},#{item.itemAmount},#{item.itemRent},#{item.itemRepo},#{item.stat},#{item.statName})
+		</foreach>
+	</insert>
 	<update id="update" parameterType="RentDtl">
 		update tb_rentdtl
 		<set>

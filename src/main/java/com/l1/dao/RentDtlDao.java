@@ -5,24 +5,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+
 @Repository
 public interface RentDtlDao {
-  public List<RentDtl> find(Map<String, Object> map);
+    List<RentDtl> find(Map<String, Object> map);
 
-  public List<RentDtl> findByIds(String ids);
+    List<RentDtl> findByIds(String ids);
 
-  public RentDtl findById(Integer id);
+    RentDtl findById(Integer id);
 
-  public List<String> findNamesByIds(String ids);
+    List<String> findNamesByIds(String ids);
 
-  public Long getTotal(Map<String, Object> map);
+    Long getTotal(Map<String, Object> map);
 
-  public Integer add(RentDtl color);
+    Integer add(RentDtl color);
 
-  public Integer update(RentDtl color);
+    Integer update(RentDtl color);
 
-  public Integer deleteById(Integer id);
+    Integer deleteById(Integer id);
 
-  public void delete(String[] ids);
+    void delete(String[] ids);
 
+    int batchSave(List<RentDtl> details);
 }

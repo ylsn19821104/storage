@@ -17,13 +17,7 @@
         <th field="id" width="50" align="center" hidden="true">ID</th>
         <th field="cb" checkbox="true" align="center"></th>
         <th data-options="field:'billNo',width:80">出租单号</th>
-        <th data-options="field:'stat',width:80,formatter:function(value,row){ return {'-1':'已取消',
-'0':'已下单,未支付',
-'1':'已支付',
-'2':'已发货',
-'3':'已收货,待退还',
-'4':'已退还,待收货',
-'5':'已完成'}[value];}">出租状态
+        <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[value];}">出租状态
         </th>
         <th data-options="field:'warehouseName',width:80">出库仓库</th>
         <th data-options="field:'rentDay',width:60">租用天数</th>
@@ -69,7 +63,7 @@
                 <td>出租状态</td>
                 <td colspan="2">
                     <select class="easyui-combobox" name="stat" style="width:100px;" data-options="
-                    valueField: 'textField',
+                    valueField: 'valueField',
                     textField: 'textField',
                     method:'get',
                     url: '${pageContext.request.contextPath}/dic/rentStatus'">
@@ -170,7 +164,9 @@
                 <th data-options="field:'itemAmount',width:60,align:'right'">数量</th>
                 <th data-options="field:'itemRent',width:60">金额</th>
                 <th data-options="field:'itemRepo',width:60,align:'center'">押金</th>
-                <th data-options="field:'statName',width:60,align:'center'">状态</th>
+                <th data-options="field:'statName',width:60,align:'center',formatter:function(value,row){
+							return $.statusDic[row.stat];
+						}">状态</th>
 
             </tr>
             </thead>
@@ -183,9 +179,7 @@
         </div>
         <div id="t2EditPanel" class="easyui-dialog" title="编辑" style="padding:10px;width:550px;"
              data-options="modal:true,closed:true,buttons: '#t2EditPanel-buttons'">
-            <form id="t2EditForm" method="post">
-                <input type="hidden" name="dtlId" id="dtlId">
-                <!-- <input type="hidden" name="id" id="id"> -->
+            <form id="t2EditForm">
                 <input type="hidden" name="statName" id="statName">
                 <table>
                     <tr>
@@ -193,7 +187,6 @@
                         <td>
                             <select class="easyui-combobox" name="skuId" style="width:150px;"
                                     data-options="valueField: 'id',textField: 'text',url: '${pageContext.request.contextPath}/sku/comboList',required:true,editable:false,missingMessage:'必填字段'">
-
                             </select>
                         </td>
 
@@ -233,15 +226,15 @@
                         <td>状态</td>
                         <td>
                             <select class="easyui-combobox" name="stat" style="width:150px;" data-options="
-			                    valueField: 'id',textField: 'text',
-			                    url: '${pageContext.request.contextPath}/billStat/comboList',editable:false">
+			                    valueField: 'valueField',textField: 'textField',method:'get',
+			                    url: '${pageContext.request.contextPath}/dic/rentStatus',editable:false">
                             </select>
                         </td>
                     </tr>
                 </table>
             </form>
             <div id="t2EditPanel-buttons">
-                <a id="btn_t2_edit_save" href="javascript:void(0)" class="easyui-linkbutton">保存</a>
+                <a id="btn_t2_edit_save" href="javascript:void(0)" class="easyui-linkbutton">确定</a>
                 <a id="btn_t2_edit_close" href="javascript:void(0)" class="easyui-linkbutton">取消</a>
             </div>
         </div>

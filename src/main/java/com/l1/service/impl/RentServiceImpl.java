@@ -5,16 +5,23 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.l1.dao.RentDtlDao;
+import com.l1.entity.RentDtl;
 import org.springframework.stereotype.Service;
 
 import com.l1.dao.RentDao;
 import com.l1.entity.Rent;
 import com.l1.service.RentService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("rentService")
 public class RentServiceImpl implements RentService {
     @Resource
     private RentDao rentDao;
+
+    @Resource
+    private RentDtlDao rentDtlDao;
 
     @Override
     public List<Rent> find(Map<String, Object> map) {
@@ -46,6 +53,8 @@ public class RentServiceImpl implements RentService {
         return rentDao.delete(ids);
     }
 
+
+
     @Override
     public List<Rent> findByIds(String ids) {
         return rentDao.findByIds(ids);
@@ -63,7 +72,21 @@ public class RentServiceImpl implements RentService {
 
     @Override
     public int save(Rent rent) {
-        return rentDao.save(rent);
+        int ret = rentDao.save(rent);
+        return ret>0?rent.getId():-1;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public int saveRentWithDetails(Rent rent, List<RentDtl> details) {
+        int id = this.save(rent);
+        if(details!=null&&details.size()>0){
+            for(RentDtl item:details){
+                item.setId(id);
+            }
+            rentDtlDao.batchSave(details);
+        }
+        return id;
     }
 
 }

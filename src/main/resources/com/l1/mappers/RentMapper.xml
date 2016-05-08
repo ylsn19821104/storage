@@ -32,10 +32,10 @@
         <result property="update_time" column="update_time"/>
     </resultMap>
 
-    <insert id="save" parameterType="com.l1.entity.Rent">
-		insert into tb_rent(id,billNo,customerName,warehouseId,stat,create_time,customerPhone,customerAddr,customerCard
+    <insert id="save" parameterType="com.l1.entity.Rent" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_rent(billNo,customerName,warehouseId,stat,create_time,customerPhone,customerAddr,customerCard
 		,rentDay,rentMoney,repoMoney,beginDate,endDate,expressBillNo,returnBillNo,logisticsCompany) 
-		values(null,#{billNo},#{customerName},#{warehouseId},#{stat},#{create_time},
+		values(#{billNo},#{customerName},#{warehouseId},#{stat},#{create_time},
 		#{customerPhone},#{customerAddr},#{customerCard}
 		,#{rentDay},#{rentMoney},#{repoMoney},#{beginDate},#{endDate},#{expressBillNo},#{returnBillNo},#{logisticsCompany})
 	</insert>

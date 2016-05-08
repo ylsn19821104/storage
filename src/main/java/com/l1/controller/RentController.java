@@ -2,12 +2,14 @@ package com.l1.controller;
 
 import com.l1.entity.*;
 import com.l1.service.BillStatService;
+import com.l1.service.RentDtlService;
 import com.l1.service.RentService;
 import com.l1.service.WarehouseService;
 import com.l1.util.DateUtil;
 import com.l1.util.StringUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -36,6 +38,7 @@ public class RentController {
 
     @Resource
     private BillStatService billStatService;
+
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -81,28 +84,39 @@ public class RentController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> save(Rent rent, String details, HttpServletRequest request) {
+    public Map<String, Object> save(Rent rent,String details) {
         rent.setCreate_time(DateUtil.now());
-        int count = rentService.save(rent);
+        List<RentDtl> detailsList= null;
         if (details != null && details.length() > 2) {
+            detailsList= new LinkedList<RentDtl>();
             JSONArray array = JSONArray.fromObject(details);
             if (array != null && array.size() > 0) {
                 List<RentDetail> list = new LinkedList<RentDetail>();
                 for (int i = 0; i < array.size(); i++) {
                     JSONObject item = array.getJSONObject(i);
-                    RentDetail detail = new RentDetail();
-                    //TODO 获取详细信息
+                    RentDtl detail = jsonToRentDetail(item);
+                    detailsList.add(detail);
                 }
-                //TODO写入数据库
             }
-
-
         }
+
         Map<String, Object> ret = new HashMap<String, Object>();
-        ret.put("flag", count > 0);
+        ret.put("flag", rentService.saveRentWithDetails(rent,detailsList) > 0);
         return ret;
     }
 
+    private RentDtl jsonToRentDetail(JSONObject json){
+        RentDtl ret = new RentDtl();
+        ret.setDtlId(json.get("dtlId")==null?null:json.getInt("dtlId"));
+        ret.setSkuId(json.getInt("skuId"));
+        ret.setItemName(json.getString("itemName"));
+        ret.setStat(json.getInt("stat"));
+        ret.setItemPrice(BigDecimal.valueOf(json.getDouble("itemPrice")));
+        ret.setItemAmount(json.getInt("itemAmount"));
+        ret.setItemRent(BigDecimal.valueOf(json.getDouble("itemRent")));
+        ret.setItemRepo(BigDecimal.valueOf(json.getDouble("itemRepo")));
+        return ret;
+    }
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> update(Rent rent) {

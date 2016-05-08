@@ -48,6 +48,6 @@
     </bean>
 
     <!-- 5. 使用声明式事务 -->
-    <!--<tx:annotation-driven transaction-manager="txManager"/>-->
+    <tx:annotation-driven transaction-manager="txManager"/>
 
 </beans>
