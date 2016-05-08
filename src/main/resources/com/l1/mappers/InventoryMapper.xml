@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.InventoryDao">
+
+	<resultMap type="Inventory" id="InventoryResult">
+		<result property="id" column="id" />
+		<result property="skuId" column="skuId" />
+		<result property="colorId" column="colorId" />
+		<result property="colorName" column="colorName" />
+
+		<result property="warehouseId" column="warehouseId" />
+		<result property="warehouseName" column="warehouseName" />
+		
+		<result property="sizeId" column="sizeId" />
+		<result property="sizeName" column="sizeName" />
+
+		<result property="style" column="style" />
+		<result property="amount" column="amount" />
+		<result property="locationId" column="locationId" />
+		<result property="locationName" column="locationName" />
+
+	</resultMap>
+
+	<insert id="save" parameterType="Inventory">
+		insert into
+		tb_inventory(id,skuId,colorId,warehouseId,sizeId,style,amount,locationId)
+		values(null,#{skuId},#{colorId},#{warehouseId},#{sizeId},#{style},#{amount},#{locationId})
+	</insert>
+
+	<update id="update" parameterType="Inventory">
+		update tb_inventory
+		<set>
+			<if test="skuId !=null ">
+				billNo=#{billNo},
+			</if>
+			<if test="colorId !=null">
+				colorId=#{colorId},
+			</if>
+			<if test="warehouseId!=null and warehouseId!='' ">
+				warehouseId=#{warehouseId},
+			</if>
+			<if test="sizeId !=null">
+				sizeId=#{sizeId},
+			</if>
+			<if test="style !=null ">
+				style=#{style},
+			</if>
+			<if test="amount !=null  ">
+				amount=#{amount},
+			</if>
+			<if test="locationId !=null">
+				makerName=#{makerName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="find" parameterType="Map" resultMap="InventoryResult">
+		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.trueName AS makerName,
+		tk.stat,tb.name AS statName,tk.warehouseId,tw.name AS warehouseName
+        FROM tb_inventory tk LEFT JOIN tb_user tu ON tk.makerId=tu.trueName 
+        LEFT JOIN  tb_warehouse tw ON tk.warehouseId= tw.id 
+        LEFT JOIN  tb_billstat tb ON tk.stat= tb.id
+		<where>
+			<if test="billNo !=null and billNo !='' ">
+				and billNo like #{billNo}
+			</if>
+			
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="findByIds" resultMap="InventoryResult">
+		select *
+		from tb_inventory
+		where id in 
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		
+	</select>
+
+	<select id="findById" parameterType="int" resultMap="InventoryResult">
+		select *
+		from tb_inventory
+		where id =#{id}
+	</select>
+
+
+
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_inventory
+		<where>
+			<if test="id!=null and id>0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete">
+		DELETE FROM tb_inventory where id IN
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_inventory where
+		id=#{id}
+	</delete>
+
+</mapper> 

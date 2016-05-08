@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.BrandDao">
+
+	<resultMap type="Brand" id="BrandResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="code" column="code"/>
+		<result property="stat" column="stat"/>
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+	</resultMap>
+	
+	<select id="findById" parameterType="int" resultType="Brand">
+		select * from tb_brand where id=#{id}
+	</select>
+	
+	<select id="find" parameterType="Map" resultMap="BrandResult">
+		select * from tb_brand
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat = #{stat}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_brand
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Brand">
+		insert into tb_brand(id,name,stat,code,create_time) values(null,#{name},#{stat},#{code},#{create_time})
+	</insert>
+	
+	<update id="update" parameterType="Brand">
+		update tb_brand
+		<set>
+			<if test="name!=null and name!='' ">
+				name=#{name},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			
+			<if test="code!=null and code!='' ">
+				code=#{code},
+			</if>
+			
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		update tb_brand set stat='停用' where id=#{id}
+	</delete>
+</mapper> 

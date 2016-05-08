@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.SkuDao">
+
+    <resultMap type="Sku" id="SkuResult">
+        <result property="id" column="id"/>
+        <result property="itemId" column="itemId"/>
+        <result property="itemName" column="itemName"/>
+        <result property="colorId" column="colorId"/>
+        <result property="colorName" column="colorName"/>
+        <result property="sizeDtlName" column="sizeDtlName"/>
+        <result property="sizeDtlId" column="sizeDtlId"/>
+        <result property="text" column="text"/>
+    </resultMap>
+
+    <select id="findById" parameterType="int" resultType="Sku">
+		select * from tb_sku where id=#{id}
+	</select>
+
+    <select id="find" parameterType="Map" resultMap="SkuResult">
+        select * from tb_sku
+        <where>
+            <if test="itemId!=null and itemId!='' ">
+                and itemId like #{itemId}
+            </if>
+            <if test="itemName!=null and itemName!='' ">
+                and itemName like #{itemName}
+            </if>
+            <if test="colorId!=null and colorId!='' ">
+                and colorId = #{colorId}
+            </if>
+            <if test="sizeDtlId!=null and sizeDtlId!='' ">
+                and sizeDtlId = #{sizeDtlId}
+            </if>
+
+            <if test="sizeDtlName!=null and sizeDtlName!='' ">
+                and sizeDtlName = #{sizeDtlName}
+            </if>
+
+            <if test="sizeDtlId!=null and sizeDtlId!='' ">
+                and sizeDtlId = #{sizeDtlId}
+            </if>
+
+            <if test="colorName!=null and colorName!='' ">
+                and colorName = #{colorName}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="findForCombo"  resultType="map">
+        SELECT id,itemName text from tb_sku
+    </select>
+
+
+    <select id="getTotal" resultType="Long">
+        select count(*) from tb_sku
+        <where>
+            <if test="itemName!=null and itemName!='' ">
+                and itemName=#{itemName}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="Sku">
+		insert into tb_sku(id,itemId,itemName,text,colorName,sizeDtlName,colorId,sizeDtlId) 
+					values(null,#{itemId},#{itemName},#{itemName},#{colorName},#{sizeDtlName},#{colorId},#{sizeDtlId})
+	</insert>
+
+    <update id="update" parameterType="Sku">
+        update tb_sku
+        <set>
+            <if test="itemId!=null and itemId!='' ">
+                itemId=#{itemId},
+            </if>
+            <if test="sizeDtlId!=null and sizeDtlId!='' ">
+                sizeDtlId=#{sizeDtlId},
+            </if>
+            <if test="itemName!=null and itemName!='' ">
+                itemName=#{itemName},
+            </if>
+            <if test="itemName!=null and itemName!='' ">
+                text=#{itemName},
+            </if>
+            <if test="sizeDtlName!=null and sizeDtlName!='' ">
+                sizeDtlName=#{sizeDtlName},
+            </if>
+            <if test="colorName!=null and colorName!='' ">
+                colorName=#{colorName},
+            </if>
+            <if test="colorId!=null and colorId!='' ">
+                colorId=#{colorId},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+    <update id="updateImageId">
+        update tb_sku set img_id = #{1} where id=#{0}
+    </update>
+    <delete id="deleteById" parameterType="Integer">
+		delete from tb_sku where id=#{id}
+	</delete>
+
+    <delete id="deleteByItemId" parameterType="Integer">
+		delete from tb_sku where itemId=#{itemId}
+	</delete>
+</mapper> 

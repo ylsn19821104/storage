@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.KctzDtlDao">
+
+	<resultMap type="KctzDtl" id="KctzDtlResult">
+		<result property="id" column="id"/>
+		<result property="dtlId" column="dtlId"/>
+		<result property="skuId" column="skuId"/>
+		<result property="skuName" column="skuName"/>
+		<result property="tzLocationId" column="tzLocationId"/>
+		<result property="tzLocationName" column="tzLocationName"/>
+		<result property="locationId" column="locationId"/>
+		<result property="locationName" column="locationName"/>
+		<result property="skuAmount" column="skuAmount"/>
+		<result property="warehouseId" column="warehouseId"/>
+		<result property="warehouseName" column="warehouseName"/>
+		<result property="tzAmount" column="tzAmount"/>
+		
+	</resultMap>
+	
+	<insert id="add" parameterType="KctzDtl">
+		insert into tb_kctzdtl(dtlid,id,skuId,tzLocationId,locationId,skuAmount,warehouseId,tzAmount) 
+		values(null,#{id},#{skuId},#{tzLocationId},#{locationId},#{skuAmount},#{warehouseId},#{tzAmount})
+	</insert>
+	
+	<update id="update" parameterType="KctzDtl">
+		update tb_kctzdtl
+		<set>
+			<if test="skuId!=null and skuId!='' ">
+				skuId=#{skuId},
+			</if>
+			<if test="id!=null and id!='' ">
+				id=#{id},
+			</if>
+			
+			<if test="warehouseId !=null">
+				warehouseId=#{warehouseId},
+			</if>
+			
+			<if test="tzLocationId !=null">
+				tzLocationId=#{tzLocationId},
+			</if>
+			<if test="locationId !=null">
+				locationId=#{locationId},
+			</if>
+			<if test="skuAmount !=null">
+				skuAmount=#{skuAmount},
+			</if>
+			<if test="tzAmount !=null">
+				tzAmount=#{tzAmount},
+			</if>
+		</set>
+		where dtlId=#{dtlId}
+	</update>
+	
+	<select id="find" parameterType="Map" resultMap="KctzDtlResult">
+		SELECT tk.dtlid,tk.id,tk.skuAmount,tk.skuId,tk.locationId,tk.tzAmount,tk.tzLocationId,tk.warehouseId, 
+		ts.itemName AS skuName,tl.name AS locationName,tll.name AS tzLocationName,tw.name AS warehouseName
+		FROM tb_kctzdtl tk LEFT JOIN tb_sku ts ON tk.skuId=ts.id 
+		LEFT JOIN tb_warehouse_location tl ON tk.locationId=tl.id
+		LEFT JOIN tb_warehouse_location tll ON tk.tzLocationId=tll.id
+		LEFT JOIN tb_warehouse tw ON tw.id = tk.warehouseId
+		<where>
+			<if test="id!=null and id!='' ">
+				and tk.id = #{id}
+			</if>
+			<if test="dtlId!=null and dtlId!='' ">
+				and dtlId= #{dtlId}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findByIds" parameterType="string" resultMap="KctzDtlResult">
+		select * from tb_kctzdtl
+		where id in (#{ids})
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="KctzDtlResult">
+		select * from tb_kctzdtl
+		where dtlId =#{dtlId}
+	</select>
+	
+	
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_kctzdtl
+		<where>
+			<if test="id!=null and id!='' ">
+				and id =#{id}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM tb_kctzdtl where dtlId IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_kctzdtl where dtlId=#{dtlId}
+	</delete>
+</mapper> 

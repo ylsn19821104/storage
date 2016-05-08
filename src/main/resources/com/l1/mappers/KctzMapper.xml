@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.KctzDao">
+
+	<resultMap type="Kctz" id="KctzResult">
+		<result property="id" column="id" />
+		<result property="billNo" column="billNo" />
+		<result property="billDate" column="billDate" />
+
+		<result property="warehouseId" column="warehouseId" />
+		<result property="warehouseName" column="warehouseName" />
+
+		<result property="stat" column="stat" />
+		<result property="statName" column="statName" />
+		<result property="makerName" column="makerName" />
+		<result property="makerId" column="makerId" />
+
+		<result property="create_by" column="create_by" />
+		<result property="create_time" column="create_time" />
+		<result property="update_by" column="update_by" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+	<insert id="save" parameterType="Kctz">
+		insert into
+		tb_kctz(id,billNo,billDate,warehouseId,warehouseName,
+		stat,statName,makerName,makerId,create_time,create_by,update_by,update_time)
+		values(null,#{billNo},#{billDate},#{warehouseId},#{warehouseName},
+		#{stat},#{statName},#{makerName},#{makerId},#{create_time},#{create_by},#{update_by},#{update_time})
+	</insert>
+
+	<update id="update" parameterType="Kctz">
+		update tb_kctz
+		<set>
+			<if test="billNo!=null and billNo!='' ">
+				billNo=#{billNo},
+			</if>
+			<if test="billDate !=null">
+				billDate=#{billDate},
+			</if>
+			
+			
+			<if test="warehouseId!=null and warehouseId!='' ">
+				warehouseId=#{warehouseId},
+			</if>
+			<if test="warehouseName!=null and warehouseName!='' ">
+				warehouseName=#{warehouseName},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			<if test="statName!=null and statName!='' ">
+				statName=#{statName},
+			</if>
+			<if test="makerName !=null">
+				makerName=#{makerName},
+			</if>
+			<if test="makerId !=null">
+				makerId=#{makerId},
+			</if>
+			<if test="update_time !=null">
+				update_time=#{update_time},
+			</if>
+			<if test="create_time !=null">
+				create_time=#{create_time},
+			</if>
+			<if test="update_by !=null">
+				update_by=#{update_by},
+			</if>
+			<if test="create_by !=null">
+				create_by=#{create_by},
+			</if>
+		
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="find" parameterType="Map" resultMap="KctzResult">
+		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.trueName AS makerName,
+		tk.stat,tb.name AS statName,tk.warehouseId,tw.name AS warehouseName
+        FROM tb_kctz tk LEFT JOIN tb_user tu ON tk.makerId=tu.trueName 
+        LEFT JOIN  tb_warehouse tw ON tk.warehouseId= tw.id 
+        LEFT JOIN  tb_billstat tb ON tk.stat= tb.id
+		<where>
+			<if test="billNo !=null and billNo !='' ">
+				and billNo like #{billNo}
+			</if>
+			
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="findByIds" parameterType="string" resultMap="KctzResult">
+		select *
+		from tb_kctz
+		where id in (#{ids})
+	</select>
+
+	<select id="findById" parameterType="int" resultMap="KctzResult">
+		select *
+		from tb_kctz
+		where id =#{id}
+	</select>
+
+
+
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_kctz
+		<where>
+			<if test="id!=null and id>0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete">
+		DELETE FROM tb_kctz where id IN
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_kctz where
+		id=#{id}
+	</delete>
+
+</mapper> 

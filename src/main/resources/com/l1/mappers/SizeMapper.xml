@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.SizeDao">
+
+	<resultMap type="Size" id="SizeResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="text" column="text"/>
+		<result property="code" column="code"/>
+		<result property="stat" column="stat"/>
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+	</resultMap>
+	
+	<select id="find" parameterType="Map" resultMap="SizeResult">
+		select * from tb_size
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findByIds" parameterType="string" resultMap="SizeResult">
+		select * from tb_size
+		where id in (#{ids})
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="SizeResult">
+		select * from tb_size
+		where id =#{id}
+	</select>
+	
+	<select id="findNamesByIds" parameterType="string" resultType="String">
+		select name from tb_size
+		where id in (#{ids})
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_size
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Size">
+		insert into tb_size(id,name,text,code,stat,create_time) values(null,#{name},#{name},#{code},#{stat},#{create_time})
+	</insert>
+	
+	<update id="update" parameterType="Size">
+		update tb_size
+		<set>
+			<if test="name!=null and name!='' ">
+				name=#{name},
+			</if>
+			
+			<if test="name!=null and name!='' ">
+				text=#{name},
+			</if>
+			
+			<if test="code!=null and code!='' ">
+				code=#{code},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		update tb_size set stat='停用' where id=#{id}
+	</delete>
+</mapper> 

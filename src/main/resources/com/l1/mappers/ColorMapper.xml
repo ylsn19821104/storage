@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.ColorDao">
+
+	<resultMap type="Color" id="ColorResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="text" column="text"/>
+		<result property="code" column="code"/>
+		<result property="stat" column="stat"/>
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+	</resultMap>
+	
+	<select id="find" parameterType="Map" resultMap="ColorResult">
+		select * from tb_color
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="ColorResult">
+		select * from tb_color where id=#{id}
+	</select>
+	
+	<select id="findByIds" resultMap="ColorResult">
+		select * from tb_color
+		<where>
+		    id in 
+		    <foreach item="item" index="index" collection="array"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+            </foreach>
+		</where>
+	</select>
+	
+	<select id="findNamesByIds"  resultType="String">
+		select name from tb_color
+		<where>
+		    id in 
+		    <foreach item="item" index="index" collection="array"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+            </foreach>
+		</where>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_color
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Color">
+		insert into tb_color(id,name,text,code,stat,create_time) values(null,#{name},#{name},#{code},#{stat},#{create_time})
+	</insert>
+	
+	<update id="update" parameterType="Color">
+		update tb_color
+		<set>
+			<if test="name!=null and name!='' ">
+				name=#{name},
+			</if>
+			
+			<if test="name!=null and name!='' ">
+				text=#{name},
+			</if>
+			
+			<if test="code!=null and code!='' ">
+				code=#{code},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		update tb_color set stat='停用' where id=#{id}
+	</delete>
+</mapper> 

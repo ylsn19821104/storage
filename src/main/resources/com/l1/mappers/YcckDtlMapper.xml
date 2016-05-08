@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.YcckDtlDao">
+
+	<resultMap type="YcckDtl" id="YcckDtlResult">
+		<result property="id" column="id" />
+		<result property="dtlId" column="dtlId" />
+		<result property="stat" column="stat" />
+		<result property="statName" column="statName" />
+
+		<result property="skuName" column="skuName" />
+		<result property="skuId" column="skuId" />
+		<result property="warehouseName" column="warehouseName" />
+		<result property="warehouseId" column="warehouseId" />
+
+		<result property="skuAmount" column="skuAmount" />
+		<result property="outAmount" column="outAmount" />
+		<result property="locationId" column="locationId" />
+		<result property="locationName" column="locationName" />
+	</resultMap>
+
+	<insert id="add" parameterType="YcckDtl">
+		insert into
+		tb_ycckdtl(dtlid,id,skuId,warehouseId,skuAmount,outAmount,locationId)
+		values(null,#{id},#{skuId},#{warehouseId},#{skuAmount},#{outAmount},#{locationId})
+	</insert>
+
+	<update id="update" parameterType="YcckDtl">
+		update tb_ycckdtl
+		<set>
+			<if test="skuId!=null and skuId!='' ">
+				skuId=#{skuId},
+			</if>
+			<if test="id!=null and id!='' ">
+				id=#{id},
+			</if>
+
+			<if test="outAmount !=null and outAmount !='' ">
+				outAmount=#{outAmount},
+			</if>
+			<if test="skuAmount !=null and skuAmount !='' ">
+				skuAmount=#{skuAmount},
+			</if>
+			<if test="locationId !=null">
+				locationId=#{locationId},
+			</if>
+
+			<if test="warehouseId !=null">
+				warehouseId=#{warehouseId},
+			</if>
+
+		</set>
+		where dtlId=#{dtlId}
+	</update>
+
+	<select id="find" parameterType="Map" resultMap="YcckDtlResult">
+		SELECT y.dtlid,y.id,y.skuId,y.warehouseId,y.skuAmount,y.outAmount,y.locationId, 
+   			w1.name AS warehouseName,w2.name AS locationName,s.itemName AS skuName 	
+		FROM tb_ycckdtl y
+		LEFT JOIN tb_sku s ON s.id=y.skuId
+		LEFT JOIN tb_warehouse w1 ON w1.id=y.warehouseId
+		LEFT JOIN tb_warehouse_location w2 ON w2.id=y.locationId
+		<where>
+			<if test="id!=null and id!='' ">
+				and y.id = #{id}
+			</if>
+			<if test="dtlId!=null and dtlId!='' ">
+				and y.dtlId= #{dtlId}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="findByIds" parameterType="string" resultMap="YcckDtlResult">
+		select *
+		from tb_ycckdtl
+		where id in (#{ids})
+	</select>
+
+	<select id="findById" parameterType="int" resultMap="YcckDtlResult">
+		select *
+		from tb_ycckdtl
+		where dtlId =#{dtlId}
+	</select>
+
+
+
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_ycckdtl
+		<where>
+			<if test="id!=null and id!='' ">
+				and id =#{id}
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete">
+		DELETE FROM tb_ycckdtl where dtlId IN
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_ycckdtl
+		where dtlId=#{dtlId}
+	</delete>
+</mapper> 

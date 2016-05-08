@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.DicDao">
+
+	<resultMap type="Dic" id="DicResult">
+		<result property="id" column="id"/>
+		<result property="keyWord" column="keyWord"/>
+		<result property="textField" column="textField"/>
+		<result property="valueField" column="valueField"/>
+		<result property="ord" column="ord"/>
+	</resultMap>
+	
+	<select id="query" resultMap="DicResult">
+		select id,keyWord,textField,valueField,ord from tb_dic
+		where keyWord = #{key} order by ord
+	</select>
+	
+
+</mapper> 

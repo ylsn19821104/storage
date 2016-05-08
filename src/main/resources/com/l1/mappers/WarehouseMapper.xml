@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.WarehouseDao">
+
+    <resultMap type="Warehouse" id="WarehouseResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="text" column="name"/>
+        <result property="code" column="code"/>
+        <result property="address" column="address"/>
+        <result property="stat" column="stat"/>
+        <result property="phone" column="phone"/>
+        <result property="create_by" column="create_by"/>
+        <result property="create_time" column="create_time"/>
+        <result property="update_by" column="update_by"/>
+        <result property="update_time" column="update_time"/>
+    </resultMap>
+
+    <select id="find" parameterType="Map" resultMap="WarehouseResult">
+        select * from tb_warehouse
+        <where>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+            <if test="code!=null and code!='' ">
+                and code like #{code}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findForCombo" parameterType="Map" resultType="Map">
+        select id,name text from tb_warehouse
+        <where>
+            <if test="stat!=null and stat!='' ">
+                and stat= #{stat}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIds" parameterType="string" resultMap="WarehouseResult">
+		select * from tb_warehouse
+		where id in (#{ids})
+	</select>
+
+    <select id="findById" parameterType="int" resultMap="WarehouseResult">
+		select * from tb_warehouse
+		where id =#{id}
+	</select>
+
+    <select id="findNamesByIds" parameterType="string" resultType="String">
+		select name from tb_warehouse
+		where id in (#{ids})
+	</select>
+
+    <select id="getTotal" parameterType="Map" resultType="Long">
+        select count(*) from tb_warehouse
+        <where>
+            <if test="name!=null and name!='' ">
+                and name like #{name}
+            </if>
+            <if test="code!=null and code!='' ">
+                and code like #{code}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="Warehouse">
+		insert into tb_warehouse(id,name,text,code,stat,phone,address,create_time) 
+		values(null,#{name},#{name},#{code},#{stat},#{phone},#{address},#{create_time})
+	</insert>
+
+    <update id="update" parameterType="Warehouse">
+        update tb_warehouse
+        <set>
+            <if test="name!=null and name!='' ">
+                name=#{name},
+            </if>
+            <if test="name!=null and name!='' ">
+                text=#{name},
+            </if>
+            <if test="phone!=null and phone!='' ">
+                phone=#{phone},
+            </if>
+            <if test="code!=null and code!='' ">
+                code=#{code},
+            </if>
+            <if test="stat!=null and stat!='' ">
+                stat=#{stat},
+            </if>
+            <if test="update_time!=null">
+                update_time=#{update_time},
+            </if>
+            <if test="address!=null and address!='' ">
+                address=#{address},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+		delete from tb_warehouse where id=#{id}
+	</delete>
+</mapper> 

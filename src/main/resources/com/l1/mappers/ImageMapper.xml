@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.l1.dao.ImageDao">
+    <resultMap type="image" id="ImageResult">
+        <result column="id" property="id"/>
+        <result column="comment" property="comment"/>
+        <result column="ImgSuffix" property="suffix"/>
+    </resultMap>
+
+    <update id="save" parameterType="image">
+        update tb_sku set
+        hasImage=true,
+        comment=#{comment},
+        imgSuffix = #{suffix},
+        where id=#{id}
+
+    </update>
+
+
+    <select id="find"  resultMap="ImageResult">
+        SELECT id,comment,ImgSuffix from tb_sku
+        where hasImage=true
+        <!--<if test="#{0}!=null and #{1}!=null">-->
+            <!--limit #{0},#{1}-->
+        <!--</if>-->
+    </select>
+    <select id="findById" resultMap="ImageResult">
+        select id,comment,ImgSuffix
+        from tb_sku
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="ImageResult">
+        select id,comment,ImgSuffix
+        from tb_sku
+    </select>
+    <delete id="remove">
+        DELETE FROM tb_image where id IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

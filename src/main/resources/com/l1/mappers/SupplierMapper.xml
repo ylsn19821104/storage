@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.SupplierDao">
+
+	<resultMap type="Supplier" id="SupplierResult">
+		<result property="id" column="id"/>
+		<result property="supplierName" column="supplierName"/>
+		<result property="text" column="supplierName"/>
+		<result property="supplierCode" column="supplierCode"/>
+		<result property="stat" column="stat"/>
+		<result property="type" column="type"/>
+		<result property="mobile" column="mobile"/>
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+	</resultMap>
+	
+	<select id="find" parameterType="Map" resultMap="SupplierResult">
+		select * from tb_supplier
+		<where>
+			<if test="supplierName!=null and supplierName!='' ">
+				and supplierName like #{supplierName}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_supplier
+		<where>
+			<if test="supplierName!=null and supplierName!='' ">
+				and supplierName like #{supplierName}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Supplier">
+		insert into tb_supplier(id,supplierName,supplierCode,mobile,stat,type,create_time) values(null,#{supplierName},#{supplierCode},#{mobile},#{stat},#{type},#{create_time})
+	</insert>
+	
+	<update id="update" parameterType="Supplier">
+		update tb_supplier
+		<set>
+			<if test="supplierName!=null and supplierName!='' ">
+				supplierName=#{supplierName},
+			</if>
+			<if test="supplierCode!=null and supplierCode!='' ">
+				supplierCode=#{supplierCode},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			<if test="type!=null and type!='' ">
+				type=#{type},
+			</if>
+			<if test="mobile!=null and mobile!='' ">
+				mobile=#{mobile},
+			</if>
+			<if test="supplierCode!=null and supplierCode!='' ">
+				supplierCode=#{supplierCode},
+			</if>
+			<if test="update_time!=null ">
+				update_time=#{update_time},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from tb_supplier where id=#{id}
+	</delete>
+</mapper> 

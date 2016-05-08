@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.ReturnDtlDao">
+
+	<resultMap type="ReturnDtl" id="ReturnDtlResult">
+		<result property="id" column="id"/>
+		<result property="dtlId" column="dtlId"/>
+		<result property="itemName" column="itemName"/>
+		<result property="skuId" column="skuId"/>
+		<result property="itemPrice" column="itemPrice"/>
+		<result property="itemAmount" column="itemAmount"/>
+		<result property="itemRent" column="itemRent"/>
+		<result property="itemRepo" column="itemRepo"/>
+		<result property="itemDamage" column="itemDamage"/>
+		<result property="stat" column="stat"/>
+		<result property="statName" column="statName"/>
+		<result property="warehouseId" column="warehouseId"/>
+		<result property="warehouseName" column="warehouseName"/>
+		
+	</resultMap>
+	
+	<insert id="add" parameterType="ReturnDtl">
+		insert into tb_returndtl(dtlid,id,skuId,itemName,itemPrice,itemAmount,itemRent,itemRepo,itemDamage,stat,statName,warehouseId,warehouseName) 
+		values(null,#{id},#{skuId},#{itemName},#{itemPrice},#{itemAmount},#{itemRent},#{itemRepo},#{itemDamage},#{stat},#{statName},#{warehouseId},#{warehouseName})
+	</insert>
+	
+	<update id="update" parameterType="ReturnDtl">
+		update tb_returndtl
+		<set>
+			<if test="skuId!=null and skuId!='' ">
+				skuId=#{skuId},
+			</if>
+			
+			<if test="itemName!=null and itemName!='' ">
+				itemName=#{itemName},
+			</if>
+			<if test="itemPrice!=null and itemPrice!='' ">
+				itemPrice=#{itemPrice},
+			</if>
+			<if test="itemAmount!=null and itemAmount!='' ">
+				itemAmount=#{itemAmount},
+			</if>
+			<if test="itemRent!=null">
+				itemRent=#{itemRent},
+			</if>
+			<if test="itemRepo!=null">
+				itemRepo=#{itemRepo},
+			</if>
+			<if test="itemDamage !=null">
+				itemDamage=#{itemDamage},
+			</if>
+			<if test="stat!=null">
+				stat=#{stat},
+			</if>
+			<if test="statName!=null">
+				statName=#{statName},
+			</if>
+			
+			<if test="warehouseId !=null">
+				warehouseId=#{warehouseId},
+			</if>
+			<if test="warehouseName !=null">
+				warehouseName=#{warehouseName},
+			</if>
+			
+		</set>
+		where dtlId=#{dtlId}
+	</update>
+	
+	<select id="find" parameterType="Map" resultMap="ReturnDtlResult">
+		select * from tb_returndtl
+		<where>
+			<if test="id!=null and id!='' ">
+				and id = #{id}
+			</if>
+			<if test="dtlId!=null and dtlId!='' ">
+				and dtlId= #{dtlId}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findByIds" parameterType="string" resultMap="ReturnDtlResult">
+		select * from tb_returndtl
+		where id in (#{ids})
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="ReturnDtlResult">
+		select * from tb_returndtl
+		where dtlId =#{dtlId}
+	</select>
+	
+	
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_returndtl
+		<where>
+			<if test="id!=null and id!='' ">
+				and id =#{id}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM tb_returndtl where dtlId IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_returndtl where dtlId=#{dtlId}
+	</delete>
+</mapper> 

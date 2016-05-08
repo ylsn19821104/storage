@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.YcckDao">
+
+	<resultMap type="Ycck" id="YcckResult">
+		<result property="id" column="id" />
+		<result property="billNo" column="billNo" />
+		
+		<result property="outWarehouseId" column="outWarehouseId" />
+		<result property="outWarehouseName" column="outWarehouseName" />
+		
+		<result property="inWarehouseId" column="inWarehouseId" />
+		<result property="inWarehouseName" column="inWarehouseName" />
+
+		<result property="stat" column="stat" />
+		<result property="statName" column="statName" />
+
+		<result property="billDate" column="billDate" />
+		<result property="total" column="total" />
+		
+		<result property="makerId" column="makerId" />
+		<result property="makerName" column="makerName" />
+
+
+		<result property="create_by" column="create_by" />
+		<result property="create_time" column="create_time" />
+		<result property="update_by" column="update_by" />
+		<result property="update_time" column="update_time" />
+	</resultMap>
+
+	<insert id="save" parameterType="Ycck">
+		insert into
+		tb_ycck(id,billNo,outWarehouseId,inWarehouseId,
+		stat,create_by,create_time,makerId,billDate,update_by,update_time,total)
+		values(null,#{billNo},#{outWarehouseId},#{inWarehouseId},
+		#{stat},#{create_by},#{create_time},#{makerId},#{billDate},#{update_by},#{update_time},#{total})
+	</insert>
+
+	<update id="update" parameterType="Ycck">
+		update tb_ycck
+		<set>
+			<if test="billNo!=null and billNo!='' ">
+				billNo=#{billNo},
+			</if>
+			
+			<if test="outWarehouseId !=null ">
+				outWarehouseId=#{outWarehouseId},
+			</if>
+			
+			<if test="inWarehouseId !=null and inWarehouseId !='' ">
+				inWarehouseId=#{inWarehouseId},
+			</if>
+			
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			
+			<if test="update_by!=null">
+				update_by=#{update_by},
+			</if>
+			
+			<if test="makerId !=null">
+				makerId=#{makerId},
+			</if>
+			
+			<if test="billDate !=null">
+				billDate=#{billDate},
+			</if>
+			<if test="total!=null">
+				total=#{total},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="find" parameterType="Map" resultMap="YcckResult">
+		SELECT ty.id,ty.billNo,ty.outWarehouseId,ty.inWarehouseId,ty.stat,ty.create_by,ty.create_time,ty.makerId,
+		ty.billDate,ty.update_by,ty.update_time,ty.total,
+		tw1.name AS outWarehouseName,tw2.name AS inWarehouseName,tb.name AS statName,tu.trueName AS makerName
+		FROM tb_ycck ty
+		LEFT JOIN tb_warehouse tw1 ON tw1.id=ty.outWarehouseId
+		LEFT JOIN tb_warehouse tw2 ON tw2.id=ty.inWarehouseId
+		LEFT JOIN tb_billstat tb ON tb.id=ty.stat
+		LEFT JOIN tb_user tu ON tu.id=ty.makerId
+		<where>
+			<if test="billNo !=null and billNo !='' ">
+				and ty.billNo like #{billNo}
+			</if>
+			<if test="outBillNo !=null and outBillNo !='' ">
+				and ty.outBillNo like #{outBillNo}
+			</if>
+			
+			<if test="stat!=null and stat!='' ">
+				and ty.stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+
+	<select id="findByIds" parameterType="string" resultMap="YcckResult">
+		select *
+		from tb_ycck
+		where id in 
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="findById" parameterType="int" resultMap="YcckResult">
+		select *
+		from tb_ycck
+		where id =#{id}
+	</select>
+
+
+
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_ycck
+		<where>
+			<if test="id!=null ">
+				and id = #{id}
+			</if>
+			
+		</where>
+	</select>
+
+	<delete id="delete">
+		DELETE FROM tb_ycck where id IN
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_ycck where
+		id=#{id}
+	</delete>
+
+</mapper> 

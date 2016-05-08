@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.ReturnMainDao">
+
+	<resultMap type="ReturnMain" id="ReturnMainResult">
+		<result property="id" column="id"/>
+		<result property="billNo" column="billNo"/>
+		<result property="customerName" column="customerName"/>
+		<result property="warehouseId" column="warehouseId"/>
+		<result property="warehouseName" column="warehouseName"/>
+		<result property="customerPhone" column="customerPhone"/>
+		<result property="customerAddr" column="customerAddr"/>
+		<result property="customerCard" column="customerCard"/>
+		<result property="stat" column="stat"/>
+		<result property="statName" column="statName"/>
+		
+		<result property="rentDay" column="rentDay"/>
+		<result property="rentMoney" column="rentMoney"/>
+		<result property="repoMoney" column="repoMoney"/>
+		<result property="damageMoney" column="damageMoney"/>
+		<result property="beginDate" column="beginDate"/>
+		<result property="endDate" column="endDate"/>
+		<result property="expressBillNo" column="expressBillNo"/>
+		<result property="rentBillNo" column="rentBillNo"/>
+		<result property="logisticsCompany" column="logisticsCompany"/>
+		
+		
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="ReturnMain">
+		insert into tb_return(id,billNo,customerName,warehouseId,stat,statName,create_time,warehouseName,customerPhone,customerAddr,customerCard
+		,rentDay,rentMoney,repoMoney,damageMoney,beginDate,endDate,expressBillNo,rentBillNo,logisticsCompany) 
+		values(null,#{billNo},#{customerName},#{warehouseId},#{stat},#{statName},#{create_time},#{warehouseName},#{customerPhone},#{customerAddr},#{customerCard}
+		,#{rentDay},#{rentMoney},#{repoMoney},#{damageMoney},#{beginDate},#{endDate},#{expressBillNo},#{rentBillNo},#{logisticsCompany})
+	</insert>
+	
+	<update id="update" parameterType="ReturnMain">
+		update tb_return
+		<set>
+			<if test="billNo!=null and billNo!='' ">
+				billNo=#{billNo},
+			</if>
+			
+			<if test="customerName!=null and customerName!='' ">
+				customerName=#{customerName},
+			</if>
+			
+			<if test="warehouseId!=null and warehouseId!='' ">
+				warehouseId=#{warehouseId},
+			</if>
+			<if test="warehouseName!=null and warehouseName!='' ">
+				warehouseName=#{warehouseName},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			<if test="statName!=null and statName!='' ">
+				statName=#{statName},
+			</if>
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			<if test="customerPhone!=null">
+				customerPhone=#{customerPhone},
+			</if>
+			<if test="customerAddr!=null">
+				customerAddr=#{customerAddr},
+			</if>
+			<if test="customerCard!=null">
+				customerCard=#{customerCard},
+			</if>
+			<if test="rentDay!=null">
+				rentDay=#{rentDay},
+			</if>
+			
+			<if test="repoMoney!=null">
+				repoMoney=#{repoMoney},
+			</if>
+			<if test="rentMoney!=null">
+				rentMoney=#{rentMoney},
+			</if>
+			
+			<if test="damageMoney !=null">
+				damageMoney=#{damageMoney},
+			</if>
+			<if test="beginDate!=null">
+				beginDate=#{beginDate},
+			</if>
+			<if test="endDate!=null">
+				endDate=#{endDate},
+			</if>
+			<if test="expressBillNo!=null">
+				expressBillNo=#{expressBillNo},
+			</if>
+			
+			<if test="rentBillNo !=null">
+				rentBillNo=#{rentBillNo},
+			</if>
+			<if test="logisticsCompany!=null">
+				logisticsCompany=#{logisticsCompany},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="find" parameterType="Map" resultMap="ReturnMainResult">
+		select * from tb_return
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat=#{stat}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findByIds" parameterType="string" resultMap="ReturnMainResult">
+		select * from tb_return
+		where id in (#{ids})
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="ReturnMainResult">
+		select * from tb_return
+		where id =#{id}
+	</select>
+	
+	
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_return
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM tb_return where id IN
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tb_return where id=#{id}
+	</delete>
+	
+</mapper> 

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.ItemDao">
+
+	<resultMap type="Item" id="ItemResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="code" column="code"/>
+		<result property="stat" column="stat"/>
+		<result property="brandId" column="brandId"/>
+		<result property="brandName" column="brandName"/>
+		
+		<result property="create_by" column="create_by"/>
+		<result property="create_time" column="create_time"/>
+		<result property="update_by" column="update_by"/>
+		<result property="update_time" column="update_time"/>
+		
+		
+		<result property="primaryCategoryId" column="primaryCategoryId"/>
+		<result property="primaryCategoryName" column="primaryCategoryName"/>
+		<result property="minorCategoryId" column="minorCategoryId"/>
+		<result property="minorCategoryName" column="minorCategoryName"/>
+		
+		
+		<result property="rental1" column="rental1"/>
+		<result property="rental2" column="rental2"/>
+		<result property="deposit" column="deposit"/>
+		<result property="style" column="style"/>
+		<result property="color" column="color"/>
+		<result property="colorName" column="colorName"/>		
+		
+		<result property="size" column="size"/>		
+		<result property="sizeName" column="sizeName"/>		
+				
+				
+		
+		<!-- 
+		<association property="brand" column="brandId" select="com.com.dao.BrandDao.findById"></association>
+		 -->
+	</resultMap>
+	
+	<select id="findById" parameterType="int" resultMap="ItemResult">
+		select * from tb_item where id=#{id}
+	</select>
+	
+	<select id="find" parameterType="Map" resultMap="ItemResult">
+		select * from tb_item
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+			<if test="stat!=null and stat!='' ">
+				and stat = #{stat}
+			</if>
+			<if test="code!=null and code!='' ">
+				and code like #{code}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findNamesByIds"  resultType="String">
+		select name from tb_item
+		<where>
+		    id in 
+		    <foreach item="item" index="index" collection="array"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+            </foreach>
+		</where>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from tb_item
+		<where>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="Item">
+		insert into tb_item(name,style,stat,code,create_time,brandId,brandName,deposit,primaryCategoryId,primaryCategoryName,minorCategoryId,minorCategoryName,rental1,rental2,color,colorName,size,sizeName) 
+		values(#{name},#{style},#{stat},#{code},#{create_time},#{brandId},#{brandName},#{deposit},#{primaryCategoryId},#{primaryCategoryName},#{minorCategoryId},#{minorCategoryName},#{rental1},#{rental2},#{color},#{colorName},#{size},#{sizeName})
+	</insert>
+	
+	<update id="update" parameterType="Item">
+		update tb_item
+		<set>
+			<if test="name!=null and name!='' ">
+				name=#{name},
+			</if>
+			<if test="stat!=null and stat!='' ">
+				stat=#{stat},
+			</if>
+			
+			<if test="code!=null and code!='' ">
+				code=#{code},
+			</if>
+			
+			<if test="update_time!=null">
+				update_time=#{update_time},
+			</if>
+			<if test="brandId!=null and brandId!='' ">
+				brandId=#{brandId},
+			</if>
+			
+			<if test="brandName!=null and brandName!='' ">
+				brandName=#{brandName},
+			</if>
+			
+			<if test="primaryCategoryId!=null and primaryCategoryId!='' ">
+				primaryCategoryId=#{primaryCategoryId},
+			</if>
+			
+			<if test="primaryCategoryName!=null and primaryCategoryName!='' ">
+				primaryCategoryName=#{primaryCategoryName},
+			</if>
+			
+			<if test="minorCategoryId!=null and minorCategoryId!='' ">
+				minorCategoryId=#{minorCategoryId},
+			</if>
+			
+			<if test="minorCategoryName!=null and minorCategoryName!='' ">
+				minorCategoryName=#{minorCategoryName},
+			</if>
+			
+			
+			<if test="rental1!=null and rental1!='' ">
+				rental1=#{rental1},
+			</if>
+			
+			<if test="rental2!=null and rental2!='' ">
+				rental2=#{rental2},
+			</if>
+			
+			<if test="deposit!=null and deposit!='' ">
+				deposit=#{deposit},
+			</if>
+			
+			<if test="style!=null and style!='' ">
+				style=#{style},
+			</if>
+			
+			<if test="color!=null and color!='' ">
+				color=#{color},
+			</if>
+			
+			<if test="colorName!=null and colorName!='' ">
+				colorName=#{colorName},
+			</if>
+			
+			<if test="size!=null and size!='' ">
+				size=#{size},
+			</if>
+			
+			<if test="sizeName!=null and sizeName!='' ">
+				sizeName=#{sizeName},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		update tb_item set stat='停用' where id=#{id}
+	</delete>
+	
+</mapper> 
