@@ -16,5 +16,9 @@ public interface ImageDao {
     List<Image> findAll();
     int update(Image image);
     int batchUpdate(List<Image> images);
-    int remove(List<Integer> ids);
+    int remove(Integer[] ids);
+
+    int queryTotal();
+
+    List<Image> findByIds(Integer[] ids);
 }

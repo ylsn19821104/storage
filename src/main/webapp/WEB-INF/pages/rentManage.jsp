@@ -8,6 +8,7 @@
     <jsp:include page="common.jsp"/>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/rent.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/databox-formatter.js"></script>
 </head>
 <body>
 <table id="dg" class="easyui-datagrid" title="出租单" fit="true"
@@ -99,6 +100,7 @@
                 <td>物流供应商</td>
                 <td>
                     <select class="easyui-combobox" name="logisticsCompany" style="width:100px;" data-options="
+                    editable:false,
                     valueField: 'id',
                     textField: 'text',
                     url: '${pageContext.request.contextPath}/supplier/comboList'">
@@ -152,7 +154,7 @@
     </form>
     <div id="t2_panel">
         <table id="t2_dg" class="easyui-datagrid" title="出租明细"
-               data-options="pagination:'true',rownumbers:true,singleSelect:false,method:'get',toolbar:'#t2_menu'">
+               data-options="pagination:'false',rownumbers:true,singleSelect:false,method:'get',toolbar:'#t2_menu'">
             <thead>
             <tr>
                 <th field="cb" checkbox="true" align="center"></th>
@@ -215,7 +217,7 @@
                     </tr>
                     <tr>
                         <td>金额</td>
-                        <td><input class="easyui-numberbox" type="text" name="itemRent" id="itemRent"
+                        <td><input class="easyui-numberbox" type="text" name="itemRent" id="itemRent" data-options="editable:false"
                                    style="width:150px"></td>
 
                         <td>押金</td>

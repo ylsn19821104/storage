@@ -10,7 +10,7 @@ $(function () {
     function bindHandlers() {
         loadDic();
         $('#btn_add').bind('click', toAdd);
-        $('#btn_edit').bind('click', edit);
+        $('#btn_edit').bind('click', toEdit);
         $('#btn_query').bind('click', query);
         $('#btn_remove').bind('click', remove);
         $('#btn_edit_save').bind('click', save);
@@ -87,40 +87,30 @@ $(function () {
         $('#editPanel').dialog('open');
     }
 
-    function edit() {
+    function formatDate(obj,names){
+        function format(name) {
+            obj[name] = (obj&&obj[name])?new Date(obj[name]).format("yyyy-MM-dd"):null;
+        }
+        for(var i in names){
+            obj[names[i]] = format(names[i]);
+        }
+    }
+    function toEdit() {
         var rows = $('#dg').datagrid('getChecked');
         if (rows) {
             if (rows.length > 1) {
                 $.messager.alert('系统提示!', '只能对一行进行编辑!')
             } else if (rows.length == 1) {
-                currentItem = rows[0];
-                var url = t1Url + '/findById';
-                $.ajax({
-                    url: url,
-                    data: {id: rows[0]['id']},
-                    dataType: 'json',
-                    type: 'get'
-                }).success(function (ret) {
-                    if (ret && ret['id']) {
-                        $('#t2_dg').datagrid('loadData', {total: 0, rows: []});
-                    }
-                    t2Query();
-                    if (ret.beginDate) {
-                        var value = new Date(ret.beginDate);
-                        ret.beginDate = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-                    }
-                    if (ret.endDate) {
-                        var value = new Date(ret.endDate);
-                        ret.endDate = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-                    }
-                    $('#editForm').form('load', ret);
-                    $(ret).each(function (i, val) {
-                        $('#' + i).val(val);
-                    });
-                    $('#editPanel').dialog('open');
-                }).error(function (err) {
-                    $.messager.alert('系统提示!', '获取数据!请重新尝试或联系管理员!');
-                });
+                var row = rows[0];
+
+                formatDate(row,['beginDate','endDate','create_time','update_time']);
+
+                $.currentItem = row;
+
+                $('#editForm').form('load', $.currentItem);
+                t2Query();
+                $('#editPanel').dialog('open');
+
             }
         }
 
@@ -177,11 +167,11 @@ $(function () {
         if ($('#editForm').form('validate')) {
             $('#editForm input').each(function (i, val) {
                 var name = $(val).attr('name');
-                if (name) {
+                if (name&&$(val).val()) {
                     $.currentItem[name] = $(val).val();
                 }
             });
-            var details = $('#t2_dg').datagrid('getChanges');
+            var details = $('#t2_dg').datagrid('getData').rows;
             $(details).each(function (i,val) {
                 if(val.dtlId<0){
                     delete val.dtlId;
@@ -197,10 +187,21 @@ $(function () {
             }).success(function (ret) {
                 if (ret && ret.flag) {
                     $.messager.alert('系统提示!', '保存成功!');
-                    //TODO 关闭
-                    //$('#editForm').form('clear');
-                    //$('#editPanel').dialog('close');
-                    //query();
+                    //如果是修改的话不关闭当前页面,新增的话才关闭
+                    if($.currentItem.id){
+                        $.get(t1Url+'/findById',{id:$.currentItem.id},function (data) {
+                            formatDate(data,['beginDate','endDate','create_time','update_time']);
+                            $.currentItem = data;
+                            $('#editForm').form('load', data);
+                        });
+                        query();
+                        t2Query();
+                    }else{
+                        $('#editForm').form('clear');
+                        $('#editPanel').dialog('close');
+                    }
+
+                    query();
                 } else {
                     $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
                 }
@@ -276,7 +277,7 @@ $(function () {
     }
 
     function t2Query() {
-        var url = t2Url + '/findAllById?id=' + currentItem['id'];
+        var url = t2Url + '/findAllById?id=' + $.currentItem['id'];
         $.ajax({
             url: url,
             dataType: 'json',

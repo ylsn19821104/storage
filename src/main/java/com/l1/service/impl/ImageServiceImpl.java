@@ -48,7 +48,17 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public int remove(List<Integer> ids) {
+    public int remove(Integer[] ids) {
         return imageDao.remove(ids);
+    }
+
+    @Override
+    public int queryTotal() {
+        return imageDao.queryTotal();
+    }
+
+    @Override
+    public List<Image> findByIds(Integer[] ids) {
+        return imageDao.findByIds(ids);
     }
 }

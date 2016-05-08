@@ -43,6 +43,7 @@ public class RentServiceImpl implements RentService {
         return rentDao.update(rent);
     }
 
+
     @Override
     public Integer deleteById(Integer id) {
         return rentDao.deleteById(id);
@@ -52,7 +53,6 @@ public class RentServiceImpl implements RentService {
     public Integer delete(String[] ids) {
         return rentDao.delete(ids);
     }
-
 
 
     @Override
@@ -73,16 +73,30 @@ public class RentServiceImpl implements RentService {
     @Override
     public int save(Rent rent) {
         int ret = rentDao.save(rent);
-        return ret>0?rent.getId():-1;
+        return ret > 0 ? rent.getId() : -1;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public int saveRentWithDetails(Rent rent, List<RentDtl> details) {
         int id = this.save(rent);
-        if(details!=null&&details.size()>0){
-            for(RentDtl item:details){
+        if (details != null && details.size() > 0) {
+            for (RentDtl item : details) {
                 item.setId(id);
+            }
+            rentDtlDao.batchSave(details);
+        }
+        return id;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public int updateWithDetails(Rent rent, List<RentDtl> details) {
+        int id = this.update(rent);
+        rentDtlDao.deleteByRentId(rent.getId());
+        if (details != null && details.size() > 0) {
+            for (RentDtl item : details) {
+                item.setId(rent.getId());
             }
             rentDtlDao.batchSave(details);
         }

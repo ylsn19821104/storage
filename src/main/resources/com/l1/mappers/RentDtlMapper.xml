@@ -111,4 +111,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteById" parameterType="int">
 		DELETE FROM tb_rentdtl where dtlId=#{dtlId}
 	</delete>
+	<delete id="deleteByRentId" parameterType="int">
+		DELETE FROM tb_rentdtl where id=#{id}
+	</delete>
+
 </mapper> 

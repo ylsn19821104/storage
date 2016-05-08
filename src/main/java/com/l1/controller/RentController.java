@@ -100,8 +100,15 @@ public class RentController {
             }
         }
 
+        int count = 0;
+        if(rent.getId()!=null){
+            count = rentService.updateWithDetails(rent,detailsList);
+        }else{
+            count = rentService.saveRentWithDetails(rent,detailsList);
+
+        }
         Map<String, Object> ret = new HashMap<String, Object>();
-        ret.put("flag", rentService.saveRentWithDetails(rent,detailsList) > 0);
+        ret.put("flag", count > 0);
         return ret;
     }
 
@@ -114,7 +121,7 @@ public class RentController {
         ret.setItemPrice(BigDecimal.valueOf(json.getDouble("itemPrice")));
         ret.setItemAmount(json.getInt("itemAmount"));
         ret.setItemRent(BigDecimal.valueOf(json.getDouble("itemRent")));
-        ret.setItemRepo(BigDecimal.valueOf(json.getDouble("itemRepo")));
+        ret.setItemRepo(json.get("itemRepo")==null?null:BigDecimal.valueOf(json.getDouble("itemRepo")));
         return ret;
     }
     @RequestMapping(value = "update", method = RequestMethod.POST)

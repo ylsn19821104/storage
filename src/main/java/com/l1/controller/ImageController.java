@@ -2,6 +2,7 @@ package com.l1.controller;
 
 import com.l1.entity.Image;
 import com.l1.service.ImageService;
+import com.l1.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.HashMap;
@@ -58,9 +58,12 @@ public class ImageController {
                 fileName = String.valueOf(image.getId());
             }
         }
-
+//        FileUtil.save(img,fileName);
         File targetFile = new File(path, fileName);
 
+        if(targetFile.exists()){
+            targetFile.delete();
+        }
         //保存
         try {
             img.transferTo(targetFile);
@@ -73,8 +76,13 @@ public class ImageController {
 
     @RequestMapping("list")
     @ResponseBody
-    public List<Image> query(Integer page, Integer rows) {
-        return imageService.find(page, rows);
+    public Map<String,Object> query(Integer page, Integer rows) {
+        Map<String,Object> ret = new HashMap<String, Object>();
+        List<Image> list = imageService.find(page, rows);
+        int count = imageService.queryTotal();
+        ret.put("total",count);
+        ret.put("rows",list);
+        return ret;
     }
     @RequestMapping("comboList")
     @ResponseBody
@@ -93,7 +101,7 @@ public class ImageController {
     public Map<String,Boolean> update(@RequestParam(required = false) MultipartFile img, Image image, HttpSession session) {
         Map<String,Boolean> ret = new HashMap<String, Boolean>();
 
-        if(img!=null){
+        if(img!=null&&img.getSize()>0){
             String contentType = img.getContentType();
             if (!contentType.startsWith("image/")) {
                 ret.put("flag",false);
@@ -115,6 +123,7 @@ public class ImageController {
                 }
             }
 
+//            FileUtil.save(img,fileName);
             File targetFile = new File(path, fileName);
             targetFile.delete();
             //保存
@@ -129,5 +138,26 @@ public class ImageController {
         return ret;
     }
 
+    @RequestMapping("remove")
+    @ResponseBody
+    public Map<String,Object> remove(@RequestParam("ids[]") Integer[] ids){
+        Map<String,Object> ret = new HashMap<String, Object>();
+        List<Image> images = imageService.findByIds(ids);
+        if(images!=null&&images.size()>0){
+            String dir = this.getClass().getResource("/").toString().replace("file:/","").replace("classes/","")+"resources/images/upload";
+
+            for(Image image:images){
+//                FileUtil.remove(image.getId()+image.getSuffix());
+                File file = new File(dir,image.getId()+image.getSuffix());
+                if(file.exists()){
+                    file.delete();
+                }
+            }
+
+        }
+        imageService.remove(ids);
+        ret.put("flag",ids.length);
+        return ret;
+    }
 
 }

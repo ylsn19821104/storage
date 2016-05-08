@@ -35,12 +35,13 @@
 
             function add() {
                 $.currentItem = null;
+                $('#id').combobox('reload');
                 $('#editForm').form('clear');
                 $('#editPanel').dialog('open');
             }
 
             function edit() {
-                var rows = $('#dg').datagrid('getChecked');
+                var rows = $('#dg').datagrid('getSelections');
                 if (rows) {
                     if (rows.length > 1) {
                         $.messager.alert('系统提示!', '只能对一行进行编辑!')
@@ -53,10 +54,12 @@
                             dataType: 'json',
                             type: 'get'
                         }).success(function (ret) {
-                            $('#editForm').form('load', ret);
-                            $(ret).each(function (i, val) {
-                                $('#' + i).val(val);
+                            $('#imghead').attr({
+                                'src': '/resources/images/upload/' + ret.id + ret.suffix,
+                                width: 300,
+                                height: 400
                             });
+                            $('#editForm').form('load', ret);
                             $('#editPanel').dialog('open');
                         }).error(function (err) {
                             $.messager.alert('系统提示!', '获取数据!请重新尝试或联系管理员!');
@@ -70,7 +73,7 @@
             }
 
             function remove() {
-                var rows = $('#dg').datagrid('getChecked');
+                var rows = $('#dg').datagrid('getSelections');
                 var ids = [];
                 if (rows && rows.length > 0) {
                     $(rows).each(function (i, v, r) {
@@ -79,7 +82,7 @@
                 }
                 if (ids.length > 0) {
                     $.ajax({
-                        url: t1Url + '/delete',
+                        url: t1Url + '/remove',
                         data: {ids: ids},
                         dataType: 'json',
                         type: 'post'
@@ -114,6 +117,10 @@
             }
 
             function save() {
+                if (!$.currentItem && !$('input[name="img"]').val()) {
+                    $.messager.alert('系统提示', '请选择要上传的文件!');
+                    return;
+                }
                 if ($('#editForm').form('validate')) {
                     $('#editForm').form('submit', {
                                 url: t1Url + ($.currentItem ? '/update' : '/save'),
@@ -123,21 +130,19 @@
                                     return true;	// 返回false终止表单提交
                                 },
                                 success: function (ret) {
-                                    if(ret&&ret.flag){
+                                    ret = JSON.parse(ret);
+                                    if (ret && ret.flag) {
                                         $.messager.progress('close');	// 如果提交成功则隐藏进度条
                                         $.messager.alert('系统提示!', '保存成功!');
                                         $('#editForm').form('clear');
                                         closeEditPanel();
                                         query();
-                                    }else{
+                                        $.currentItem = null;
+                                    } else {
                                         $.messager.progress('close');
                                         $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
                                     }
 
-                                },
-                                error: function (err) {
-                                    $.messager.progress('close');
-                                    $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
                                 }
                             }
                     );
@@ -148,21 +153,21 @@
 
             function closeEditPanel() {
                 $('#editPanel').dialog('close');
-                $('imghead').attr('src','');
+                $('#imghead').attr('src', '');
             }
 
             function previewImage(file) {
-                var MAX_WIDTH = 260;
-                var MAX_HEIGHT = 180;
+                var MAX_WIDTH = 600;
+                var MAX_HEIGHT = 275;
                 var div = $('#preview');
                 if (file.files && file.files[0]) {
-                    if(!(/image.*/.test(file.files[0].type))){
-                        $.messager.alert('系统提示','请选择图片文件!');
+                    if (!(/image.*/.test(file.files[0].type))) {
+                        $.messager.alert('系统提示', '请选择图片文件!');
                         $('#img').filebox('clear');
-                        $('#imghead').attr('src','');
+                        $('#imghead').attr('src', '');
                         return;
                     }
-                    div.html( '<img id="imghead">');
+                    div.html('<img id="imghead">');
                     var img = document.getElementById('imghead');
                     img.onload = function () {
                         var rect = calcImgZoomParam(MAX_WIDTH, MAX_HEIGHT, img.offsetWidth, img.offsetHeight);
@@ -176,7 +181,7 @@
                     }
                     reader.readAsDataURL(file.files[0]);
                 }
-                else if(document.selection)//兼容IE
+                else if (document.selection)//兼容IE
                 {
                     var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
                     file.select();
@@ -187,8 +192,8 @@
                     var rect = calcImgZoomParam(MAX_WIDTH, MAX_HEIGHT, img.offsetWidth, img.offsetHeight);
                     var status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
                     div.html("<div id='divhead' style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>");
-                }else{
-                    $('#imghead').attr("src","");
+                } else {
+                    $('#imghead').attr("src", "");
                 }
             }
 
@@ -228,7 +233,8 @@
             var pre = '<img width=\'80px\' height=\'80px\'src=\'${pageContext.request.contextPath}/resources/images/upload/';
             var suf = '\'/>';
             return pre+row.id+row.suffix+suf;
-        }">预览图</th>
+        }">预览图
+        </th>
     </tr>
     </thead>
 
@@ -265,12 +271,14 @@
             <tr>
                 <td>文件</td>
                 <td>
-                    <input type="file" accept="image/*" class="easyui-filebox" name="img" data-options="required:true"  onchange="$.previewImage(this)">
+                    <input type="file" accept="image/*" class="easyui-filebox" name="img" data-options="required:true"
+                           onchange="$.previewImage(this)">
                 </td>
             </tr>
 
             <tr>
-                <td><div id="preview"><img id="imghead" border=0 src=''></div>
+                <td>
+                    <div id="preview"><img id="imghead" border=0 src=''></div>
                 </td>
             </tr>
         </table>

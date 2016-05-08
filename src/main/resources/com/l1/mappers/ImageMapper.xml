@@ -11,12 +11,16 @@
 
     <update id="save" parameterType="image">
         update tb_sku set
-        hasImage=true,
+        hasImage=TRUE ,
         comment=#{comment},
-        imgSuffix = #{suffix},
+        imgSuffix = #{suffix}
         where id=#{id}
 
     </update>
+
+    <select id="queryTotal" resultType="int">
+        SELECT count(*) from tb_sku where hasImage = 1
+    </select>
 
 
     <select id="find"  resultMap="ImageResult">
@@ -31,15 +35,31 @@
         from tb_sku
         where id = #{id}
     </select>
+    <select id="findByIds" resultMap="ImageResult">
+        select id,comment,ImgSuffix
+        from tb_sku
+        where id IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 
     <select id="findAll" resultMap="ImageResult">
         select id,comment,ImgSuffix
         from tb_sku
+        where hasImage is null or hasImage = 0
     </select>
     <delete id="remove">
-        DELETE FROM tb_image where id IN
+        UPDATE tb_sku SET hasImage = null where id IN
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
+    <update id="update" parameterType="image">
+        UPDATE tb_sku set comment = #{comment}
+        <if test="suffix!=null">
+            ,imgSuffix = #{suffix}
+        </if>
+        WHERE id=#{id}
+    </update>
 </mapper>

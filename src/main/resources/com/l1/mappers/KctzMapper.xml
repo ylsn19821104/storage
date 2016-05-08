@@ -78,9 +78,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<select id="find" parameterType="Map" resultMap="KctzResult">
-		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.trueName AS makerName,
+		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.true_name AS makerName,
 		tk.stat,tb.name AS statName,tk.warehouseId,tw.name AS warehouseName
-        FROM tb_kctz tk LEFT JOIN tb_user tu ON tk.makerId=tu.trueName 
+        FROM tb_kctz tk LEFT JOIN tb_user tu ON tk.makerId=tu.true_name
         LEFT JOIN  tb_warehouse tw ON tk.warehouseId= tw.id 
         LEFT JOIN  tb_billstat tb ON tk.stat= tb.id
 		<where>

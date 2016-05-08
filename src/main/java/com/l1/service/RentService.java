@@ -28,4 +28,8 @@ public interface RentService {
     Integer delete(String[] ids);
 
     int saveRentWithDetails(Rent rent, List<RentDtl> details);
+
+
+    int updateWithDetails(Rent rent, List<RentDtl> details);
+
 }
