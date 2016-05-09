@@ -8,11 +8,11 @@
     <title>归还单</title>
     <jsp:include page="common.jsp"/>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/return.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/return.js"></script>
 </head>
 <body>
 <table id="dg" class="easyui-datagrid" title="归还单" fit="true"
-       data-options="pagination:'true',rownumbers:true,singleSelect:false,selectOnCheck:true,url:'${pageContext.request.contextPath}/returnMain/list',method:'get',toolbar:'#menu'">
+       data-options="pagination:'true',rownumbers:true,singleSelect:false,selectOnCheck:true,url:'${pageContext.request.contextPath}/return/list',method:'get',toolbar:'#menu'">
     <thead data-options="frozen:true">
     <tr>
         <th field="id" width="50" align="center" hidden="true">ID</th>
@@ -67,8 +67,7 @@
                     <select class="easyui-combobox" name="stat" style="width:100px;" data-options="
                     valueField: 'id',
                     textField: 'text',
-                    
-                    url: '${pageContext.request.contextPath}/billStat/comboList',required:true,editable:false,missingMessage:'必填字段'">
+                    url: '${pageContext.request.contextPath}/billStat/comboList',method:'get',required:true,editable:false,missingMessage:'必填字段'">
                     </select>
                 </td>
             </tr>
@@ -78,7 +77,7 @@
                     <select class="easyui-combobox" name="warehouseId" style="width:100px;" data-options="
                     valueField: 'id',
                     textField: 'text',
-                    url: '${pageContext.request.contextPath}/warehouse/comboList'">
+                    url: '${pageContext.request.contextPath}/warehouse/comboList',method:'get'">
                     </select>
                 </td>
                 <td>客户</td>

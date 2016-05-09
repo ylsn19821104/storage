@@ -22,7 +22,7 @@ public interface ReturnMainService {
 
 	public Integer deleteById(Integer id);
 
-	public void save(ReturnMain rent);
+	public int save(ReturnMain rent);
 
 	public Integer delete(String[] ids);
 }

@@ -30,7 +30,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/returnMain")
+@RequestMapping("/return")
 public class ReturnMainController {
     @Resource
     private ReturnMainService returnMainService;
@@ -57,7 +57,7 @@ public class ReturnMainController {
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> list(@RequestParam(value = "page", required = false) String page,
-                                    @RequestParam(value = "rows", required = false) String rows, ReturnMain s_returnMain, HttpServletResponse response)
+                                    @RequestParam(value = "rows", required = false) String rows, ReturnMain s_returnMain)
             throws Exception {
         if (page == null) {
             page = "1";
@@ -102,10 +102,10 @@ public class ReturnMainController {
         }
 
         returnMain.setCreate_time(DateUtil.now());
-        returnMainService.save(returnMain);
+        int count = returnMainService.save(returnMain);
 
         Map<String, Object> ret = new HashMap<String, Object>();
-        ret.put("flag", true);
+        ret.put("flag", count>0);
         return ret;
     }
 

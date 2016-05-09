@@ -62,8 +62,8 @@ public class ReturnMainServiceImpl implements ReturnMainService {
   }
 
   @Override
-  public void save(ReturnMain returnMain) {
-		returnMainDao.save(returnMain);
+  public int save(ReturnMain returnMain) {
+		return returnMainDao.save(returnMain);
   }
 
 }

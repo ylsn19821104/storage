@@ -202,7 +202,7 @@
         <div title="租赁管理" data-options="iconCls:'icon-fwgl'" style="padding:10px">
             <a href="javascript:openTab('出租单列表','rent','icon-fwcj')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-fwcj'" style="width: 150px;">出租单列表</a>
-            <a href="javascript:openTab('归还单列表','returnMain','icon-fwfp')" class="easyui-linkbutton"
+            <a href="javascript:openTab('归还单列表','return','icon-fwfp')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-fwfp'" style="width: 150px;">归还单</a>
         </div>
         <div title="库存管理" data-options="iconCls:'icon-tjbb'" style="padding:10px">

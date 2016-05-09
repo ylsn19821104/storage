@@ -25,6 +25,6 @@ public interface ReturnMainDao {
 
   public Integer deleteById(int id);
 
-  public void save(ReturnMain rent);
+  public int save(ReturnMain rent);
 
 }

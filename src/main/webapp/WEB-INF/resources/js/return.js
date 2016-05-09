@@ -4,8 +4,8 @@
 $(function () {
     bindHandlers();
     bindT2Handlers();
-    var t1Url = '/storage/returnMain';
-    var t2Url = '/storage/returnDtl'
+    var t1Url = 'return';
+    var t2Url = 'returnDtl'
     var currentItem = null;
 
     function bindHandlers() {
@@ -75,7 +75,7 @@ $(function () {
                 $.messager.alert('系统提示!', '只能对一行进行编辑!')
             } else if (rows.length == 1) {
                 currentItem = rows[0];
-                var url = t1Url + '/findById.do';
+                var url = t1Url + '/findById';
                 $.ajax({
                     url: url,
                     data: {id: rows[0]['id']},
@@ -125,7 +125,7 @@ $(function () {
         }
         if (ids.length > 0) {
             $.ajax({
-                url: t1Url + '/delete.do',
+                url: t1Url + '/delete',
                 data: {ids: ids},
                 dataType: 'json',
                 type: 'post'
@@ -143,7 +143,7 @@ $(function () {
     }
 
     function query() {
-    	var url = t1Url + '/list.do';
+    	var url = t1Url + '/list';
         $.ajax({
             url: url,
             dataType: 'json',
@@ -162,7 +162,7 @@ $(function () {
     function save() {
         if ($('#editForm').form('validate')) {
             $('#editForm').form('submit', {
-                    url: t1Url + (currentItem ? '/update.do' : '/save.do'),
+                    url: t1Url + (currentItem ? '/update' : '/save'),
                     ajax: false,
                     contentType: "application/json",
                     onSubmit: function () {
@@ -170,16 +170,26 @@ $(function () {
                         return true;	// 返回false终止表单提交
                     },
                     success: function (ret) {
-                        $.messager.progress('close');	// 如果提交成功则隐藏进度条
-                        $.messager.alert('系统提示!', '保存成功!');
-                        $('#editForm').form('clear');
-                        $('#editPanel').dialog('close');
+
+                        if(ret&&ret.flag){
+                            $.messager.alert('系统提示!', '保存成功!');
+                            $('#editForm').form('clear');
+                            $('#editPanel').dialog('close');
+                        }else{
+                            $.messager.progress('close');
+                            $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
+                        }
+
                         query();
                     },
                     error: function (err) {
                         $.messager.progress('close');
                         $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
-                    }
+                    }.complete(function () {
+                        $.messager.progress('close');	// 如果提交成功则隐藏进度条
+                    }).complete(function () {
+                        $.messager.progress('close');	// 如果提交成功则隐藏进度条
+                    })
                 }
             );
         }
@@ -200,7 +210,7 @@ $(function () {
             if (rows.length > 1) {
                 $.messager.alert('系统提示!', '只能对一行进行编辑!')
             } else if (rows.length == 1) {
-            	var url=t2Url + '/findById.do';
+            	var url=t2Url + '/findById';
                 $.ajax({
                     url: url,
                     data: {id: rows[0]['dtlId']},
@@ -226,7 +236,7 @@ $(function () {
 
     function t2Save() {
         if ($('#t2EditForm').form('validate')) {
-        	var url =t2Url + ($('#dtlId').val() ? '/update.do' : '/save.do')+'?id='+currentItem['id']; 
+        	var url =t2Url + ($('#dtlId').val() ? '/update' : '/save')+'?id='+currentItem['id']; 
             $('#t2EditForm').form('submit', {
                 url: url,
                 ajax: false,
@@ -260,7 +270,7 @@ $(function () {
             });
         }
         if (ids.length > 0) {
-        	var url = t2Url + '/delete.do';
+        	var url = t2Url + '/delete';
             $.ajax({
                 url: url,
                 data: {ids: ids},
@@ -280,7 +290,7 @@ $(function () {
     }
 
     function t2Query() {
-    	var url = t2Url + '/findAllById.do?id=' + currentItem['id'];
+    	var url = t2Url + '/findAllById?id=' + currentItem['id'];
         $.ajax({
             url: url,
             dataType: 'json',
