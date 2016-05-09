@@ -9,7 +9,7 @@ public class ReturnMain {
   private Integer id;
   private String billNo;
 
-  private int warehouseId;
+  private Integer warehouseId;
   private String warehouseName;
 
   private String customerName;
@@ -21,27 +21,23 @@ public class ReturnMain {
   private String expressBillNo;
   private String rentBillNo;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date beginDate;
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date endDate;
 
   // 组
-  private int rentDay;
+  private Integer rentDay;
   private BigDecimal rentMoney;
   private BigDecimal repoMoney;
   private BigDecimal damageMoney;
 
-  private int stat;
+  private Integer stat;
   private String statName;
 
   private Integer create_by;
   private Integer update_by;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date create_time;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date update_time;
 
   public Integer getId() {
@@ -60,11 +56,11 @@ public class ReturnMain {
     this.billNo = billNo;
   }
 
-  public int getWarehouseId() {
+  public Integer getWarehouseId() {
     return warehouseId;
   }
 
-  public void setWarehouseId(int warehouseId) {
+  public void setWarehouseId(Integer warehouseId) {
     this.warehouseId = warehouseId;
   }
 
@@ -141,11 +137,11 @@ public class ReturnMain {
     this.endDate = endDate;
   }
 
-  public int getRentDay() {
+  public Integer getRentDay() {
     return rentDay;
   }
 
-  public void setRentDay(int rentDay) {
+  public void setRentDay(Integer rentDay) {
     this.rentDay = rentDay;
   }
 
@@ -165,11 +161,11 @@ public class ReturnMain {
     this.repoMoney = repoMoney;
   }
 
-  public int getStat() {
+  public Integer getStat() {
     return stat;
   }
 
-  public void setStat(int stat) {
+  public void setStat(Integer stat) {
     this.stat = stat;
   }
 

@@ -130,6 +130,7 @@ $(function () {
             $('#btn_edit_save').linkbutton('enable');
             $('#t2_menu a').linkbutton('enable');
             bindHandlers();
+            bindT2Handlers();
         }else{
             $('#btn_edit_save').linkbutton('disable');
             $('#btn_edit_save').unbind('click');

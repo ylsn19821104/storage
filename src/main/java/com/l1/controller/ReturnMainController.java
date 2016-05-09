@@ -9,14 +9,18 @@ import com.l1.service.ReturnMainService;
 import com.l1.service.WarehouseService;
 import com.l1.util.DateUtil;
 import com.l1.util.StringUtil;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +89,7 @@ public class ReturnMainController {
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> save(ReturnMain returnMain) {
+    public Map<String, Object> save(ReturnMain returnMain, BindingResult err) throws IOException {
         Integer warehouseId = returnMain.getWarehouseId();
         if (warehouseId != null && warehouseId > 0) {
             Warehouse warehouse = warehouseService.findById(warehouseId);

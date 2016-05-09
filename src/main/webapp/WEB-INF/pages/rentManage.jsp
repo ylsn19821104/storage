@@ -191,8 +191,37 @@
                     <tr>
                         <td>SKU</td>
                         <td>
-                            <select class="easyui-combobox" name="skuId" style="width:150px;"
-                                    data-options="valueField: 'id',textField: 'text',url: '${pageContext.request.contextPath}/sku/comboList',required:true,missingMessage:'必填字段'">
+                            <select class="easyui-combobox" name="skuId" id="skuId" style="width:150px;"
+                                    data-options="valueField: 'id',
+                                    textField: 'text',
+                                    url: '${pageContext.request.contextPath}/sku/comboList',
+                                    required:true,missingMessage:'必填字段',
+                                    formatter: function(row){
+                                        var opts = $(this).combobox('options');
+                                        return row[opts.valueField]+' '+row[opts.textField];
+                                    },
+                                    onHidePanel:function(){
+                                        var val = $('input[name=skuId]').val();
+                                        if(!val){
+                                            return;
+                                        }
+
+                                        var opt = $(this).combobox('options');
+                                        var data =$(this).combobox('getData');
+                                        var contains = false;
+                                        for(var i=0;i<data.length;i++){
+                                            if(data[i][opt.valueField]==val){
+                                            $(this).combobox('setValue',val+' '+data[i][opt.textField]);
+                                                return;
+                                            }
+                                        }
+                                        if(!contains){
+                                            $.messager.alert('系统提示','只能从下拉框中选择值!');
+                                            $(this).combobox('reset');
+                                        }
+                                    }
+
+                                    ">
                             </select>
                         </td>
 
