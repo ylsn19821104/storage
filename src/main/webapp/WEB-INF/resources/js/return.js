@@ -8,6 +8,8 @@ $(function () {
     var t2Url = 'returnDtl'
     var currentItem = null;
 
+
+    
     function bindHandlers() {
         $('#btn_add').bind('click', add);
         $('#btn_edit').bind('click', edit);
