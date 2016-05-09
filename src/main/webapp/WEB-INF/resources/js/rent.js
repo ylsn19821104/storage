@@ -8,11 +8,14 @@ $(function () {
     var t2Url = '/rentDtl'
 
     function bindHandlers() {
+        $('a.easyui-linkbutton').unbind();
         loadDic();
         $('#btn_add').bind('click', toAdd);
         $('#btn_edit').bind('click', toEdit);
         $('#btn_query').bind('click', query);
         $('#btn_remove').bind('click', remove);
+        $('#btn_finish').bind('click', finish);
+
         $('#btn_edit_save').bind('click', save);
         $('#btn_edit_close').bind('click', closeEditPanel);
         $('#start_time').datebox({
@@ -76,6 +79,7 @@ $(function () {
         $('#btn_t2_add').bind('click', t2ToAdd);
         $('#btn_t2_edit').bind('click', t2ToEdit);
         $('#btn_t2_query').bind('click', t2Query);
+
         $('#btn_t2_remove').bind('click', t2Remove);
         $('#btn_t2_edit_save').bind('click', t2Save);
         $('#btn_t2_edit_close').bind('click', t2CloseEditPanel);
@@ -179,6 +183,10 @@ $(function () {
     }
 
     function save() {
+        $('#btn_edit_save').unbind();
+        setTimeout(function () {
+            $('#btn_edit_save').bind(save);
+        },1000);
         if ($('#editForm').form('validate')) {
             $('#editForm input').each(function (i, val) {
                 var name = $(val).attr('name');
@@ -231,11 +239,17 @@ $(function () {
 
     }
     function finish(){
+        $('#btn_finish').unbind();
+        setTimeout(function () {
+            $('#btn_finish').bind(finish);
+        },1000);
         var rows = $('#dg').datagrid('getChecked');
         var ids = [];
         if (rows && rows.length > 0) {
             $(rows).each(function (i, v, r) {
-                ids.push(v['id']);
+                if(v['stat']!=6){
+                    ids.push(v['id']);
+                }
             });
         }
         if(ids&&ids.length>0){
@@ -245,10 +259,17 @@ $(function () {
                 dataType:'json',
                 data:{ids:ids}
             }).success(function (ret) {
-                $.messager.alert('系统提示','审核完成!');
+                if(ret&&ret.flag){
+                    $.messager.alert('系统提示','审核完成!');
+                    query();
+                }else{
+                    $.messager.alert('系统提示','操作失败,请重新尝试或联系管理员!');
+                }
             }).error(function (e) {
                 $.messager.alert('系统提示','操作失败,请重新尝试或联系管理员!');
             });
+        }else{
+            $.messager.alert('系统提示','请选择未完成的条目进行审核!');
         }
     }
     function t2ToAdd() {

@@ -83,7 +83,7 @@ public class RentServiceImpl implements RentService {
         return ret > 0 ? rent.getId() : -1;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.DEFAULT,propagation = Propagation.REQUIRES_NEW)
     @Override
     public int saveRentWithDetails(Rent rent, List<RentDtl> details) {
         String billNo = generateBillNo();

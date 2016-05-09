@@ -210,7 +210,7 @@ public class RentController {
     }
     @RequestMapping(value = "/finish",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> finish(Integer[] ids){
+    public Map<String,Object> finish(@RequestParam(value = "ids[]")Integer[] ids){
         Map<String,Object> ret = new HashMap<String, Object>();
         int count = rentService.finish(ids);
         ret.put("flag",count>0);

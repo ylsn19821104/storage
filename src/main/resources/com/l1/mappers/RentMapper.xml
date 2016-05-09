@@ -107,7 +107,7 @@
     <update id="finish">
         UPDATE tb_rent set stat = 6 WHERE id IN
         <foreach collection="array" item="item" open="(" separator="," close=")">
-            #(item)
+            #{item}
         </foreach>
     </update>
     <select id="find" resultMap="RentResult">

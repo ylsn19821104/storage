@@ -50,7 +50,7 @@
     <a id="btn_add" href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增</a>
     <a id="btn_edit" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
     <a id="btn_remove" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
-    <a id="btn_finish" href="#" class="easyui-linkbutton" plain="true">审核</a>
+    <a id="btn_finish" href="#" class="easyui-linkbutton" iconCls="icon-ok" plain="true">审核</a>
 </div>
 <%--以下为编辑面板的内容--%>
 <div id="editPanel" class="easyui-dialog edit-panel" title="编辑"
