@@ -82,19 +82,22 @@ $(function () {
     }
 
     function toAdd() {
-        $.currentItem = {type:'new'};
+        setEditable(true);
+        $.currentItem = {type: 'new'};
         $('#editForm').form('clear');
         $('#editPanel').dialog('open');
     }
 
-    function formatDate(obj,names){
+    function formatDate(obj, names) {
         function format(name) {
-            obj[name] = (obj&&obj[name])?new Date(obj[name]).format("yyyy-MM-dd"):null;
+            obj[name] = (obj && obj[name]) ? new Date(obj[name]).format("yyyy-MM-dd") : null;
         }
-        for(var i in names){
+
+        for (var i in names) {
             obj[names[i]] = format(names[i]);
         }
     }
+
     function toEdit() {
         var rows = $('#dg').datagrid('getChecked');
         if (rows) {
@@ -103,22 +106,34 @@ $(function () {
             } else if (rows.length == 1) {
                 var row = rows[0];
 
-                formatDate(row,['beginDate','endDate','create_time','update_time']);
+                formatDate(row, ['beginDate', 'endDate', 'create_time', 'update_time']);
 
                 $.currentItem = row;
 
                 $('#editForm').form('load', $.currentItem);
+                setEditable($.currentItem.stat!=6);//已完成状态不可编辑
                 t2Query();
                 $('#editPanel').dialog('open');
 
             }
-        }
-
-        else {
+        } else {
             $.messager.alert('系统提示!', '请选择要编辑的行!')
         }
     }
 
+    function setEditable(flag) {
+        if(flag){
+            $('#btn_edit_save').linkbutton('enable');
+            $('#t2_menu a').linkbutton('enable');
+            bindHandlers();
+        }else{
+            $('#btn_edit_save').linkbutton('disable');
+            $('#btn_edit_save').unbind('click');
+            $('#t2_menu a').linkbutton('disable');
+            $('#t2_menu').unbind('click');
+        }
+    }
+    
     function remove() {
         var rows = $('#dg').datagrid('getChecked');
         var ids = [];
@@ -167,13 +182,13 @@ $(function () {
         if ($('#editForm').form('validate')) {
             $('#editForm input').each(function (i, val) {
                 var name = $(val).attr('name');
-                if (name&&$(val).val()) {
+                if (name && $(val).val()) {
                     $.currentItem[name] = $(val).val();
                 }
             });
             var details = $('#t2_dg').datagrid('getData').rows;
-            $(details).each(function (i,val) {
-                if(val.dtlId<0){
+            $(details).each(function (i, val) {
+                if (val.dtlId < 0) {
                     delete val.dtlId;
                 }
             })
@@ -188,15 +203,15 @@ $(function () {
                 if (ret && ret.flag) {
                     $.messager.alert('系统提示!', '保存成功!');
                     //如果是修改的话不关闭当前页面,新增的话才关闭
-                    if($.currentItem.id){
-                        $.get(t1Url+'/findById',{id:$.currentItem.id},function (data) {
-                            formatDate(data,['beginDate','endDate','create_time','update_time']);
+                    if ($.currentItem.id) {
+                        $.get(t1Url + '/findById', {id: $.currentItem.id}, function (data) {
+                            formatDate(data, ['beginDate', 'endDate', 'create_time', 'update_time']);
                             $.currentItem = data;
                             $('#editForm').form('load', data);
                         });
                         query();
                         t2Query();
-                    }else{
+                    } else {
                         $('#editForm').form('clear');
                         $('#editPanel').dialog('close');
                     }
@@ -215,9 +230,29 @@ $(function () {
 
 
     }
-
+    function finish(){
+        var rows = $('#dg').datagrid('getChecked');
+        var ids = [];
+        if (rows && rows.length > 0) {
+            $(rows).each(function (i, v, r) {
+                ids.push(v['id']);
+            });
+        }
+        if(ids&&ids.length>0){
+            $.ajax({
+                url:t1Url+'/finish',
+                type:'post',
+                dataType:'json',
+                data:{ids:ids}
+            }).success(function (ret) {
+                $.messager.alert('系统提示','审核完成!');
+            }).error(function (e) {
+                $.messager.alert('系统提示','操作失败,请重新尝试或联系管理员!');
+            });
+        }
+    }
     function t2ToAdd() {
-        $.t2CurrentItem = {dtlId:-(new Date().getTime()), type: 'new'};
+        $.t2CurrentItem = {dtlId: -(new Date().getTime()), type: 'new'};
         $('#t2EditPanel').dialog('open');
         $('#t2EditForm').form('clear');
         $('#t2EditForm').form('load', {dtlId: $.t2CurrentItem});
@@ -241,6 +276,7 @@ $(function () {
 
     function t2Save() {
         if ($('#t2EditForm').form('validate')) {
+
             var item = $.t2CurrentItem;
             if (item) {
                 var type = item.type
@@ -258,10 +294,30 @@ $(function () {
                     $('#t2_dg').datagrid('updateRow', {index: index, row: item});
                 }
             }
+            calcTotal();
             delete $.t2CurrentItem;
             $('#t2EditForm').form('clear');
             $('#t2EditPanel').dialog('close');
         }
+    }
+
+    function calcTotal() {
+        var rows = $('#t2_dg').datagrid('getRows');
+        var rentMoney = null;
+        var repoMoney = null;
+        if (rows && rows.length) {
+            rentMoney = 0;
+            repoMoney = 0;
+            $.each(rows, function (i, row) {
+                var itemRent = parseFloat(row['itemRent']);
+                var itemRepo = parseFloat(row['itemRepo']);
+                rentMoney += (isNaN(itemRent) ? 0 : itemRent)
+                repoMoney += (isNaN(itemRepo) ? 0 : itemRepo)
+            });
+
+        }
+        $('#rentMoney').val(rentMoney);
+        $('#repoMoney').val(repoMoney);
     }
 
     function t2Remove() {
@@ -274,6 +330,7 @@ $(function () {
                 grid.datagrid('deleteRow', index);
             });
         }
+        calcTotal();
     }
 
     function t2Query() {

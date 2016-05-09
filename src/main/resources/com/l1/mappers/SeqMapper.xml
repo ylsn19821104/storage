@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.SeqDao">
+	
+	<select id="find" resultType="int">
+		select max(seq) seq from tb_seq
+		where day=curdate()
+	</select>
+
+	<insert id="add" parameterType="string">
+		INSERT INTO tb_seq(prefix,day,seq) SELECT #{prefix},CURDATE(),IFNULL(MAX(seq),0)+1 FROM tb_seq WHERE DAY=CURDATE()
+	</insert>
+
+
+</mapper> 

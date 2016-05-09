@@ -17,7 +17,7 @@
     <tr>
         <th field="id" width="50" align="center" hidden="true">ID</th>
         <th field="cb" checkbox="true" align="center"></th>
-        <th data-options="field:'billNo',width:80">出租单号</th>
+        <th data-options="field:'billNo',width:105">出租单号</th>
         <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[value];}">出租状态
         </th>
         <th data-options="field:'warehouseName',width:80">出库仓库</th>
@@ -50,20 +50,22 @@
     <a id="btn_add" href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增</a>
     <a id="btn_edit" href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
     <a id="btn_remove" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+    <a id="btn_finish" href="#" class="easyui-linkbutton" plain="true">审核</a>
 </div>
 <%--以下为编辑面板的内容--%>
-<div id="editPanel" class="easyui-dialog" title="编辑" style="padding:10px;width:650px;height:450px;"
+<div id="editPanel" class="easyui-dialog edit-panel" title="编辑"
      data-options="minimizable: true,maximizable: true,resizable: true,modal:true,closed:true,buttons: '#editPanel-buttons'">
     <form id="editForm" method="post">
         <input type="hidden" name="id" id="id">
         <table>
             <tr>
-                <td>出租单号</td>
-                <td><input class="easyui-numberbox" type="text" name="billNo" id="billNo" style="width:100px">
+                <td class="label">出租单号</td>
+                <td><input class="easyui-textbox input" data-options="editable:false" type="text" name="billNo"
+                           id="billNo" readonly>
                 </td>
-                <td>出租状态</td>
+                <td class="label">出租状态</td>
                 <td colspan="2">
-                    <select class="easyui-combobox" name="stat" style="width:100px;" data-options="
+                    <select class="easyui-combobox input" name="stat" style="width:120px;" data-options="
                     valueField: 'valueField',
                     textField: 'textField',
                     method:'get',
@@ -72,80 +74,81 @@
                 </td>
             </tr>
             <tr>
-                <td>出库仓库</td>
+                <td class="label">出库仓库</td>
                 <td>
-                    <select class="easyui-combobox" name="warehouseId" style="width:100px;" data-options="
+                    <select class="easyui-combobox input" name="warehouseId" data-options="
                     valueField: 'id',
                     textField: 'text',
                     method:'get',
                     url: '${pageContext.request.contextPath}/warehouse/comboList'">
                     </select>
                 </td>
-                <td>客户</td>
-                <td><input class="easyui-textbox" type="text" name="customerName" style="width:100px">
-                </td>
-                <td>联系电话</td>
-                <td><input class="easyui-textbox" type="text" name="customerPhone" style="width:100px">
+                <td class="label">客户</td>
+                <td><input class="easyui-textbox input" type="text" name="customerName">
                 </td>
             </tr>
             <tr>
-                <td>证件号</td>
-                <td><input class="easyui-textbox" type="text" name="customerCard" style="width:100px">
+                <td class="label">联系电话</td>
+                <td><input class="easyui-textbox input" type="text" name="customerPhone">
                 </td>
-                <td>地址</td>
-                <td colspan="3"><input class="easyui-textbox" type="text" name="customerAddr"
-                                       style="width:270px"></td>
+                <td class="label">证件号</td>
+                <td><input class="easyui-textbox input" type="text" name="customerCard">
             </tr>
             <tr>
-                <td>物流供应商</td>
+                </td>
+                <td class="label">地址</td>
+                <td colspan="3"><input class="easyui-textbox input" type="text" name="customerAddr"
+                                       style="width:397px"></td>
+            </tr>
+            <tr>
+                <td class="label">物流供应商</td>
                 <td>
-                    <select class="easyui-combobox" name="logisticsCompany" style="width:100px;" data-options="
+                    <select class="easyui-combobox input" name="logisticsCompany" data-options="
                     editable:false,
                     valueField: 'id',
                     textField: 'text',
                     url: '${pageContext.request.contextPath}/supplier/comboList'">
                     </select>
                 </td>
-                <td>快递单号</td>
-                <td><input class="easyui-textbox" type="text" name="expressBillNo" style="width:100px">
+                <td class="label">快递单号</td>
+                <td><input class="easyui-textbox input" type="text" name="expressBillNo">
                 </td>
             </tr>
             <tr>
-                <td>出租快递单号</td>
-                <td><input class="easyui-textbox" type="text" name="returnBillNo" style="width:100px">
+                <td class="label">出租快递单号</td>
+                <td><input class="easyui-textbox input" type="text" name="returnBillNo">
                 </td>
-                <td colspan="4">图片预览</td>
             </tr>
             <tr>
-                <td>使用开始时间</td>
-                <td><input id="start_time" class="easyui-datebox" name="beginDate" style="width:100px"
+                <td class="label">使用开始时间</td>
+                <td><input id="start_time" class="easyui-datebox input" name="beginDate"
                            data-options="editable:false">
                 </td>
                 <td></td>
                 <td colspan="3" rowspan="5">SKU图片</td>
             </tr>
             <tr>
-                <td>使用结束时间</td>
-                <td><input id="end_time" class="easyui-datebox" name="endDate" style="width:100px"
+                <td class="label">使用结束时间</td>
+                <td><input id="end_time" class="easyui-datebox input" name="endDate"
                            data-options="editable:false">
                 </td>
                 <td></td>
             </tr>
             <tr>
-                <td>租用天数</td>
-                <td><input id="days" class="easyui-numberbox" type="text" name="rentDay" style="width:100px" readonly>
+                <td class="label">租用天数</td>
+                <td><input id="days" class="easyui-numberbox input" type="text" name="rentDay" readonly>
                 </td>
                 <td></td>
             </tr>
             <tr>
-                <td>租金总金额</td>
-                <td><input class="easyui-numberbox" type="text" name="rentMoney" style="width:100px">
+                <td class="label">租金总金额</td>
+                <td><input class="input" readonly type="text" name="rentMoney" id="rentMoney">
                 </td>
                 <td></td>
             </tr>
             <tr>
-                <td>押金总额</td>
-                <td><input class="easyui-numberbox" type="text" name="repoMoney" style="width:100px">
+                <td class="label">押金总额</td>
+                <td><input class="input" readonly type="text" name="repoMoney" id="repoMoney">
                 </td>
                 <td></td>
             </tr>
@@ -168,7 +171,8 @@
                 <th data-options="field:'itemRepo',width:60,align:'center'">押金</th>
                 <th data-options="field:'statName',width:60,align:'center',formatter:function(value,row){
 							return $.statusDic[row.stat];
-						}">状态</th>
+						}">状态
+                </th>
 
             </tr>
             </thead>
@@ -188,7 +192,7 @@
                         <td>SKU</td>
                         <td>
                             <select class="easyui-combobox" name="skuId" style="width:150px;"
-                                    data-options="valueField: 'id',textField: 'text',url: '${pageContext.request.contextPath}/sku/comboList',required:true,editable:false,missingMessage:'必填字段'">
+                                    data-options="valueField: 'id',textField: 'text',url: '${pageContext.request.contextPath}/sku/comboList',required:true,missingMessage:'必填字段'">
                             </select>
                         </td>
 
@@ -203,7 +207,7 @@
                                    style="width:150px"
                                    data-options="min:0,precision:2,required:true,onChange:function(newValue,oldValue){
                         	var amount= $('#itemAmount').numberbox('getValue');
-                        	$('#itemRent').numberbox('setValue',newValue*amount);
+                        	$('#itemRent').val(newValue*amount);
                         }"></td>
 
                         <td>数量</td>
@@ -211,13 +215,13 @@
                                    style="width:150px"
                                    data-options="min:1,precision:0,required:true,onChange:function(newValue,oldValue){
                         	var price = $('#itemPrice').numberbox('getValue');
-                        	$('#itemRent').numberbox('setValue',newValue*price);
+                        	$('#itemRent').val(newValue*price);
                         }"></td>
 
                     </tr>
                     <tr>
                         <td>金额</td>
-                        <td><input class="easyui-numberbox" type="text" name="itemRent" id="itemRent" data-options="editable:false"
+                        <td><input type="text" name="itemRent" id="itemRent"
                                    style="width:150px"></td>
 
                         <td>押金</td>

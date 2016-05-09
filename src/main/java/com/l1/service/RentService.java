@@ -32,4 +32,5 @@ public interface RentService {
 
     int updateWithDetails(Rent rent, List<RentDtl> details);
 
+    int finish(Integer[] ids);
 }

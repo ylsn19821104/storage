@@ -2,14 +2,13 @@ package com.l1.controller;
 
 import com.l1.entity.*;
 import com.l1.service.BillStatService;
-import com.l1.service.RentDtlService;
 import com.l1.service.RentService;
 import com.l1.service.WarehouseService;
 import com.l1.util.DateUtil;
 import com.l1.util.StringUtil;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
@@ -84,11 +83,11 @@ public class RentController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> save(Rent rent,String details) {
+    public Map<String, Object> save(Rent rent, String details) {
         rent.setCreate_time(DateUtil.now());
-        List<RentDtl> detailsList= null;
+        List<RentDtl> detailsList = null;
         if (details != null && details.length() > 2) {
-            detailsList= new LinkedList<RentDtl>();
+            detailsList = new LinkedList<RentDtl>();
             JSONArray array = JSONArray.fromObject(details);
             if (array != null && array.size() > 0) {
                 List<RentDetail> list = new LinkedList<RentDetail>();
@@ -101,10 +100,10 @@ public class RentController {
         }
 
         int count = 0;
-        if(rent.getId()!=null){
-            count = rentService.updateWithDetails(rent,detailsList);
-        }else{
-            count = rentService.saveRentWithDetails(rent,detailsList);
+        if (rent.getId() != null) {
+            count = rentService.updateWithDetails(rent, detailsList);
+        } else {
+            count = rentService.saveRentWithDetails(rent, detailsList);
 
         }
         Map<String, Object> ret = new HashMap<String, Object>();
@@ -112,18 +111,22 @@ public class RentController {
         return ret;
     }
 
-    private RentDtl jsonToRentDetail(JSONObject json){
+    private RentDtl jsonToRentDetail(JSONObject json) {
+        WrappedJSON item = new WrappedJSON(json);
         RentDtl ret = new RentDtl();
-        ret.setDtlId(json.get("dtlId")==null?null:json.getInt("dtlId"));
-        ret.setSkuId(json.getInt("skuId"));
-        ret.setItemName(json.getString("itemName"));
+        ret.setDtlId(item.getInteger("dtlId"));
+        ret.setSkuId(item.getInteger("skuId"));
+        ret.setItemName(item.getString("itemName"));
 //        ret.setStat(json.getInt("stat"));
-        ret.setItemPrice(BigDecimal.valueOf(json.getDouble("itemPrice")));
-        ret.setItemAmount(json.getInt("itemAmount"));
-        ret.setItemRent(BigDecimal.valueOf(json.getDouble("itemRent")));
-        ret.setItemRepo(json.get("itemRepo")==null?null:BigDecimal.valueOf(json.getDouble("itemRepo")));
+        ret.setItemPrice(item.getBigDecimal("itemPrice"));
+
+        ret.setItemAmount(item.getInteger("itemAmount"));
+
+        ret.setItemRent(item.getBigDecimal("itemRent"));
+        ret.setItemRepo(item.getBigDecimal("itemRepo"));
         return ret;
     }
+
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> update(Rent rent) {
@@ -205,5 +208,35 @@ public class RentController {
         Rent rent = rentService.findById(id);
         return rent;
     }
+    @RequestMapping(value = "/finish",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> finish(Integer[] ids){
+        Map<String,Object> ret = new HashMap<String, Object>();
+        int count = rentService.finish(ids);
+        ret.put("flag",count>0);
+        return ret;
+    }
+    private class WrappedJSON {
+        private JSONObject source;
 
+        public WrappedJSON(JSONObject source) {
+            this.source = source;
+        }
+
+        public String getString(String key) {
+            return source.get(key) instanceof JSONNull ? null : source.getString(key);
+        }
+
+        public Integer getInteger(String key) {
+            return source.get(key) instanceof JSONNull ? null : source.getInt(key);
+        }
+
+        public Double getDouble(String key) {
+            return source.get(key) instanceof JSONNull ? null : source.getDouble(key);
+        }
+
+        public BigDecimal getBigDecimal(String key) {
+            return source.get(key) instanceof JSONNull ? null : BigDecimal.valueOf(source.getDouble(key));
+        }
+    }
 }

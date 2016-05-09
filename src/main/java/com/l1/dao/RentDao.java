@@ -27,4 +27,5 @@ public interface RentDao {
 
   public int save(Rent rent);
 
+  int finish(Integer[] ids);
 }

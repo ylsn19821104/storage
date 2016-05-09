@@ -104,7 +104,12 @@
         </set>
         where id=#{id}
     </update>
-
+    <update id="finish">
+        UPDATE tb_rent set stat = 6 WHERE id IN
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #(item)
+        </foreach>
+    </update>
     <select id="find" resultMap="RentResult">
         select * from tb_rent
         <where>

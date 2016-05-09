@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tb_brand where id=#{id}
 	</select>
 	
-	<select id="find" parameterType="Map" resultMap="BrandResult">
+	<select id="find" parameterType="map" resultMap="BrandResult">
 		select * from tb_brand
 		<where>
 			<if test="name!=null and name!='' ">
