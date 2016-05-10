@@ -72,6 +72,35 @@ CREATE TABLE `tb_color` (
 
 insert  into `tb_color`(`id`,`name`,`code`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`text`) values (4,'红色','red','停用',NULL,'2016-04-12 12:38:49',NULL,NULL,NULL),(5,'蓝色','blue','停用',NULL,'2016-04-12 12:38:49',NULL,NULL,NULL),(6,'白','white','使用',NULL,'2016-04-12 12:45:01',NULL,'2016-04-14 00:00:30','白'),(7,'绿色','green','使用',NULL,'2016-04-12 12:54:49',NULL,'2016-04-14 00:00:44','绿色'),(8,'123','123','使用',NULL,'2016-05-08 09:30:44',NULL,'2016-05-08 11:22:45','123'),(9,'123','123','停用',NULL,'2016-05-08 11:22:36',NULL,NULL,'123');
 
+/*Table structure for table `tb_custom_props` */
+
+DROP TABLE IF EXISTS `tb_custom_props`;
+
+CREATE TABLE `tb_custom_props` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `propName` varchar(127) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_custom_props` */
+
+insert  into `tb_custom_props`(`id`,`propName`) values (1,'场景'),(2,'风格'),(3,'材质');
+
+/*Table structure for table `tb_custom_props_vals` */
+
+DROP TABLE IF EXISTS `tb_custom_props_vals`;
+
+CREATE TABLE `tb_custom_props_vals` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `propId` bigint(20) NOT NULL,
+  `val` varchar(127) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+/*Data for the table `tb_custom_props_vals` */
+
+insert  into `tb_custom_props_vals`(`id`,`propId`,`val`) values (1,1,'场景1'),(2,1,'场景2'),(4,2,'风格1'),(5,2,'风格2'),(6,2,'风格3'),(7,3,'材质1'),(8,3,'材质3'),(9,3,'材质3'),(10,3,'123'),(11,3,'fdsfds'),(12,3,'dfsdf'),(23,1,'werew'),(24,1,'场景4');
+
 /*Table structure for table `tb_dic` */
 
 DROP TABLE IF EXISTS `tb_dic`;
@@ -83,7 +112,7 @@ CREATE TABLE `tb_dic` (
   `valueField` int(10) NOT NULL,
   `ord` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_dic` */
 
@@ -306,12 +335,13 @@ CREATE TABLE `tb_rent` (
   `beginDate` date DEFAULT NULL,
   `endDate` date DEFAULT NULL,
   `warehouseName` varchar(50) DEFAULT NULL,
+  `billStatus` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_rent` */
 
-insert  into `tb_rent`(`id`,`billNo`,`customerName`,`warehouseId`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`returnBillNo`,`beginDate`,`endDate`,`warehouseName`) values (69,'CZ201605090023',NULL,NULL,6,NULL,'2016-05-09 21:11:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(70,'CZ201605090024',NULL,NULL,6,NULL,'2016-05-09 21:11:31',NULL,NULL,NULL,NULL,NULL,'','','','','','',NULL,NULL,NULL),(71,'CZ201605090025',NULL,NULL,6,NULL,'2016-05-09 21:11:40',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(72,'CZ201605090026',NULL,NULL,6,NULL,'2016-05-09 21:13:45',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(74,'CZ201605090028',NULL,NULL,6,NULL,'2016-05-09 21:18:41',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert  into `tb_rent`(`id`,`billNo`,`customerName`,`warehouseId`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`returnBillNo`,`beginDate`,`endDate`,`warehouseName`,`billStatus`) values (75,'CZ201605090029',NULL,NULL,6,NULL,'2016-05-09 23:36:36',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),(76,'CZ201605090030',NULL,NULL,6,NULL,'2016-05-09 23:37:50',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0);
 
 /*Table structure for table `tb_rentdtl` */
 
@@ -365,11 +395,11 @@ CREATE TABLE `tb_return` (
   `endDate` date DEFAULT NULL,
   `statName` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_return` */
 
-insert  into `tb_return`(`id`,`billNo`,`customerName`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`rentBillNo`,`warehouseId`,`warehouseName`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`damageMoney`,`beginDate`,`endDate`,`statName`) values (1,'3344','所发生','22','第三方','345566','22 第三方','的4444','222',2,'浦西仓库',2,NULL,'2016-04-27 23:17:32',NULL,'2016-04-27 23:24:00',8,'33.00','33.00','333.00','2016-04-20','2016-04-27','已完成');
+insert  into `tb_return`(`id`,`billNo`,`customerName`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`rentBillNo`,`warehouseId`,`warehouseName`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`damageMoney`,`beginDate`,`endDate`,`statName`) values (1,'3344','所发生','22','第三方','345566','22 第三方','的4444','222',2,'浦西仓库',1,NULL,'2016-04-27 23:17:32',NULL,'2016-05-09 22:42:51',8,'33.00','33.00','333.00','2016-04-20','2016-04-27','待审批'),(2,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:41:50',NULL,'2016-05-09 22:42:42',NULL,NULL,NULL,NULL,NULL,NULL,'待审批'),(3,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:42:37',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'待审批');
 
 /*Table structure for table `tb_returndtl` */
 
@@ -406,11 +436,11 @@ CREATE TABLE `tb_seq` (
   `day` date NOT NULL,
   `seq` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_seq` */
 
-insert  into `tb_seq`(`id`,`prefix`,`day`,`seq`) values (14,'CZ','2016-05-09',1),(15,'CZ','2016-05-09',2),(16,'CZ','2016-05-09',3),(17,'CZ','2016-05-09',4),(18,'CZ','2016-05-09',5),(19,'CZ','2016-05-09',6),(20,'CZ','2016-05-09',7),(21,'CZ','2016-05-09',8),(22,'CZ','2016-05-09',9),(23,'CZ','2016-05-09',10),(24,'CZ','2016-05-09',11),(25,'CZ','2016-05-09',12),(26,'CZ','2016-05-09',13),(27,'CZ','2016-05-09',14),(28,'CZ','2016-05-09',15),(29,'CZ','2016-05-09',16),(30,'CZ','2016-05-09',17),(31,'CZ','2016-05-09',18),(32,'CZ','2016-05-09',19),(33,'CZ','2016-05-09',20),(34,'CZ','2016-05-09',21),(35,'CZ','2016-05-09',22),(36,'CZ','2016-05-09',23),(37,'CZ','2016-05-09',24),(38,'CZ','2016-05-09',25),(39,'CZ','2016-05-09',26),(40,'CZ','2016-05-09',27),(41,'CZ','2016-05-09',28);
+insert  into `tb_seq`(`id`,`prefix`,`day`,`seq`) values (14,'CZ','2016-05-09',1),(15,'CZ','2016-05-09',2),(16,'CZ','2016-05-09',3),(17,'CZ','2016-05-09',4),(18,'CZ','2016-05-09',5),(19,'CZ','2016-05-09',6),(20,'CZ','2016-05-09',7),(21,'CZ','2016-05-09',8),(22,'CZ','2016-05-09',9),(23,'CZ','2016-05-09',10),(24,'CZ','2016-05-09',11),(25,'CZ','2016-05-09',12),(26,'CZ','2016-05-09',13),(27,'CZ','2016-05-09',14),(28,'CZ','2016-05-09',15),(29,'CZ','2016-05-09',16),(30,'CZ','2016-05-09',17),(31,'CZ','2016-05-09',18),(32,'CZ','2016-05-09',19),(33,'CZ','2016-05-09',20),(34,'CZ','2016-05-09',21),(35,'CZ','2016-05-09',22),(36,'CZ','2016-05-09',23),(37,'CZ','2016-05-09',24),(38,'CZ','2016-05-09',25),(39,'CZ','2016-05-09',26),(40,'CZ','2016-05-09',27),(41,'CZ','2016-05-09',28),(42,'CZ','2016-05-09',29),(43,'CZ','2016-05-09',30);
 
 /*Table structure for table `tb_size` */
 
@@ -472,7 +502,7 @@ CREATE TABLE `tb_sku` (
 
 /*Data for the table `tb_sku` */
 
-insert  into `tb_sku`(`id`,`itemId`,`colorId`,`sizeDtlId`,`itemName`,`sizeDtlName`,`colorName`,`text`,`hasImage`,`imgSuffix`,`comment`) values (15,7,6,8,'15','165S','白','15',NULL,'.jpg',''),(16,7,6,10,'16','180L','白','16',NULL,'.jpg',''),(17,7,6,11,'17','175XX','白','17',NULL,'.png',''),(18,7,7,8,'18','165S','绿色','18',1,'.png','w'),(19,7,7,10,'19','180L','绿色','19',1,'.jpg','2134'),(20,7,7,11,'20','175XX','绿色','20',NULL,NULL,NULL),(21,5,6,8,'21','165S','白','21',NULL,NULL,NULL),(22,5,6,11,'22','175XX','白','22',NULL,NULL,NULL),(23,8,6,8,'234','165S','白','234',NULL,NULL,NULL),(24,9,6,8,'123','165S','白','123',NULL,NULL,NULL),(25,9,6,9,'123','170','白','123',NULL,NULL,NULL),(26,9,7,8,'123','165S','绿色','123',NULL,NULL,NULL),(27,9,7,9,'123','170','绿色','123',NULL,NULL,NULL);
+insert  into `tb_sku`(`id`,`itemId`,`colorId`,`sizeDtlId`,`itemName`,`sizeDtlName`,`colorName`,`text`,`hasImage`,`imgSuffix`,`comment`) values (15,7,6,8,'a','165S','白','15',NULL,'.jpg',''),(16,7,6,10,'b','180L','白','16',NULL,'.jpg',''),(17,7,6,11,'17','175XX','白','17',NULL,'.png',''),(18,7,7,8,'18','165S','绿色','18',1,'.png','w'),(19,7,7,10,'19','180L','绿色','19',1,'.jpg','2134'),(20,7,7,11,'20','175XX','绿色','20',NULL,NULL,NULL),(21,5,6,8,'21','165S','白','21',NULL,NULL,NULL),(22,5,6,11,'22','175XX','白','22',NULL,NULL,NULL),(23,8,6,8,'234','165S','白','234',NULL,NULL,NULL),(24,9,6,8,'123','165S','白','123',NULL,NULL,NULL),(25,9,6,9,'123','170','白','123',NULL,NULL,NULL),(26,9,7,8,'123','165S','绿色','123',NULL,NULL,NULL),(27,9,7,9,'123','170','绿色','123',NULL,NULL,NULL);
 
 /*Table structure for table `tb_supplier` */
 
