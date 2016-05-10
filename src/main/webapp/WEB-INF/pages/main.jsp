@@ -188,11 +188,11 @@
                data-options="plain:true,iconCls:'icon-khkfjh'" style="width: 150px">小分类</a>
             <a href="javascript:openTab('商品图片维护','image','icon-khkfjh')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-khkfjh'" style="width: 150px">图片维护</a>
-            <a href="javascript:openTab('自定义属性1','slefProp1','icon-khkfjh')" class="easyui-linkbutton"
+            <a href="javascript:openTab('自定义属性1','customProps/1','icon-khkfjh')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-khkfjh'" style="width: 150px">自定义属性1</a>
-            <a href="javascript:openTab('自定义属性2','slefProp2','icon-khkfjh')" class="easyui-linkbutton"
+            <a href="javascript:openTab('自定义属性2','customProps/2','icon-khkfjh')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-khkfjh'" style="width: 150px">自定义属性2</a>
-            <a href="javascript:openTab('自定义属性3','slefProp3','icon-khkfjh')" class="easyui-linkbutton"
+            <a href="javascript:openTab('自定义属性3','customProps/3','icon-khkfjh')" class="easyui-linkbutton"
                data-options="plain:true,iconCls:'icon-khkfjh'" style="width: 150px">自定义属性3</a>
         </div>
         <div title="采购管理" data-options="iconCls:'icon-khgl'" style="padding:10px;">

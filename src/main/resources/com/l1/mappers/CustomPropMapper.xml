@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.l1.dao.CustomPropDao">
+
+    <resultMap type="customProp" id="customPropResult">
+        <result property="id" column="id"/>
+        <result property="propId" column="propId"/>
+        <result property="propName" column="propName"/>
+        <result property="val" column="val"/>
+    </resultMap>
+
+    <select id="getTotal" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM tb_custom_props_vals WHERE propId=#{propId}
+    </select>
+    <select id="find" resultMap="customPropResult">
+        select v.id,propId,propName,val from tb_custom_props p,tb_custom_props_vals v
+        where v.propId = p.id AND propId=#{0}
+        <if test="#{1}!=null and #{2}!=null">
+            limit #{1},#{2}
+        </if>
+    </select>
+    <select id="findInfo" parameterType="int" resultType="map">
+        SELECT id,propName FROM tb_custom_props where id=#{id}
+    </select>
+    <update id="update" parameterType="customProp">
+            update tb_custom_props_vals SET val = #{val} where id=#{id}
+    </update>
+    <insert id="add" parameterType="customProp">
+        insert into tb_custom_props_vals (propId, val) values (#{propId},#{val});
+    </insert>
+    <!--<update id="batchSave">-->
+        <!--UPDATE tb_rent set stat = 6 WHERE id IN-->
+        <!--<foreach collection="array" item="item" open="(" separator="," close=")">-->
+            <!--#{item}-->
+        <!--</foreach>-->
+    <!--</update>-->
+
+    <delete id="remove">
+        DELETE FROM tb_custom_props_vals where id IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper> 
