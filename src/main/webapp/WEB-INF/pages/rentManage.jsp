@@ -7,18 +7,27 @@
     <title>出租单</title>
     <jsp:include page="common.jsp"/>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/rent.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/databox-formatter.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $.statusDic ={
+                <c:forEach items="${statusDic}" var="item" varStatus="status">
+                    '${item.valueField}':'${item.textField}'<c:if test="${!status.last}"> , </c:if>
+                </c:forEach>
+            };
+        });
+    </script>
+    <script type="text/javascript" src="resources/js/rent.js"></script>
+    <script type="text/javascript" src="resources/js/databox-formatter.js"></script>
 </head>
 <body>
 <table id="dg" class="easyui-datagrid" title="出租单" fit="true"
-       data-options="pagination:'true',rownumbers:true,singleSelect:false,selectOnCheck:true,url:'${pageContext.request.contextPath}/rent/list',method:'get',toolbar:'#menu'">
+       data-options="pagination:'true',rownumbers:true,singleSelect:false,selectOnCheck:true,url:'rent/list',method:'get',toolbar:'#menu'">
     <thead data-options="frozen:true">
     <tr>
         <th field="id" width="50" align="center" hidden="true">ID</th>
         <th field="cb" checkbox="true" align="center"></th>
         <th data-options="field:'billNo',width:105">出租单号</th>
-        <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[value];}">出租状态
+        <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[String(value)];}">出租状态
         </th>
         <th data-options="field:'warehouseName',width:80">出库仓库</th>
         <th data-options="field:'rentDay',width:60">租用天数</th>
@@ -69,7 +78,7 @@
                     valueField: 'valueField',
                     textField: 'textField',
                     method:'get',
-                    url: '${pageContext.request.contextPath}/dic/rentStatus'">
+                    url: 'dic/rentStatus'">
                     </select>
                 </td>
             </tr>
@@ -80,7 +89,7 @@
                     valueField: 'id',
                     textField: 'text',
                     method:'get',
-                    url: '${pageContext.request.contextPath}/warehouse/comboList'">
+                    url: 'warehouse/comboList'">
                     </select>
                 </td>
                 <td class="label">客户</td>
@@ -194,7 +203,7 @@
                             <select class="easyui-combobox" name="skuId" id="skuId" style="width:150px;"
                                     data-options="valueField: 'id',
                                     textField: 'text',
-                                    url: '${pageContext.request.contextPath}/sku/comboList',
+                                    url: 'sku/comboList',
                                     required:true,missingMessage:'必填字段',
                                     formatter: function(row){
                                         var opts = $(this).combobox('options');

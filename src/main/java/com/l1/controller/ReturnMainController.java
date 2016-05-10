@@ -1,10 +1,8 @@
 package com.l1.controller;
 
-import com.l1.entity.BillStat;
-import com.l1.entity.PageBean;
-import com.l1.entity.ReturnMain;
-import com.l1.entity.Warehouse;
+import com.l1.entity.*;
 import com.l1.service.BillStatService;
+import com.l1.service.DicService;
 import com.l1.service.ReturnMainService;
 import com.l1.service.WarehouseService;
 import com.l1.util.DateUtil;
@@ -13,6 +11,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
@@ -45,6 +44,9 @@ public class ReturnMainController {
     @Resource
     private BillStatService billStatService;
 
+    @Resource
+    private DicService dicService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,7 +56,9 @@ public class ReturnMainController {
     }
 
     @RequestMapping
-    public String showPage() {
+    public String showPage(Model model) {
+        List<Dic> statusDic = dicService.query("returnStatus");
+        model.addAttribute("statusDic",statusDic);
         return "returnManage";
     }
 

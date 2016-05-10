@@ -4,12 +4,12 @@
 $(function () {
     bindHandlers();
     bindT2Handlers();
-    var t1Url = '/rent';
-    var t2Url = '/rentDtl'
+    var t1Url = 'rent';
+    var t2Url = 'rentDtl'
 
     function bindHandlers() {
         $('a.easyui-linkbutton').unbind();
-        loadDic();
+        // loadDic();
         $('#btn_add').bind('click', toAdd);
         $('#btn_edit').bind('click', toEdit);
         $('#btn_query').bind('click', query);
@@ -54,25 +54,6 @@ $(function () {
         });
 
 
-    }
-
-    function loadDic() {
-        $.ajax({
-            url: '/dic/rentStatus',
-            type: 'get'
-        }).success(function (ret) {
-            if (ret && ret.length) {
-                var dic = {};
-                $(ret).each(function (i, val) {
-                    dic[val.valueField] = val.textField;
-                })
-                $.statusDic = dic;
-            } else {
-                $.messager.alert('系统提示', '加载数据字典失败,请刷新页面或联系管理员!');
-            }
-        }).error(function () {
-            $.messager.alert('系统提示', '加载数据字典失败,请刷新页面或联系管理员!');
-        });
     }
 
     function bindT2Handlers() {

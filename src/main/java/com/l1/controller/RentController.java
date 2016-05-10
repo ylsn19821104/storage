@@ -1,9 +1,7 @@
 package com.l1.controller;
 
 import com.l1.entity.*;
-import com.l1.service.BillStatService;
-import com.l1.service.RentService;
-import com.l1.service.WarehouseService;
+import com.l1.service.*;
 import com.l1.util.DateUtil;
 import com.l1.util.StringUtil;
 import net.sf.json.JSONArray;
@@ -12,6 +10,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ import java.util.*;
 
 /**
  * @Description:
- * @Author: hongxp
+ * @Author: luopotaotao
  * @Since: 2016年4月12日
  */
 
@@ -38,6 +37,8 @@ public class RentController {
     @Resource
     private BillStatService billStatService;
 
+    @Resource
+    private DicService dicService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -48,7 +49,9 @@ public class RentController {
     }
 
     @RequestMapping
-    public String showPage() {
+    public String showPage(Model model) {
+        List<Dic> statusDic = dicService.query("rentStatus");
+        model.addAttribute("statusDic",statusDic);
         return "rentManage";
     }
 
@@ -153,43 +156,43 @@ public class RentController {
         return ret;
     }
 
-    @RequestMapping(value = "/save11")
-    @ResponseBody
-    public Map<String, Object> save1(Rent rent) throws Exception {
-        Integer warehouseId = rent.getWarehouseId();
-        if (warehouseId != null && warehouseId > 0) {
-            Warehouse warehouse = warehouseService.findById(warehouseId);
-            if (warehouse != null) {
-                rent.setWarehouseName(warehouse.getName());
-            }
-        }
-
-        Integer statId = rent.getStat();
-        if (statId != null && statId > 0) {
-            BillStat billStat = billStatService.findById(statId);
-            if (billStat != null) {
-                rent.setStatName(billStat.getName());
-            }
-        }
-
-        int resultTotal = 0; // 操作的记录条数
-        if (rent.getId() == null) {
-            rent.setCreate_time(DateUtil.now());
-            resultTotal = rentService.add(rent);
-        } else {
-            rent.setUpdate_time(DateUtil.now());
-            resultTotal = rentService.update(rent);
-        }
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (resultTotal > 0) {
-            result.put("success", true);
-        } else {
-            result.put("success", false);
-        }
-
-        return result;
-    }
+//    @RequestMapping(value = "/save11")
+//    @ResponseBody
+//    public Map<String, Object> save1(Rent rent) throws Exception {
+//        Integer warehouseId = rent.getWarehouseId();
+//        if (warehouseId != null && warehouseId > 0) {
+//            Warehouse warehouse = warehouseService.findById(warehouseId);
+//            if (warehouse != null) {
+//                rent.setWarehouseName(warehouse.getName());
+//            }
+//        }
+//
+//        Integer statId = rent.getStat();
+//        if (statId != null && statId > 0) {
+//            BillStat billStat = billStatService.findById(statId);
+//            if (billStat != null) {
+//                rent.setStatName(billStat.getName());
+//            }
+//        }
+//
+//        int resultTotal = 0; // 操作的记录条数
+//        if (rent.getId() == null) {
+//            rent.setCreate_time(DateUtil.now());
+//            resultTotal = rentService.add(rent);
+//        } else {
+//            rent.setUpdate_time(DateUtil.now());
+//            resultTotal = rentService.update(rent);
+//        }
+//
+//        Map<String, Object> result = new HashMap<String, Object>();
+//        if (resultTotal > 0) {
+//            result.put("success", true);
+//        } else {
+//            result.put("success", false);
+//        }
+//
+//        return result;
+//    }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
