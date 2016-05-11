@@ -27,8 +27,9 @@
         <th field="id" width="50" align="center" hidden="true">ID</th>
         <th field="cb" checkbox="true" align="center"></th>
         <th data-options="field:'billNo',width:105">出租单号</th>
-        <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[String(value)];}">出租状态
-        </th>
+        <th data-options="field:'stat',width:80,formatter:function(value,row){ return $.statusDic[String(value)];}">出租状态</th>
+        <th data-options="field:'billStat',hidden:true">单据状态</th>
+        <th data-options="field:'billStatName',width:80">单据状态</th>
         <th data-options="field:'warehouseName',width:80">出库仓库</th>
         <th data-options="field:'rentDay',width:60">租用天数</th>
         <th data-options="field:'rentMoney',width:70">租金总金额</th>
@@ -41,7 +42,8 @@
         <th data-options="field:'customerPhone',width:100">联系电话</th>
         <th data-options="field:'customerCard',width:100">证件号</th>
         <th data-options="field:'customerAddr',width:100">地址</th>
-        <th data-options="field:'supplierId',width:100">物流公司</th>
+        <th data-options="field:'supplierId',width:100,hidden:true">物流Id</th>
+        <th data-options="field:'supplierName',width:100">物流公司</th>
         <th data-options="field:'expressBillNo',width:100">快递单号</th>
         <th data-options="field:'returnBillNo',width:100">出租快递单号</th>
         <th data-options="field:'beginDate',width:80,formatter:function(value,row){ if(value) value = new Date(value);return value?value.getFullYear()+'-'+value.getMonth()+'-'+value.getDate():'';}">

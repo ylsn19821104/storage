@@ -4,96 +4,97 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Rent {
-  private Integer id;
-  private String billNo;
+    private Integer id;
+    private String billNo;
 
-  private Integer warehouseId;
-  private String warehouseName;
+    private Integer warehouseId;
+    private String warehouseName;
 
-  private String customerName;
-  private String customerPhone;
-  private String customerAddr;
-  private String customerCard;
+    private String customerName;
+    private String customerPhone;
+    private String customerAddr;
+    private String customerCard;
 
-  private String supplierId;
-  private String expressBillNo;
-  private String returnBillNo;
+    private String supplierId;
+    private String supplierName;
+    private String expressBillNo;
+    private String returnBillNo;
 
-  private Date beginDate;
-  private Date endDate;
+    private Date beginDate;
+    private Date endDate;
 
-  // 组
-  private Integer rentDay;
-  private BigDecimal rentMoney;
-  private BigDecimal repoMoney;
+    // 组
+    private Integer rentDay;
+    private BigDecimal rentMoney;
+    private BigDecimal repoMoney;
 
-  private Integer stat;
-  private Integer billStat;
+    private Integer stat;
+    private Integer billStat;
+    private String billStatName;
 
-  private Integer create_by;
-  private Integer update_by;
+    private Integer create_by;
+    private Integer update_by;
 
-  private Date create_time;
+    private Date create_time;
 
-  private Date update_time;
-
+    private Date update_time;
 
 
     public Integer getId() {
-    return id;
-  }
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getBillNo() {
-    return billNo;
-  }
+    public String getBillNo() {
+        return billNo;
+    }
 
-  public void setBillNo(String billNo) {
-    this.billNo = billNo;
-  }
+    public void setBillNo(String billNo) {
+        this.billNo = billNo;
+    }
 
-  public Integer getWarehouseId() {
-    return warehouseId;
-  }
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
 
-  public void setWarehouseId(Integer warehouseId) {
-    this.warehouseId = warehouseId;
-  }
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
 
-  public String getWarehouseName() {
-    return warehouseName;
-  }
+    public String getWarehouseName() {
+        return warehouseName;
+    }
 
-  public void setWarehouseName(String warehouseName) {
-    this.warehouseName = warehouseName;
-  }
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
 
-  public String getCustomerName() {
-    return customerName;
-  }
+    public String getCustomerName() {
+        return customerName;
+    }
 
-  public void setCustomerName(String customerName) {
-    this.customerName = customerName;
-  }
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-  public String getCustomerPhone() {
-    return customerPhone;
-  }
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
 
-  public void setCustomerPhone(String customerPhone) {
-    this.customerPhone = customerPhone;
-  }
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
 
-  public String getCustomerAddr() {
-    return customerAddr;
-  }
+    public String getCustomerAddr() {
+        return customerAddr;
+    }
 
-  public void setCustomerAddr(String customerAddr) {
-    this.customerAddr = customerAddr;
-  }
+    public void setCustomerAddr(String customerAddr) {
+        this.customerAddr = customerAddr;
+    }
 
     public String getCustomerCard() {
         return customerCard;
@@ -104,115 +105,131 @@ public class Rent {
     }
 
     public String getSupplierId() {
-    return supplierId;
-  }
+        return supplierId;
+    }
 
-  public void setSupplierId(String supplierId) {
-    this.supplierId = supplierId;
-  }
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
+    }
 
-  public String getExpressBillNo() {
-    return expressBillNo;
-  }
+    public String getSupplierName() {
+        return supplierName;
+    }
 
-  public void setExpressBillNo(String expressBillNo) {
-    this.expressBillNo = expressBillNo;
-  }
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
 
-  public String getReturnBillNo() {
-    return returnBillNo;
-  }
+    public String getExpressBillNo() {
+        return expressBillNo;
+    }
 
-  public void setReturnBillNo(String returnBillNo) {
-    this.returnBillNo = returnBillNo;
-  }
+    public void setExpressBillNo(String expressBillNo) {
+        this.expressBillNo = expressBillNo;
+    }
 
-  public Date getBeginDate() {
-    return beginDate;
-  }
+    public String getReturnBillNo() {
+        return returnBillNo;
+    }
 
-  public void setBeginDate(Date beginDate) {
-    this.beginDate = beginDate;
-  }
+    public void setReturnBillNo(String returnBillNo) {
+        this.returnBillNo = returnBillNo;
+    }
 
-  public Date getEndDate() {
-    return endDate;
-  }
+    public Date getBeginDate() {
+        return beginDate;
+    }
 
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
-  }
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
 
-  public Integer getRentDay() {
-    return rentDay;
-  }
+    public Date getEndDate() {
+        return endDate;
+    }
 
-  public void setRentDay(Integer rentDay) {
-    this.rentDay = rentDay;
-  }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-  public BigDecimal getRentMoney() {
-    return rentMoney;
-  }
+    public Integer getRentDay() {
+        return rentDay;
+    }
 
-  public void setRentMoney(BigDecimal rentMoney) {
-    this.rentMoney = rentMoney;
-  }
+    public void setRentDay(Integer rentDay) {
+        this.rentDay = rentDay;
+    }
 
-  public BigDecimal getRepoMoney() {
-    return repoMoney;
-  }
+    public BigDecimal getRentMoney() {
+        return rentMoney;
+    }
 
-  public void setRepoMoney(BigDecimal repoMoney) {
-    this.repoMoney = repoMoney;
-  }
+    public void setRentMoney(BigDecimal rentMoney) {
+        this.rentMoney = rentMoney;
+    }
 
-  public Integer getStat() {
-    return stat;
-  }
+    public BigDecimal getRepoMoney() {
+        return repoMoney;
+    }
 
-  public void setStat(Integer stat) {
-    this.stat = stat;
-  }
+    public void setRepoMoney(BigDecimal repoMoney) {
+        this.repoMoney = repoMoney;
+    }
 
-  public Integer getBillStat() {
-    return billStat;
-  }
+    public Integer getStat() {
+        return stat;
+    }
 
-  public void setBillStat(Integer billStat) {
-    this.billStat = billStat;
-  }
+    public void setStat(Integer stat) {
+        this.stat = stat;
+    }
 
-  public Integer getCreate_by() {
-    return create_by;
-  }
+    public Integer getBillStat() {
+        return billStat;
+    }
 
-  public void setCreate_by(Integer create_by) {
-    this.create_by = create_by;
-  }
+    public void setBillStat(Integer billStat) {
+        this.billStat = billStat;
+    }
 
-  public Integer getUpdate_by() {
-    return update_by;
-  }
+    public String getBillStatName() {
+        return billStatName;
+    }
 
-  public void setUpdate_by(Integer update_by) {
-    this.update_by = update_by;
-  }
+    public void setBillStatName(String billStatName) {
+        this.billStatName = billStatName;
+    }
 
-  public Date getCreate_time() {
-    return create_time;
-  }
+    public Integer getCreate_by() {
+        return create_by;
+    }
 
-  public void setCreate_time(Date create_time) {
-    this.create_time = create_time;
-  }
+    public void setCreate_by(Integer create_by) {
+        this.create_by = create_by;
+    }
 
-  public Date getUpdate_time() {
-    return update_time;
-  }
+    public Integer getUpdate_by() {
+        return update_by;
+    }
 
-  public void setUpdate_time(Date update_time) {
-    this.update_time = update_time;
-  }
+    public void setUpdate_by(Integer update_by) {
+        this.update_by = update_by;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
+    }
+
+    public Date getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
+    }
 
 }

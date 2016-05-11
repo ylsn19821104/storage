@@ -15,6 +15,7 @@
         <result property="customerCard" column="customerCard"/>
         <result property="stat" column="stat"/>
         <result property="billStat" column="billStat"/>
+        <result property="billStatName" column="billStatName"/>
 
         <result property="rentDay" column="rentDay"/>
         <result property="rentMoney" column="rentMoney"/>
@@ -24,6 +25,7 @@
         <result property="expressBillNo" column="expressBillNo"/>
         <result property="returnBillNo" column="returnBillNo"/>
         <result property="supplierId" column="supplierId"/>
+        <result property="supplierName" column="supplierName"/>
 
 
         <result property="create_by" column="create_by"/>
@@ -60,7 +62,7 @@
             <if test="stat!=null and stat!='' ">
                 stat=#{stat},
             </if>
-             <if test="billStat!=null and billStat!='' ">
+            <if test="billStat!=null and billStat!='' ">
                 stat=#{billStat},
             </if>
             <if test="statName!=null and statName!='' ">
@@ -114,7 +116,25 @@
         </foreach>
     </update>
     <select id="find" resultMap="RentResult">
-        select * from tb_rent
+        SELECT
+        r.*,w.`name` warehouseName,s.`supplierName`,d.textField billStatName
+        FROM
+        tb_rent r
+        LEFT JOIN
+        tb_warehouse w
+        ON r.warehouseId = w.id
+        LEFT JOIN
+        tb_supplier s
+        ON
+        r.supplierId = s.id
+        LEFT JOIN
+        (SELECT
+        valueField,
+        textField
+        FROM
+        tb_dic
+        WHERE keyWord = 'rentBillStatus') d
+        ON r.billStat = d.valueField
         <where>
             <if test="name!=null and name!='' ">
                 and name like #{name}
@@ -132,17 +152,35 @@
     </select>
 
     <select id="findByIds" parameterType="string" resultMap="RentResult">
-		select r.*,w.name warehouseName,s.supplierName supplierId from tb_rent r,tb_warehouse w,tb_supplier s
-		where id in (#{ids}) and r.warehouseId =
+		select r.*,w.name warehouseName,s.supplierName supplierId from tb_rent r,tb_warehouse w,tb_supplier s,tb_dic d
+		where id in (#{ids}) and r.warehouseId = w.id
 	</select>
 
     <select id="findById" parameterType="int" resultMap="RentResult">
-		select r.*,w.name warehouseName,s.supplierName supplierId from tb_rent r,tb_warehouse w,tb_supplier s
-		where id =#{id} and r.warehouseId = w.name and r.supplierId = s.id
+		SELECT
+              r.*,w.`name` warehouseName,s.`supplierName`,d.textField billStatName
+            FROM
+              tb_rent r
+              LEFT JOIN
+              tb_warehouse w
+              ON r.warehouseId = w.id
+              LEFT JOIN
+              tb_supplier s
+              ON
+              r.supplierId = s.id
+                LEFT JOIN
+              (SELECT
+                valueField,
+                textField
+              FROM
+                tb_dic
+              WHERE keyWord = 'rentBillStatus') d
+              ON r.billStat = d.valueField
+              where r.id = #{id}
 	</select>
 
 
-    <select id="getTotal" parameterType="java.util.Map" resultType="Long">
+    <select id="getTotal" parameterType="map" resultType="Long">
         select count(*) from tb_rent
         <where>
             <if test="name!=null and name!='' ">
