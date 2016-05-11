@@ -533,9 +533,9 @@ DROP TABLE IF EXISTS `tb_user`;
 
 CREATE TABLE `tb_user` (
   `id` bigint(16) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  `true_name` varchar(50) DEFAULT NULL,
+  `truename` varchar(50) DEFAULT NULL,
   `mobile` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `stat` varchar(10) DEFAULT NULL,
@@ -543,7 +543,7 @@ CREATE TABLE `tb_user` (
   `last_login_time` datetime DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_by` bigint(20) DEFAULT NULL,
-  `user_code` varchar(50) DEFAULT NULL,
+  `usercode` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户';
 
