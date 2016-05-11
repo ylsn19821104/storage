@@ -211,7 +211,7 @@
             <th data-options="field:'customerCard',width:150">证件号</th>
             <th data-options="field:'warehouseId',width:50, hidden:'true'">warehouseId</th>
             <th data-options="field:'warehouseName',width:150">出库仓库</th>
-			<th data-options="field:'logisticsCompany',width:150">物流公司</th>
+			<th data-options="field:'supplierId',width:150">物流公司</th>
             <th data-options="field:'expressBillNo',width:150">快递单号</th>
             <th data-options="field:'returnBillNo',width:150">归还单号</th>
             <th data-options="field:'beginDate',width:150">使用开始日期</th>
@@ -278,7 +278,7 @@
 	   			<td><input type="text" id="customerAddr" name="customerAddr" class="easyui-validatebox" required="true"/>&nbsp;<span class="required">*</span></td>
 
 	   			<td>物流公司：</td>
-	   			<td><input type="text" id="logisticsCompany" name="logisticsCompany" class="easyui-validatebox" required="true"/>&nbsp;<span class="required">*</span></td>
+	   			<td><input type="text" id="supplierId" name="supplierId" class="easyui-validatebox" required="true"/>&nbsp;<span class="required">*</span></td>
 	   		</tr>
 	   		<tr>
 	   			<td>快递单号：</td>

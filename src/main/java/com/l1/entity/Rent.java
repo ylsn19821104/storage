@@ -2,15 +2,6 @@ package com.l1.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.commons.collections.Factory;
-import org.apache.commons.collections.FactoryUtils;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.collections.list.LazyList;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.AutoPopulatingList;
 
 public class Rent {
   private Integer id;
@@ -24,7 +15,7 @@ public class Rent {
   private String customerAddr;
   private String customerCard;
 
-  private String logisticsCompany;
+  private String supplierId;
   private String expressBillNo;
   private String returnBillNo;
 
@@ -37,7 +28,7 @@ public class Rent {
   private BigDecimal repoMoney;
 
   private Integer stat;
-  private String statName;
+  private Integer billStat;
 
   private Integer create_by;
   private Integer update_by;
@@ -112,12 +103,12 @@ public class Rent {
         this.customerCard = customerCard;
     }
 
-    public String getLogisticsCompany() {
-    return logisticsCompany;
+    public String getSupplierId() {
+    return supplierId;
   }
 
-  public void setLogisticsCompany(String logisticsCompany) {
-    this.logisticsCompany = logisticsCompany;
+  public void setSupplierId(String supplierId) {
+    this.supplierId = supplierId;
   }
 
   public String getExpressBillNo() {
@@ -184,6 +175,14 @@ public class Rent {
     this.stat = stat;
   }
 
+  public Integer getBillStat() {
+    return billStat;
+  }
+
+  public void setBillStat(Integer billStat) {
+    this.billStat = billStat;
+  }
+
   public Integer getCreate_by() {
     return create_by;
   }
@@ -214,14 +213,6 @@ public class Rent {
 
   public void setUpdate_time(Date update_time) {
     this.update_time = update_time;
-  }
-
-  public String getStatName() {
-    return statName;
-  }
-
-  public void setStatName(String statName) {
-    this.statName = statName;
   }
 
 }

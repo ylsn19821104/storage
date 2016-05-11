@@ -29,35 +29,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			(#{item.id},#{item.skuId},#{item.itemName},#{item.itemPrice},#{item.itemAmount},#{item.itemRent},#{item.itemRepo},#{item.stat},#{item.statName})
 		</foreach>
 	</insert>
+
 	<update id="update" parameterType="RentDtl">
 		update tb_rentdtl
 		<set>
-			<if test="skuId!=null and skuId!='' ">
-				skuId=#{skuId},
-			</if>
-			
-			<if test="itemName!=null and itemName!='' ">
-				itemName=#{itemName},
-			</if>
-			<if test="itemPrice!=null and itemPrice!='' ">
-				itemPrice=#{itemPrice},
-			</if>
-			<if test="itemAmount!=null and itemAmount!='' ">
-				itemAmount=#{itemAmount},
-			</if>
-			<if test="itemRent!=null">
-				itemRent=#{itemRent},
-			</if>
-			<if test="itemRepo!=null">
-				itemRepo=#{itemRepo},
-			</if>
-			<if test="stat!=null">
-				stat=#{stat},
-			</if>
-			<if test="statName!=null">
-				statName=#{statName},
-			</if>
-			
+			skuId=#{skuId},
+			itemName=#{itemName},
+			itemPrice=#{itemPrice},
+			itemAmount=#{itemAmount},
+			itemRent=#{itemRent},
+			itemRepo=#{itemRepo},
+			stat=#{stat},
+			statName=#{statName}
 		</set>
 		where dtlId=#{dtlId}
 	</update>

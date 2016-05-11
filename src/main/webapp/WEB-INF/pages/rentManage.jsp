@@ -8,10 +8,10 @@
     <jsp:include page="common.jsp"/>
 
     <script type="text/javascript">
-        $(function(){
-            $.statusDic ={
+        $(function () {
+            $.statusDic = {
                 <c:forEach items="${statusDic}" var="item" varStatus="status">
-                    '${item.valueField}':'${item.textField}'<c:if test="${!status.last}"> , </c:if>
+                '${item.valueField}': '${item.textField}'<c:if test="${!status.last}">, </c:if>
                 </c:forEach>
             };
         });
@@ -41,7 +41,7 @@
         <th data-options="field:'customerPhone',width:100">联系电话</th>
         <th data-options="field:'customerCard',width:100">证件号</th>
         <th data-options="field:'customerAddr',width:100">地址</th>
-        <th data-options="field:'logisticsCompany',width:100">物流公司</th>
+        <th data-options="field:'supplierId',width:100">物流公司</th>
         <th data-options="field:'expressBillNo',width:100">快递单号</th>
         <th data-options="field:'returnBillNo',width:100">出租快递单号</th>
         <th data-options="field:'beginDate',width:80,formatter:function(value,row){ if(value) value = new Date(value);return value?value.getFullYear()+'-'+value.getMonth()+'-'+value.getDate():'';}">
@@ -69,20 +69,51 @@
         <table>
             <tr>
                 <td class="label">出租单号</td>
-                <td><input class="easyui-textbox input" data-options="editable:false" type="text" name="billNo"
+                <td><input class="easyui-textbox input" data-options="disabled:true" name="billNo"
                            id="billNo" readonly>
                 </td>
-                <td class="label">出租状态</td>
-                <td colspan="2">
-                    <select class="easyui-combobox input" name="stat" style="width:120px;" data-options="
+                <td class="label">单据状态</td>
+                <td>
+                    <select class="easyui-combobox input" name="billStat" id="billStat" style="width:120px;"
+                            data-options="
+                    disabled:true,
                     valueField: 'valueField',
                     textField: 'textField',
-                    method:'get',
-                    url: 'dic/rentStatus'">
+                    data:[{valueField:'0',textField:'未审核'},{valueField:'1',textField:'已审核'}]">
                     </select>
                 </td>
             </tr>
             <tr>
+                <td class="label">出租状态</td>
+                <td colspan="2">
+                    <select class="easyui-combobox input" name="stat" id="stat" style="width:120px;"
+                            data-options="
+                            disabled:true,
+                            valueField: 'valueField',
+                            textField: 'textField',
+                            method:'get',
+                            url: 'dic/rentStatus'">
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="label">客户</td>
+                <td><input class="easyui-textbox input" type="text" name="customerName">
+                </td>
+                <td class="label">证件号</td>
+                <td><input class="easyui-textbox input" type="text" name="customerCard">
+            </tr>
+            <tr>
+                <td class="label">联系电话</td>
+                <td><input class="easyui-textbox input" type="text" name="customerPhone">
+                </td>
+                </td>
+                <td class="label">地址</td>
+                <td colspan="3"><input class="easyui-textbox input" type="text" name="customerAddr"></td>
+            </tr>
+            <tr>
+
                 <td class="label">出库仓库</td>
                 <td>
                     <select class="easyui-combobox input" name="warehouseId" data-options="
@@ -92,76 +123,61 @@
                     url: 'warehouse/comboList'">
                     </select>
                 </td>
-                <td class="label">客户</td>
-                <td><input class="easyui-textbox input" type="text" name="customerName">
-                </td>
-            </tr>
-            <tr>
-                <td class="label">联系电话</td>
-                <td><input class="easyui-textbox input" type="text" name="customerPhone">
-                </td>
-                <td class="label">证件号</td>
-                <td><input class="easyui-textbox input" type="text" name="customerCard">
-            </tr>
-            <tr>
-                </td>
-                <td class="label">地址</td>
-                <td colspan="3"><input class="easyui-textbox input" type="text" name="customerAddr"
-                                       style="width:397px"></td>
-            </tr>
-            <tr>
                 <td class="label">物流供应商</td>
                 <td>
-                    <select class="easyui-combobox input" name="logisticsCompany" data-options="
+                    <select class="easyui-combobox input" name="supplierId" data-options="
                     editable:false,
                     valueField: 'id',
                     textField: 'text',
                     url: '${pageContext.request.contextPath}/supplier/comboList'">
                     </select>
                 </td>
-                <td class="label">快递单号</td>
-                <td><input class="easyui-textbox input" type="text" name="expressBillNo">
-                </td>
             </tr>
             <tr>
                 <td class="label">出租快递单号</td>
+                <td><input class="easyui-textbox input" type="text" name="expressBillNo">
+                </td>
+                <td class="label">归还快递单号</td>
                 <td><input class="easyui-textbox input" type="text" name="returnBillNo">
                 </td>
+                
             </tr>
             <tr>
                 <td class="label">使用开始时间</td>
                 <td><input id="start_time" class="easyui-datebox input" name="beginDate"
                            data-options="editable:false">
                 </td>
-                <td></td>
-                <td colspan="3" rowspan="5">SKU图片</td>
-            </tr>
-            <tr>
+                
+
                 <td class="label">使用结束时间</td>
                 <td><input id="end_time" class="easyui-datebox input" name="endDate"
                            data-options="editable:false">
                 </td>
-                <td></td>
             </tr>
             <tr>
                 <td class="label">租用天数</td>
                 <td><input id="days" class="easyui-numberbox input" type="text" name="rentDay" readonly>
                 </td>
-                <td></td>
+                <td class="label">制单时间</td>
+                <td><input id="create_time" class="easyui-datebox input" name="create_time"
+                           data-options="editable:false">
+                </td>
             </tr>
             <tr>
                 <td class="label">租金总金额</td>
                 <td><input class="input" readonly type="text" name="rentMoney" id="rentMoney">
                 </td>
-                <td></td>
-            </tr>
-            <tr>
                 <td class="label">押金总额</td>
                 <td><input class="input" readonly type="text" name="repoMoney" id="repoMoney">
                 </td>
-                <td></td>
             </tr>
-            <input type="hidden" name="details" id="details"/>
+            <tr>
+                <td class="label">操作员</td>
+                <td><input class="input" readonly type="text" name="createdBy" id="createdBy">
+                </td>
+                <input type="hidden" name="details" id="details"/>
+                </td>
+            </tr>
         </table>
     </form>
     <div id="t2_panel">
@@ -221,6 +237,7 @@
                                         for(var i=0;i<data.length;i++){
                                             if(data[i][opt.valueField]==val){
                                             $(this).combobox('setValue',val+' '+data[i][opt.textField]);
+                                                $('input[name=skuId]').val(val);
                                                 return;
                                             }
                                         }

@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by luopotaotao on 2016/5/9.
  */
@@ -17,10 +20,16 @@ public class SeqServiceImpl implements SeqService {
     @Autowired
     private SeqDao seqDao;
 
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy");
+
     @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
     @Override
-    public int next(String prefix) {
+    public String next(String prefix) {
         seqDao.add(prefix);
-        return seqDao.find(prefix);
+        int number = seqDao.find(prefix);
+        StringBuilder sb = new StringBuilder();
+        String str1 = format.format(new Date());
+        String str2 = String.format("%1$,06d", number);
+        return sb.append(prefix).append(str1).append(str2).toString();
     }
 }

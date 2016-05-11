@@ -43,7 +43,7 @@
                     var result = eval('(' + result + ')');
                     if (result.success) {
                         $.messager.alert("系统提示", "保存成功！");
-                        resetValue();
+                        $("#fm").form('clear');
                         $("#dlg").dialog("close");
                         $("#dg").datagrid("reload");
                     } else {
@@ -54,18 +54,9 @@
             });
         }
 
-        function resetValue() {
-            $("#supplierName").val("");
-            $("#password").val("");
-            $("#trueName").val("");
-            $("#email").val("");
-            $("#phone").val("");
-            $("#roleName").combobox("setValue", "");
-        }
-
         function closeSupplierDialog() {
             $("#dlg").dialog("close");
-            resetValue();
+            $("#fm").form('clear');
         }
 
         function deleteSupplier() {

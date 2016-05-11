@@ -14,7 +14,7 @@
         <result property="customerAddr" column="customerAddr"/>
         <result property="customerCard" column="customerCard"/>
         <result property="stat" column="stat"/>
-        <!--<result property="statName" column="statName"/>-->
+        <result property="billStat" column="billStat"/>
 
         <result property="rentDay" column="rentDay"/>
         <result property="rentMoney" column="rentMoney"/>
@@ -23,7 +23,7 @@
         <result property="endDate" column="endDate"/>
         <result property="expressBillNo" column="expressBillNo"/>
         <result property="returnBillNo" column="returnBillNo"/>
-        <result property="logisticsCompany" column="logisticsCompany"/>
+        <result property="supplierId" column="supplierId"/>
 
 
         <result property="create_by" column="create_by"/>
@@ -33,11 +33,11 @@
     </resultMap>
 
     <insert id="save" parameterType="com.l1.entity.Rent" useGeneratedKeys="true" keyProperty="id">
-		insert into tb_rent(billNo,customerName,warehouseId,stat,create_time,customerPhone,customerAddr,customerCard
-		,rentDay,rentMoney,repoMoney,beginDate,endDate,expressBillNo,returnBillNo,logisticsCompany) 
-		values(#{billNo},#{customerName},#{warehouseId},#{stat},#{create_time},
+		insert into tb_rent(billNo,customerName,warehouseId,stat,billStat,create_time,customerPhone,customerAddr,customerCard
+		,rentDay,rentMoney,repoMoney,beginDate,endDate,expressBillNo,returnBillNo,supplierId)
+		values(#{billNo},#{customerName},#{warehouseId},#{stat},#{billStat},#{create_time},
 		#{customerPhone},#{customerAddr},#{customerCard}
-		,#{rentDay},#{rentMoney},#{repoMoney},#{beginDate},#{endDate},#{expressBillNo},#{returnBillNo},#{logisticsCompany})
+		,#{rentDay},#{rentMoney},#{repoMoney},#{beginDate},#{endDate},#{expressBillNo},#{returnBillNo},#{supplierId})
 	</insert>
 
     <update id="update" parameterType="com.l1.entity.Rent">
@@ -59,6 +59,9 @@
             </if>
             <if test="stat!=null and stat!='' ">
                 stat=#{stat},
+            </if>
+             <if test="billStat!=null and billStat!='' ">
+                stat=#{billStat},
             </if>
             <if test="statName!=null and statName!='' ">
                 statName=#{statName},
@@ -98,14 +101,14 @@
             <if test="returnBillNo!=null">
                 returnBillNo=#{returnBillNo},
             </if>
-            <if test="logisticsCompany!=null">
-                logisticsCompany=#{logisticsCompany},
+            <if test="supplierId!=null">
+                supplierId=#{supplierId},
             </if>
         </set>
         where id=#{id}
     </update>
     <update id="finish">
-        UPDATE tb_rent set stat = 6 WHERE id IN
+        UPDATE tb_rent set billStat = 1 WHERE id IN
         <foreach collection="array" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
@@ -129,13 +132,13 @@
     </select>
 
     <select id="findByIds" parameterType="string" resultMap="RentResult">
-		select * from tb_rent
-		where id in (#{ids})
+		select r.*,w.name warehouseName,s.supplierName supplierId from tb_rent r,tb_warehouse w,tb_supplier s
+		where id in (#{ids}) and r.warehouseId =
 	</select>
 
     <select id="findById" parameterType="int" resultMap="RentResult">
-		select * from tb_rent
-		where id =#{id}
+		select r.*,w.name warehouseName,s.supplierName supplierId from tb_rent r,tb_warehouse w,tb_supplier s
+		where id =#{id} and r.warehouseId = w.name and r.supplierId = s.id
 	</select>
 
 

@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.6.10 : Database - l1
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -329,7 +330,7 @@ CREATE TABLE `tb_rent` (
   `customerPhone` varchar(20) DEFAULT NULL,
   `customerAddr` varchar(100) DEFAULT NULL,
   `customerCard` varchar(50) DEFAULT NULL,
-  `logisticsCompany` varchar(50) DEFAULT NULL,
+  `supplierId` varchar(50) DEFAULT NULL,
   `expressBillNo` varchar(50) DEFAULT NULL,
   `returnBillNo` varchar(50) DEFAULT NULL,
   `beginDate` date DEFAULT NULL,
@@ -341,7 +342,7 @@ CREATE TABLE `tb_rent` (
 
 /*Data for the table `tb_rent` */
 
-insert  into `tb_rent`(`id`,`billNo`,`customerName`,`warehouseId`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`returnBillNo`,`beginDate`,`endDate`,`warehouseName`,`billStatus`) values (75,'CZ201605090029',NULL,NULL,6,NULL,'2016-05-09 23:36:36',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),(76,'CZ201605090030',NULL,NULL,6,NULL,'2016-05-09 23:37:50',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0);
+insert  into `tb_rent`(`id`,`billNo`,`customerName`,`warehouseId`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`customerPhone`,`customerAddr`,`customerCard`,`supplierId`,`expressBillNo`,`returnBillNo`,`beginDate`,`endDate`,`warehouseName`,`billStatus`) values (75,'CZ201605090029',NULL,NULL,6,NULL,'2016-05-09 23:36:36',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),(76,'CZ201605090030',NULL,NULL,6,NULL,'2016-05-09 23:37:50',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0);
 
 /*Table structure for table `tb_rentdtl` */
 
@@ -377,7 +378,7 @@ CREATE TABLE `tb_return` (
   `customerPhone` varchar(20) DEFAULT NULL,
   `customerAddr` varchar(100) DEFAULT NULL,
   `customerCard` varchar(50) DEFAULT NULL,
-  `logisticsCompany` varchar(50) DEFAULT NULL,
+  `supplierId` varchar(50) DEFAULT NULL,
   `expressBillNo` varchar(50) DEFAULT NULL,
   `rentBillNo` varchar(50) DEFAULT NULL,
   `warehouseId` bigint(20) DEFAULT NULL,
@@ -399,7 +400,7 @@ CREATE TABLE `tb_return` (
 
 /*Data for the table `tb_return` */
 
-insert  into `tb_return`(`id`,`billNo`,`customerName`,`customerPhone`,`customerAddr`,`customerCard`,`logisticsCompany`,`expressBillNo`,`rentBillNo`,`warehouseId`,`warehouseName`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`damageMoney`,`beginDate`,`endDate`,`statName`) values (1,'3344','所发生','22','第三方','345566','22 第三方','的4444','222',2,'浦西仓库',1,NULL,'2016-04-27 23:17:32',NULL,'2016-05-09 22:42:51',8,'33.00','33.00','333.00','2016-04-20','2016-04-27','待审批'),(2,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:41:50',NULL,'2016-05-09 22:42:42',NULL,NULL,NULL,NULL,NULL,NULL,'待审批'),(3,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:42:37',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'待审批');
+insert  into `tb_return`(`id`,`billNo`,`customerName`,`customerPhone`,`customerAddr`,`customerCard`,`supplierId`,`expressBillNo`,`rentBillNo`,`warehouseId`,`warehouseName`,`stat`,`create_by`,`create_time`,`update_by`,`update_time`,`rentDay`,`rentMoney`,`repoMoney`,`damageMoney`,`beginDate`,`endDate`,`statName`) values (1,'3344','所发生','22','第三方','345566','22 第三方','的4444','222',2,'浦西仓库',1,NULL,'2016-04-27 23:17:32',NULL,'2016-05-09 22:42:51',8,'33.00','33.00','333.00','2016-04-20','2016-04-27','待审批'),(2,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:41:50',NULL,'2016-05-09 22:42:42',NULL,NULL,NULL,NULL,NULL,NULL,'待审批'),(3,'','','','','','','','',NULL,NULL,1,NULL,'2016-05-09 22:42:37',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'待审批');
 
 /*Table structure for table `tb_returndtl` */
 

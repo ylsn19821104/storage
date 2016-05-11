@@ -42,7 +42,7 @@
         <th data-options="field:'customerPhone',width:100">联系电话</th>
         <th data-options="field:'customerCard',width:100">证件号</th>
         <th data-options="field:'customerAddr',width:100">地址</th>
-        <th data-options="field:'logisticsCompany',width:100">物流公司</th>
+        <th data-options="field:'supplierId',width:100">物流公司</th>
         <th data-options="field:'expressBillNo',width:100">快递单号</th>
         <th data-options="field:'returnBillNo',width:100">归还单号</th>
         <th data-options="field:'beginDate',width:80,formatter:function(value,row){ if(value) value = new Date(value);return value?value.getFullYear()+'-'+value.getMonth()+'-'+value.getDate():'';}">
@@ -113,7 +113,7 @@
             <tr>
                 <td class="label">物流供应商</td>
                 <td>
-                    <select class="easyui-combobox input" name="logisticsCompany" data-options="
+                    <select class="easyui-combobox input" name="supplierId" data-options="
                     editable:false,
                     valueField: 'id',
                     textField: 'text',

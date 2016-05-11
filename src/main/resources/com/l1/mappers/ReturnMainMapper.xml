@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="endDate" column="endDate"/>
 		<result property="expressBillNo" column="expressBillNo"/>
 		<result property="rentBillNo" column="rentBillNo"/>
-		<result property="logisticsCompany" column="logisticsCompany"/>
+		<result property="supplierId" column="supplierId"/>
 		
 		
 		<result property="create_by" column="create_by"/>
@@ -35,9 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="save" parameterType="ReturnMain">
 		insert into tb_return(id,billNo,customerName,warehouseId,stat,statName,create_time,warehouseName,customerPhone,customerAddr,customerCard
-		,rentDay,rentMoney,repoMoney,damageMoney,beginDate,endDate,expressBillNo,rentBillNo,logisticsCompany) 
+		,rentDay,rentMoney,repoMoney,damageMoney,beginDate,endDate,expressBillNo,rentBillNo,supplierId)
 		values(null,#{billNo},#{customerName},#{warehouseId},#{stat},#{statName},#{create_time},#{warehouseName},#{customerPhone},#{customerAddr},#{customerCard}
-		,#{rentDay},#{rentMoney},#{repoMoney},#{damageMoney},#{beginDate},#{endDate},#{expressBillNo},#{rentBillNo},#{logisticsCompany})
+		,#{rentDay},#{rentMoney},#{repoMoney},#{damageMoney},#{beginDate},#{endDate},#{expressBillNo},#{rentBillNo},#{supplierId})
 	</insert>
 	
 	<update id="update" parameterType="ReturnMain">
@@ -102,8 +102,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="rentBillNo !=null">
 				rentBillNo=#{rentBillNo},
 			</if>
-			<if test="logisticsCompany!=null">
-				logisticsCompany=#{logisticsCompany},
+			<if test="supplierId!=null">
+				supplierId=#{supplierId},
 			</if>
 		</set>
 		where id=#{id}

@@ -11,6 +11,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,31 +87,42 @@ public class RentController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> save(Rent rent, String details) {
+    public Map<String, Object> save(Rent rent,
+                                    @RequestParam(value = "inserted",required = false) String insertedStr,
+                                    @RequestParam(value = "updated",required = false) String updatedStr,
+                                    @RequestParam(value = "deleted",required = false) Integer[] deleted, BindingResult err) {
         rent.setCreate_time(DateUtil.now());
-        List<RentDtl> detailsList = null;
-        if (details != null && details.length() > 2) {
-            detailsList = new LinkedList<RentDtl>();
-            JSONArray array = JSONArray.fromObject(details);
-            if (array != null && array.size() > 0) {
-                List<RentDetail> list = new LinkedList<RentDetail>();
-                for (int i = 0; i < array.size(); i++) {
-                    JSONObject item = array.getJSONObject(i);
-                    RentDtl detail = jsonToRentDetail(item);
-                    detailsList.add(detail);
-                }
+        List<RentDtl> inserted = null;
+        List<RentDtl> updated = null;
+        if(rent.getId()!=null&&rent.getId()>0){
+            if(updatedStr!=null&&updatedStr.length()>0){
+                inserted = jsonArrayToRentDetailList(JSONArray.fromObject(updatedStr));
             }
+        }
+        if(insertedStr!=null&&insertedStr.length()>0){
+            inserted = jsonArrayToRentDetailList(JSONArray.fromObject(insertedStr));
         }
 
         int count = 0;
         if (rent.getId() != null) {
-            count = rentService.updateWithDetails(rent, detailsList);
+            count = rentService.updateWithDetails(rent, inserted,updated,deleted);
         } else {
-            count = rentService.saveRentWithDetails(rent, detailsList);
+            count = rentService.saveRentWithDetails(rent, inserted);
 
         }
         Map<String, Object> ret = new HashMap<String, Object>();
         ret.put("flag", count > 0);
+        return ret;
+    }
+
+    private List<RentDtl> jsonArrayToRentDetailList(JSONArray array){
+        List<RentDtl> ret = null;
+        if(array!=null&&array.size()>0){
+            ret = new LinkedList<RentDtl>();
+            for(int i = 0;i<array.size();i++){
+                ret.add(jsonToRentDetail(array.getJSONObject(i)));
+            }
+        }
         return ret;
     }
 
@@ -133,21 +145,6 @@ public class RentController {
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> update(Rent rent) {
-        Integer warehouseId = rent.getWarehouseId();
-        if (warehouseId != null && warehouseId > 0) {
-            Warehouse warehouse = warehouseService.findById(warehouseId);
-            if (warehouse != null) {
-                rent.setWarehouseName(warehouse.getName());
-            }
-        }
-
-        if (rent.getStat() > 0) {
-            BillStat billStat = billStatService.findById(rent.getStat());
-            if (billStat != null) {
-                rent.setStatName(billStat.getName());
-            }
-        }
-
         rent.setUpdate_time(DateUtil.now());
         rentService.update(rent);
 
@@ -227,19 +224,19 @@ public class RentController {
         }
 
         public String getString(String key) {
-            return source.get(key) instanceof JSONNull ? null : source.getString(key);
+            return source.get(key)==null||source.get(key) instanceof JSONNull ? null : source.getString(key);
         }
 
         public Integer getInteger(String key) {
-            return source.get(key) instanceof JSONNull ? null : source.getInt(key);
+            return source.get(key)==null|| source.get(key) instanceof JSONNull ? null : source.getInt(key);
         }
 
         public Double getDouble(String key) {
-            return source.get(key) instanceof JSONNull ? null : source.getDouble(key);
+            return source.get(key)==null||source.get(key) instanceof JSONNull ? null : source.getDouble(key);
         }
 
         public BigDecimal getBigDecimal(String key) {
-            return source.get(key) instanceof JSONNull ? null : BigDecimal.valueOf(source.getDouble(key));
+            return source.get(key)==null||source.get(key) instanceof JSONNull ? null : BigDecimal.valueOf(source.getDouble(key));
         }
     }
 }

@@ -30,7 +30,7 @@ public interface RentService {
     int saveRentWithDetails(Rent rent, List<RentDtl> details);
 
 
-    int updateWithDetails(Rent rent, List<RentDtl> details);
+    int updateWithDetails(Rent rent, List<RentDtl> inserted,List<RentDtl> updated,Integer[] ids);
 
     int finish(Integer[] ids);
 }

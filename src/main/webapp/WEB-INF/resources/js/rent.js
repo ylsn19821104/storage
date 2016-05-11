@@ -44,7 +44,7 @@ $(function () {
                     if (start.getTime() > date.getTime()) {
                         $.messager.alert('系统提示!', '结束时间不能小于开始时间!')
                         $(this).datebox('setValue', null);
-                        ('#days').numberbox('setValue', null);
+                        $('#days').numberbox('setValue', null);
                         return;
                     }
                     var interval = date.getTime() - start.getTime();
@@ -68,9 +68,14 @@ $(function () {
 
     function toAdd() {
         setEditable(true);
-        $.currentItem = {type: 'new'};
+        $.currentItem = {};
         $('#editForm').form('clear');
         $('#editPanel').dialog('open');
+
+        $('#billStat').combobox('setValue',0);
+        $('#stat').combobox('setValue',1);
+
+        $('#t2_dg').datagrid('loadData',{total:0,rows:[]});
     }
 
     function formatDate(obj, names) {
@@ -176,15 +181,33 @@ $(function () {
                     $.currentItem[name] = $(val).val();
                 }
             });
-            var details = $('#t2_dg').datagrid('getData').rows;
-            $(details).each(function (i, val) {
-                if (val.dtlId < 0) {
-                    delete val.dtlId;
+
+            if($.currentItem.id){
+                var deleted = $('#t2_dg').datagrid('getChanges','deleted');
+                if(deleted&&deleted.length>0){
+                    var deletedIds = [];
+                    $.each(deleted,function (i,row) {
+                        deletedIds.push(row['dtlId']);
+                    });
+                    $.currentItem.deleted = deletedIds;
                 }
-            })
-            if (details)
-                $.currentItem.details = JSON.stringify(details);
-            delete $.currentItem.type;
+                var updated = $('#t2_dg').datagrid('getChanges','updated');
+                if(updated&&updated.length>0){
+                    $.currentItem.updated = JSON.stringify(updated);
+                }
+            }
+            var inserted = $('#t2_dg').datagrid('getChanges','inserted');
+            if(inserted&&inserted.length>0){
+                $.currentItem.inserted = JSON.stringify(inserted);
+            }
+
+            // $(details).each(function (i, val) {
+            //     if (val.dtlId < 0) {
+            //         delete val.dtlId;
+            //     }
+            // })
+            // if (details)
+            //     $.currentItem.details = JSON.stringify(details);
             $.ajax({
                 url: t1Url + '/save',
                 type: 'post',
@@ -213,7 +236,6 @@ $(function () {
             }).error(function (e) {
                 $.messager.alert('系统提示!', '保存失败,请重新尝试或联系管理员!');
             }).complete(function (e) {
-                $.currentItem = {};
                 $.messager.progress('close');
             });
         }
@@ -255,7 +277,7 @@ $(function () {
         }
     }
     function t2ToAdd() {
-        $.t2CurrentItem = {dtlId: -(new Date().getTime()), type: 'new'};
+        $.t2CurrentItem = {};
         $('#t2EditPanel').dialog('open');
         $('#t2EditForm').form('clear');
         $('#t2EditForm').form('load', {dtlId: $.t2CurrentItem});
@@ -282,15 +304,13 @@ $(function () {
 
             var item = $.t2CurrentItem;
             if (item) {
-                var type = item.type
                 $('#t2EditForm input').each(function (i, val) {
                     var key = $(val).attr('name');
                     if (key) {
                         item[key] = $(val).val();
                     }
                 });
-                if (item.type) {
-                    delete item.type;
+                if (!item.dtlId) {
                     $('#t2_dg').datagrid('appendRow', item);
                 } else {
                     var index = $('#t2_dg').datagrid('getRowIndex', item);

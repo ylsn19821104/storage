@@ -57,7 +57,7 @@ public class RentDtlServiceImpl implements RentDtlService {
 	}
 
   @Override
-  public void delete(String[] ids) {
+  public void delete(Integer[] ids) {
       rentDtlDao.delete(ids);
   }
 

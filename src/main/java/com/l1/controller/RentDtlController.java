@@ -123,7 +123,7 @@ public class RentDtlController {
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> remove(@RequestParam(value = "ids[]") String[] ids) {
+    public Map<String, Object> remove(@RequestParam(value = "ids[]") Integer[] ids) {
         rentDtlService.delete(ids);
         Map<String, Object> ret = new HashMap<String, Object>();
         ret.put("flag", true);
@@ -176,7 +176,7 @@ public class RentDtlController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delete(@RequestParam(value = "ids[]") String[] ids)
+    public Map<String, Object> delete(@RequestParam(value = "ids[]") Integer[] ids)
             throws Exception {
         if (ids != null && ids.length > 0) {
             rentDtlService.delete(ids);

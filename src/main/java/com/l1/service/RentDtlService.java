@@ -22,5 +22,5 @@ public interface RentDtlService {
 
   public Integer deleteById(Integer id);
 
-  public void delete(String[] ids);
+  public void delete(Integer[] ids);
 }

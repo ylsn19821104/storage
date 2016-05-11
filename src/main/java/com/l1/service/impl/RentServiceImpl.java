@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 import com.l1.dao.RentDtlDao;
 import com.l1.dao.SeqDao;
 import com.l1.entity.RentDtl;
+import com.l1.entity.Seq;
+import com.l1.service.SeqService;
 import org.springframework.stereotype.Service;
 
 import com.l1.dao.RentDao;
@@ -28,7 +30,7 @@ public class RentServiceImpl implements RentService {
     private RentDtlDao rentDtlDao;
 
     @Resource
-    private SeqDao seqDao;
+    private SeqService seqService;
 
     @Override
     public List<Rent> find(Map<String, Object> map) {
@@ -86,7 +88,7 @@ public class RentServiceImpl implements RentService {
     @Transactional(isolation = Isolation.DEFAULT,propagation = Propagation.REQUIRES_NEW)
     @Override
     public int saveRentWithDetails(Rent rent, List<RentDtl> details) {
-        String billNo = generateBillNo();
+        String billNo = seqService.next("CZ");
         rent.setBillNo(billNo);
         int id = this.save(rent);
         if (details != null && details.size() > 0) {
@@ -98,26 +100,25 @@ public class RentServiceImpl implements RentService {
         return id;
     }
 
-    private String generateBillNo(){
-        StringBuilder sb = new StringBuilder();
-        String str0 = "CZ";
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String str1 = format.format(new Date());
-        seqDao.add(str0);
-        int number = seqDao.find(str0);
-        String str2 = String.format("%1$,04d", number);
-        return sb.append(str0).append(str1).append(str2).toString();
-    }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public int updateWithDetails(Rent rent, List<RentDtl> details) {
+    public int updateWithDetails(Rent rent, List<RentDtl> inserted,List<RentDtl> updated,Integer[] ids) {
         int id = this.update(rent);
         rentDtlDao.deleteByRentId(rent.getId());
-        if (details != null && details.size() > 0) {
-            for (RentDtl item : details) {
+        if (inserted != null && inserted.size() > 0) {
+            for (RentDtl item : inserted) {
                 item.setId(rent.getId());
             }
-            rentDtlDao.batchSave(details);
+            rentDtlDao.batchSave(inserted);
+        }
+        if (updated != null && updated.size() > 0) {
+            for (RentDtl item : updated) {
+                item.setId(rent.getId());
+                rentDtlDao.update(item);
+            }
+        }
+        if(ids!=null&&ids.length>0){
+            rentDtlDao.delete(ids);
         }
         return id;
     }
