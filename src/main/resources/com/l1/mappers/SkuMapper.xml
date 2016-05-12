@@ -10,17 +10,32 @@
         <result property="itemName" column="itemName"/>
         <result property="colorId" column="colorId"/>
         <result property="colorName" column="colorName"/>
-        <result property="sizeDtlName" column="sizeDtlName"/>
         <result property="sizeDtlId" column="sizeDtlId"/>
+        <result property="sizeDtlName" column="sizeDtlName"/>
+        <result property="warehouseId" column="warehouseId"/>
+        <result property="warehouseName" column="warehouseName"/>
+        <result property="amount" column="amount"/>
         <result property="text" column="text"/>
     </resultMap>
 
+    <sql id="v_sku">
+      SELECT * FROM (
+        SELECT sku.*,item.`name` itemName,color.`name` colorName,sizedtl.`name` sizeDtlName,warehouse.name warehouseName
+        FROM tb_sku sku
+          LEFT JOIN tb_item item ON sku.itemId = item.id
+           LEFT JOIN tb_color color ON sku.colorId = color.id
+           LEFT JOIN tb_sizedtl sizedtl ON sku.sizeDtlId = sizedtl.id
+           LEFT JOIN tb_warehouse warehouse ON sku.warehouseId = warehouse.id
+           ) v_sku
+    </sql>
+
     <select id="findById" parameterType="int" resultType="Sku">
-		select * from tb_sku where id=#{id}
+        <include refid="v_sku"/>
+		where id=#{id}
 	</select>
 
     <select id="find" parameterType="Map" resultMap="SkuResult">
-        select * from tb_sku
+        <include refid="v_sku"/>
         <where>
             <if test="itemId!=null and itemId!='' ">
                 and itemId like #{itemId}
@@ -52,7 +67,7 @@
         </if>
     </select>
     <select id="findForCombo"  resultType="map">
-        SELECT id,itemName text from tb_sku
+        SELECT sku.id,item.name text from tb_sku sku LEFT JOIN tb_item item ON sku.itemId = item.id
     </select>
 
 

@@ -122,7 +122,18 @@
                     valueField: 'id',
                     textField: 'text',
                     method:'get',
-                    url: 'warehouse/comboList'">
+                    url: 'warehouse/comboList',
+                    onSelect:function(ret){
+                        var rows = $('#t2_dg').datagrid('getRows');
+                        if(rows&&rows.length>0){
+                            $.messager.confirm('系统提示','重新选择仓库需要重新填写出租明细,是否继续?？',function(r){
+                                if (r){
+                                    $('#t2_dg').datagrid('loadData',{total:0,rows:[]});
+                                }
+                            }
+                        }
+
+                    }">
                     </select>
                 </td>
                 <td class="label">物流供应商</td>
@@ -142,14 +153,14 @@
                 <td class="label">归还快递单号</td>
                 <td><input class="easyui-textbox input" type="text" name="returnBillNo">
                 </td>
-                
+
             </tr>
             <tr>
                 <td class="label">使用开始时间</td>
                 <td><input id="start_time" class="easyui-datebox input" name="beginDate"
                            data-options="editable:false">
                 </td>
-                
+
 
                 <td class="label">使用结束时间</td>
                 <td><input id="end_time" class="easyui-datebox input" name="endDate"
@@ -192,6 +203,7 @@
                 <th data-options="field:'dtlId',width:80,hidden:true">id</th>
                 <th data-options="field:'skuId',width:80">SKU</th>
                 <th data-options="field:'itemName',width:80">商品名称</th>
+                <th data-options="field:'itemName',width:80">商品名称</th>
                 <th data-options="field:'itemPrice',width:80,align:'right'">单价</th>
                 <th data-options="field:'itemAmount',width:60,align:'right'">数量</th>
                 <th data-options="field:'itemRent',width:60">金额</th>
@@ -232,7 +244,20 @@
                                         if(!val){
                                             return;
                                         }
+                                        function loadSkuInfo(id){
+                                            $.ajax({
+                                                url:'sku/findById',
+                                                type:'get',
+                                                data:{id:id},
+                                                dataType:'json'
+                                            }).success(function(ret){
 
+                                            }).error(function(){
+
+                                            }).complete(function(){
+
+                                            });
+                                        }
                                         var opt = $(this).combobox('options');
                                         var data =$(this).combobox('getData');
                                         var contains = false;
@@ -240,6 +265,7 @@
                                             if(data[i][opt.valueField]==val){
                                             $(this).combobox('setValue',val+' '+data[i][opt.textField]);
                                                 $('input[name=skuId]').val(val);
+
                                                 return;
                                             }
                                         }
@@ -257,6 +283,30 @@
                         <td>
                             <input class="easyui-textbox" name="itemName" id="itemName" style="width:150px">
                         </td>
+                        <td rowspan="5">123</td>
+                    </tr>
+                    <tr>
+                        <td>颜色</td>
+                        <td>
+                            <input class="easyui-textbox" name="itemName" id="colorName" style="width:150px">
+                        </td>
+                        <td>尺码</td>
+                        <td>
+                            <input class="easyui-textbox" name="itemName" id="sizeDtlName" style="width:150px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数量</td>
+                        <td><input class="easyui-numberbox" type="text" name="itemAmount" id="itemAmount"
+                                   style="width:150px"
+                                   data-options="min:1,precision:0,required:true,onChange:function(newValue,oldValue){
+                        	var price = $('#itemPrice').numberbox('getValue');
+                        	$('#itemRent').val(newValue*price);
+                        }"></td>
+                        <td>当前库存</td>
+                        <td>
+                            <input class="easyui-textbox" name="itemName" id="amount" style="width:150px">
+                        </td>
                     </tr>
                     <tr>
                         <td>单价</td>
@@ -266,14 +316,9 @@
                         	var amount= $('#itemAmount').numberbox('getValue');
                         	$('#itemRent').val(newValue*amount);
                         }"></td>
+                        <td></td>
+                        <td></td>
 
-                        <td>数量</td>
-                        <td><input class="easyui-numberbox" type="text" name="itemAmount" id="itemAmount"
-                                   style="width:150px"
-                                   data-options="min:1,precision:0,required:true,onChange:function(newValue,oldValue){
-                        	var price = $('#itemPrice').numberbox('getValue');
-                        	$('#itemRent').val(newValue*price);
-                        }"></td>
 
                     </tr>
                     <tr>

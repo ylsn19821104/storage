@@ -80,4 +80,9 @@ public class SkuController {
         return skuList;
     }
 
+    @RequestMapping(value = "findById",method = RequestMethod.GET)
+    @ResponseBody
+    public Sku findById(Integer id){
+        return skuService.findById(id);
+    }
 }
