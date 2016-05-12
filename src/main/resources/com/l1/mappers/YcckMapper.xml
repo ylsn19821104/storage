@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="find" parameterType="Map" resultMap="YcckResult">
 		SELECT ty.id,ty.billNo,ty.outWarehouseId,ty.inWarehouseId,ty.stat,ty.create_by,ty.create_time,ty.makerId,
 		ty.billDate,ty.update_by,ty.update_time,ty.total,
-		tw1.name AS outWarehouseName,tw2.name AS inWarehouseName,tb.name AS statName,tu.trueName AS makerName
+		tw1.name AS outWarehouseName,tw2.name AS inWarehouseName,tb.name AS statName,tu.true_Name AS makerName
 		FROM tb_ycck ty
 		LEFT JOIN tb_warehouse tw1 ON tw1.id=ty.outWarehouseId
 		LEFT JOIN tb_warehouse tw2 ON tw2.id=ty.inWarehouseId

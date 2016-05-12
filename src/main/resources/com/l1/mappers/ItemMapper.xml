@@ -45,11 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from tb_item where id=#{id}
 	</select>
 	
-	<select id="find" parameterType="Map" resultMap="ItemResult">
+	<select id="find" parameterType="map" resultMap="ItemResult">
 		select * from tb_item
 		<where>
 			<if test="name!=null and name!='' ">
-				and name like #{name}
+				and name like concat('%',#{name},'%')
 			</if>
 			<if test="stat!=null and stat!='' ">
 				and stat = #{stat}

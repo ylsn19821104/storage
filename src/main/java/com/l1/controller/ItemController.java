@@ -81,16 +81,15 @@ public class ItemController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public Map<String, Object> list(@RequestParam(value = "page", required = false) String page,
-                                    @RequestParam(value = "rows", required = false) String rows, Item s_item)
+    public Map<String, Object> list(@RequestParam(value = "page", required = false) Integer page,
+                                    @RequestParam(value = "rows", required = false) Integer rows, Item s_item)
             throws Exception {
-        PageBean pageBean = new PageBean(Integer.parseInt(page), Integer.parseInt(rows));
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", StringUtil.formatLike(s_item.getName()));
         map.put("code", StringUtil.formatLike(s_item.getCode()));
         map.put("stat", "使用");
-        map.put("start", pageBean.getStart());
-        map.put("size", pageBean.getPageSize());
+        map.put("start", rows!=null&&page!=null?page*rows:null);
+        map.put("size", rows);
 
         List<Item> itemList = itemService.find(map);
         Long total = itemService.getTotal(map);
