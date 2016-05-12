@@ -4,12 +4,18 @@ public class Sku {
 	private Integer id;
 	private Integer itemId;
 	private String itemName;
+	private Double itemPrice;
 
 	private Integer colorId;
 	private String colorName;
 
 	private Integer sizeDtlId;
 	private String sizeDtlName;
+
+	private Integer warehouseId;
+	private String warehouseName;
+	private String imgSuffix;
+	private Integer amount;
 
 	private String text;
 
@@ -37,7 +43,15 @@ public class Sku {
 		this.itemName = itemName;
 	}
 
-	public Integer getColorId() {
+    public Double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public Integer getColorId() {
 		return colorId;
 	}
 
@@ -67,6 +81,38 @@ public class Sku {
 
 	public void setSizeDtlName(String sizeDtlName) {
 		this.sizeDtlName = sizeDtlName;
+	}
+
+	public Integer getWarehouseId() {
+		return warehouseId;
+	}
+
+	public void setWarehouseId(Integer warehouseId) {
+		this.warehouseId = warehouseId;
+	}
+
+	public String getWarehouseName() {
+		return warehouseName;
+	}
+
+	public void setWarehouseName(String warehouseName) {
+		this.warehouseName = warehouseName;
+	}
+
+	public String getImgSuffix() {
+		return imgSuffix;
+	}
+
+	public void setImgSuffix(String imgSuffix) {
+		this.imgSuffix = imgSuffix;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
 	}
 
 	public String getText() {

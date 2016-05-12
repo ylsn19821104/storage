@@ -17,7 +17,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/l1"/>
         <property name="username" value="root"/>
-        <property name="password" value="admin"/>
+        <property name="password" value="rshi.cn"/>
     </bean>
 
     <!--

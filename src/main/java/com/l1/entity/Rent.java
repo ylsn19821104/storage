@@ -29,6 +29,7 @@ public class Rent {
     private BigDecimal repoMoney;
 
     private Integer stat;
+    private String statName;
     private Integer billStat;
     private String billStatName;
 
@@ -182,6 +183,14 @@ public class Rent {
 
     public void setStat(Integer stat) {
         this.stat = stat;
+    }
+
+    public String getStatName() {
+        return statName;
+    }
+
+    public void setStatName(String statName) {
+        this.statName = statName;
     }
 
     public Integer getBillStat() {

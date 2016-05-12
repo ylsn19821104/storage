@@ -252,8 +252,8 @@
                         <td><input class="easyui-numberbox" type="text" name="itemAmount" id="itemAmount"
                                    style="width:150px"
                                    data-options="min:1,precision:0,required:true,onChange:function(newValue,oldValue){
-                        	var price = $('#itemPrice').numberbox('getValue');
-                        	$('#itemRent').val(newValue*price);
+                        	var itemPrice = $('#itemPrice').numberbox('getValue');
+                        	$('#itemRent').val(newValue*itemPrice);
                         }"></td>
 
                     </tr>

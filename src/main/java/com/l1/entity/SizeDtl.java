@@ -11,6 +11,7 @@ public class SizeDtl {
 	private Integer sizeId;
 
 	private String stat;
+	private String statName;
 	private Integer create_by;
 	private Integer update_by;
 
@@ -47,6 +48,14 @@ public class SizeDtl {
 
 	public void setStat(String stat) {
 		this.stat = stat;
+	}
+
+	public String getStatName() {
+		return statName;
+	}
+
+	public void setStatName(String statName) {
+		this.statName = statName;
 	}
 
 	public Integer getCreate_by() {

@@ -104,7 +104,6 @@ public class RentServiceImpl implements RentService {
     @Override
     public int updateWithDetails(Rent rent, List<RentDtl> inserted,List<RentDtl> updated,Integer[] ids) {
         int id = this.update(rent);
-        rentDtlDao.deleteByRentId(rent.getId());
         if (inserted != null && inserted.size() > 0) {
             for (RentDtl item : inserted) {
                 item.setId(rent.getId());

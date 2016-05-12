@@ -78,11 +78,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<select id="find" parameterType="Map" resultMap="KctzResult">
-		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.true_name AS makerName,
-		tk.stat,tb.name AS statName,tk.warehouseId,tw.name AS warehouseName
-        FROM tb_kctz tk LEFT JOIN tb_user tu ON tk.makerId=tu.true_name
+		SELECT tk.id,tk.billDate,tk.billNo,tk.makerId,tu.truename AS makerName,
+		tk.stat,d.textField AS statName,tk.warehouseId,tw.name AS warehouseName
+        FROM tb_kctz tk LEFT JOIN tb_user tu ON tk.makerId=tu.id
         LEFT JOIN  tb_warehouse tw ON tk.warehouseId= tw.id 
-        LEFT JOIN  tb_billstat tb ON tk.stat= tb.id
+        LEFT JOIN  (SELECT
+        valueField,
+        textField
+        FROM
+        tb_dic
+        WHERE keyWord = 'billStatus') d
+        ON tk.stat = d.valueField
 		<where>
 			<if test="billNo !=null and billNo !='' ">
 				and billNo like #{billNo}

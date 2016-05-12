@@ -7,7 +7,7 @@
     <title>库存调整单</title>
     <jsp:include page="common.jsp"/>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/kctz.js"></script>
+    <script type="text/javascript" src="resources/js/kctz.js"></script>
 </head>
 <body>
 <table id="dg" class="easyui-datagrid" title="库存调整单" fit="true" 
