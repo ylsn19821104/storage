@@ -5,24 +5,30 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+
 @Repository
 public interface PurchaseDtlDao {
-  public List<PurchaseDtl> find(Map<String, Object> map);
-
-  public List<PurchaseDtl> findByIds(String ids);
-
-  public PurchaseDtl findById(Integer id);
-
-  public List<String> findNamesByIds(String ids);
-
-  public Long getTotal(Map<String, Object> map);
-
   public Integer add(PurchaseDtl color);
+
+  public int batchSave(List<PurchaseDtl> dtls);
 
   public Integer update(PurchaseDtl color);
 
-  public Integer deleteById(Integer id);
+  public List<PurchaseDtl> find(Map<String, Object> map);
 
-  public void delete(String[] ids);
+  public List<PurchaseDtl> findByDtlIds(Integer[] dtlIds);
+
+  public List<PurchaseDtl> findByPurchaseId(Integer id);
+
+  public PurchaseDtl findByDtlId(Integer dtlId);
+
+  public Long getTotalByPurchaseId(Integer id);
+
+  public Integer deleteByDtlId(Integer id);
+
+  public void deleteByDtlIds(Integer[] ids);
+
+
+  public void deleteByPuchaseId(Integer purchaseId);
 
 }

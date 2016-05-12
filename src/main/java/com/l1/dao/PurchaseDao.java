@@ -21,10 +21,14 @@ public interface PurchaseDao {
 
   public Integer update(Purchase purchase);
 
-  public Integer delete(String[] ids);
+  public Integer delete(Integer[] ids);
 
   public Integer deleteById(int id);
 
-  public void save(Purchase rent);
+  public int save(Purchase rent);
+  
+  int finish(Integer[] ids);
+  
+  int unfinish(Integer[] ids);
 
 }

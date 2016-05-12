@@ -14,7 +14,7 @@
         <result property="customerAddr" column="customerAddr"/>
         <result property="customerCard" column="customerCard"/>
         <result property="stat" column="stat"/>
-        <result property="billStat" column="billStat"/>
+        <result property="billStat" column="billStatus"/>
         <result property="billStatName" column="billStatName"/>
 
         <result property="rentDay" column="rentDay"/>
@@ -35,7 +35,7 @@
     </resultMap>
 
     <insert id="save" parameterType="com.l1.entity.Rent" useGeneratedKeys="true" keyProperty="id">
-		insert into tb_rent(billNo,customerName,warehouseId,stat,billStat,create_time,customerPhone,customerAddr,customerCard
+		insert into tb_rent(billNo,customerName,warehouseId,stat,billStatus,create_time,customerPhone,customerAddr,customerCard
 		,rentDay,rentMoney,repoMoney,beginDate,endDate,expressBillNo,returnBillNo,supplierId)
 		values(#{billNo},#{customerName},#{warehouseId},#{stat},#{billStat},#{create_time},
 		#{customerPhone},#{customerAddr},#{customerCard}
@@ -63,7 +63,7 @@
                 stat=#{stat},
             </if>
             <if test="billStat!=null and billStat!='' ">
-                stat=#{billStat},
+                billStatus=#{billStat},
             </if>
             <if test="statName!=null and statName!='' ">
                 statName=#{statName},
@@ -134,7 +134,7 @@
         FROM
         tb_dic
         WHERE keyWord = 'rentBillStatus') d
-        ON r.billStat = d.valueField
+        ON r.billStatus = d.valueField
         <where>
             <if test="name!=null and name!='' ">
                 and name like #{name}
@@ -175,7 +175,7 @@
               FROM
                 tb_dic
               WHERE keyWord = 'rentBillStatus') d
-              ON r.billStat = d.valueField
+              ON r.billStatus = d.valueField
               where r.id = #{id}
 	</select>
 

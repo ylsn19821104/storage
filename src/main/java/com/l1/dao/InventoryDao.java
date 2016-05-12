@@ -5,19 +5,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+
 @Repository
 public interface InventoryDao {
   public List<Inventory> find(Map<String, Object> map);
 
-  public List<Inventory> findByIds(String[] ids);
+  public Inventory findBySkuAndWarehouse(Map<String, Object> params);
 
   public Inventory findById(Integer id);
 
-  public List<String> findNamesByIds(String ids);
-
   public Long getTotal(Map<String, Object> map);
-
-  public Integer add(Inventory inventory);
 
   public Integer update(Inventory inventory);
 

@@ -112,7 +112,7 @@ public class WarehouseController {
         return ret;
     }
 
-    @RequestMapping(value = "/comboList",method = RequestMethod.GET)
+    @RequestMapping(value = "/comboList")
     @ResponseBody
     public List<Map<String,String>> itemManagerComboList() throws Exception {
         List<Map<String,String>> ret = null;
