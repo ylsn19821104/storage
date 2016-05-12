@@ -79,10 +79,20 @@ public class SkuController {
         List<Map<String, String>> skuList = skuService.findForCombo(map);
         return skuList;
     }
-
-    @RequestMapping(value = "findById",method = RequestMethod.GET)
+    @RequestMapping("/getAvailableSkuInfo")
     @ResponseBody
-    public Sku findById(Integer id){
+    public List<Map<String, String>> getAvailableSkuInfo(Integer billId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (billId != null) {
+            map.put("billId",billId);
+        }
+        List<Map<String, String>> skuList = skuService.findForCombo(map);
+        return skuList;
+    }
+
+    @RequestMapping(value = "findById", method = RequestMethod.GET)
+    @ResponseBody
+    public Sku findById(Integer id) {
         return skuService.findById(id);
     }
 }

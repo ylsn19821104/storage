@@ -8,19 +8,21 @@
         <result property="id" column="id"/>
         <result property="itemId" column="itemId"/>
         <result property="itemName" column="itemName"/>
+        <result property="itemPrice" column="itemPrice"/>
         <result property="colorId" column="colorId"/>
         <result property="colorName" column="colorName"/>
         <result property="sizeDtlId" column="sizeDtlId"/>
         <result property="sizeDtlName" column="sizeDtlName"/>
         <result property="warehouseId" column="warehouseId"/>
         <result property="warehouseName" column="warehouseName"/>
+        <result property="imgSuffix" column="imgSuffix"/>
         <result property="amount" column="amount"/>
         <result property="text" column="text"/>
     </resultMap>
 
     <sql id="v_sku">
       SELECT * FROM (
-        SELECT sku.*,item.`name` itemName,color.`name` colorName,sizedtl.`name` sizeDtlName,warehouse.name warehouseName
+        SELECT sku.*,item.name itemName,item.rental1 itemPrice,color.name colorName,sizedtl.name sizeDtlName,warehouse.name warehouseName
         FROM tb_sku sku
           LEFT JOIN tb_item item ON sku.itemId = item.id
            LEFT JOIN tb_color color ON sku.colorId = color.id
@@ -68,6 +70,10 @@
     </select>
     <select id="findForCombo"  resultType="map">
         SELECT sku.id,item.name text from tb_sku sku LEFT JOIN tb_item item ON sku.itemId = item.id
+
+        <if test="billId!=null">
+            WHERE sku.id NOT IN (SELECT skuId FROM tb_rentdtl WHERE id=#{billId})
+        </if>
     </select>
 
 

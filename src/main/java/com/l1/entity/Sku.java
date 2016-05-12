@@ -4,6 +4,7 @@ public class Sku {
 	private Integer id;
 	private Integer itemId;
 	private String itemName;
+	private Double itemPrice;
 
 	private Integer colorId;
 	private String colorName;
@@ -13,6 +14,7 @@ public class Sku {
 
 	private Integer warehouseId;
 	private String warehouseName;
+	private String imgSuffix;
 	private Integer amount;
 
 	private String text;
@@ -41,7 +43,15 @@ public class Sku {
 		this.itemName = itemName;
 	}
 
-	public Integer getColorId() {
+    public Double getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public Integer getColorId() {
 		return colorId;
 	}
 
@@ -87,6 +97,14 @@ public class Sku {
 
 	public void setWarehouseName(String warehouseName) {
 		this.warehouseName = warehouseName;
+	}
+
+	public String getImgSuffix() {
+		return imgSuffix;
+	}
+
+	public void setImgSuffix(String imgSuffix) {
+		this.imgSuffix = imgSuffix;
 	}
 
 	public Integer getAmount() {

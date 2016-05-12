@@ -14,6 +14,7 @@
         <result property="customerAddr" column="customerAddr"/>
         <result property="customerCard" column="customerCard"/>
         <result property="stat" column="stat"/>
+        <result property="statName" column="statName"/>
         <result property="billStat" column="billStat"/>
         <result property="billStatName" column="billStatName"/>
 
@@ -56,17 +57,11 @@
             <if test="warehouseId!=null and warehouseId!='' ">
                 warehouseId=#{warehouseId},
             </if>
-            <if test="warehouseName!=null and warehouseName!='' ">
-                warehouseName=#{warehouseName},
-            </if>
             <if test="stat!=null and stat!='' ">
                 stat=#{stat},
             </if>
             <if test="billStat!=null and billStat!='' ">
                 stat=#{billStat},
-            </if>
-            <if test="statName!=null and statName!='' ">
-                statName=#{statName},
             </if>
             <if test="update_time!=null">
                 update_time=#{update_time},
