@@ -73,10 +73,7 @@ public class RentDtlController {
 
         List<RentDtl> linkManList = rentDtlService.find(map);
         Map<String, Object> result = new HashMap<String, Object>();
-
-        Long total = rentDtlService.getTotal(map);
         result.put("rows", linkManList);
-        result.put("total", total);
 
         return result;
     }
@@ -84,13 +81,6 @@ public class RentDtlController {
     @RequestMapping(value = "/save11", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> save(RentDtl rentDtl) {
-        if (rentDtl != null && rentDtl.getStat() > 0) {
-            BillStat billStat = billStatService.findById(rentDtl.getStat());
-            if (billStat != null) {
-                rentDtl.setStatName(billStat.getName());
-            }
-        }
-
         rentDtlService.add(rentDtl);
         Map<String, Object> ret = new HashMap<String, Object>();
         ret.put("flag", true);
@@ -100,14 +90,6 @@ public class RentDtlController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> update(RentDtl rentDtl) {
-
-        if (rentDtl != null && rentDtl.getStat() > 0) {
-            BillStat billStat = billStatService.findById(rentDtl.getStat());
-            if (billStat != null) {
-                rentDtl.setStatName(billStat.getName());
-            }
-        }
-
         if (rentDtl != null && rentDtl.getSkuId() > 0) {
             Sku sku = skuService.findById(rentDtl.getSkuId());
             if (sku != null) {
@@ -143,19 +125,6 @@ public class RentDtlController {
     public Map<String, Object> save(RentDtl rentDtl, @RequestParam("id") int id)
             throws Exception {
         rentDtl.setId(id);
-        if (rentDtl != null && rentDtl.getStat() > 0) {
-            BillStat billStat = billStatService.findById(rentDtl.getStat());
-            if (billStat != null) {
-                rentDtl.setStatName(billStat.getName());
-            }
-        }
-
-        if (rentDtl != null && rentDtl.getSkuId() > 0) {
-            Sku sku = skuService.findById(rentDtl.getSkuId());
-            if (sku != null) {
-                rentDtl.setItemName(sku.getItemName());
-            }
-        }
 
         int resultTotal = 0; // 操作的记录条数
         if (rentDtl.getDtlId() == null) {

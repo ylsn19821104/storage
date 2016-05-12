@@ -85,7 +85,7 @@ public class SizeDtlController {
     @ResponseBody
     public List<SizeDtl> itemManagerComboList() throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("stat", "使用");
+        map.put("stat", "1");
         List<SizeDtl> brandList = sizeDtlService.find(map);
 
         //TODO 过滤?

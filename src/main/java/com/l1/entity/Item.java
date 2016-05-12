@@ -8,6 +8,7 @@ public class Item {
   private String name;
   private String code;
   private String stat;
+  private String statName;
   private Integer create_by;
   private Integer update_by;
 
@@ -170,6 +171,14 @@ public class Item {
 
   public void setStat(String stat) {
     this.stat = stat;
+  }
+
+  public String getStatName() {
+    return statName;
+  }
+
+  public void setStatName(String statName) {
+    this.statName = statName;
   }
 
   public Integer getCreate_by() {

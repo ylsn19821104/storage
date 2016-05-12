@@ -6,9 +6,6 @@ public class RentDtl {
 	private Integer id;
 	private Integer dtlId;
 
-	private int stat;
-	private String statName;
-
 	private Integer skuId;
 	private String itemName;
 	private BigDecimal itemPrice;
@@ -31,14 +28,6 @@ public class RentDtl {
 
 	public void setDtlId(Integer dtlId) {
 		this.dtlId = dtlId;
-	}
-
-	public int getStat() {
-		return stat;
-	}
-
-	public void setStat(int stat) {
-		this.stat = stat;
 	}
 
 	public Integer getSkuId() {
@@ -89,11 +78,4 @@ public class RentDtl {
 		this.itemRepo = itemRepo;
 	}
 
-	public String getStatName() {
-		return statName;
-	}
-
-	public void setStatName(String statName) {
-		this.statName = statName;
-	}
 }

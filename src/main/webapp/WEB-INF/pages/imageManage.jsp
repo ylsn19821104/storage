@@ -253,7 +253,7 @@
             <tr>
                 <td>SKU</td>
                 <td>
-                    <select class="easyui-combobox" name="id" style="width:200px;" data-options="
+                    <select class="easyui-combobox" name="id" id="id" style="width:200px;" data-options="
                     required:true,
                     valueField: 'id',
                     textField: 'id',
