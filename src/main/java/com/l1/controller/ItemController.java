@@ -87,8 +87,8 @@ public class ItemController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", StringUtil.formatLike(s_item.getName()));
         map.put("code", StringUtil.formatLike(s_item.getCode()));
-        map.put("stat", "使用");
-        map.put("start", rows!=null&&page!=null?page*rows:null);
+        map.put("stat", "1");
+        map.put("start", rows!=null&&page!=null?(page>0?page-1:0)*rows:null);
         map.put("size", rows);
 
         List<Item> itemList = itemService.find(map);

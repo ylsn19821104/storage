@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="name" column="name"/>
 		<result property="code" column="code"/>
 		<result property="stat" column="stat"/>
+		<result property="statName" column="statName"/>
 		<result property="brandId" column="brandId"/>
 		<result property="brandName" column="brandName"/>
 		
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="find" parameterType="map" resultMap="ItemResult">
-		select * from tb_item
+		select i.*,d.statName from tb_item i LEFT JOIN (SELECT valueField,textField statName FROM tb_dic WHERE keyWord='itemStatus') d ON i.stat = d.valueField
 		<where>
 			<if test="name!=null and name!='' ">
 				and name like concat('%',#{name},'%')
