@@ -6,21 +6,26 @@ import java.util.Map;
 import com.l1.entity.PurchaseDtl;
 
 public interface PurchaseDtlService {
-	public List<PurchaseDtl> find(Map<String, Object> map);
+  public Integer add(PurchaseDtl color);
 
-	public List<PurchaseDtl> findByIds(String ids);
+  public int batchSave(List<PurchaseDtl> dtls);
 
-	public PurchaseDtl findById(Integer id);
+  public Integer update(PurchaseDtl color);
 
-	public List<String> findNamesByIds(String ids);
+  public List<PurchaseDtl> find(Map<String, Object> map);
 
-	public Long getTotal(Map<String, Object> map);
+  public List<PurchaseDtl> findByDtlIds(Integer[] dtlIds);
 
-	public Integer add(PurchaseDtl Purchase);
+  public List<PurchaseDtl> findByPurchaseId(Integer id);
 
-	public Integer update(PurchaseDtl Purchase);
+  public PurchaseDtl findByDtlId(Integer dtlId);
 
-	public Integer deleteById(Integer id);
+  public Long getTotalByPurchaseId(Integer id);
 
-	public void delete(String[] ids);
+  public Integer deleteByDtlId(Integer id);
+
+  public void deleteByDtlIds(Integer[] ids);
+
+
+  public void deleteByPuchaseId(Integer purchaseId);
 }

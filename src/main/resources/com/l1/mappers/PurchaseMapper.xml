@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="update_time" column="update_time" />
 	</resultMap>
 
-	<insert id="save" parameterType="Purchase">
+	<insert id="save" parameterType="Purchase" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		tb_purchase(id,billNo,billDate,total,supplierId,supplierName,warehouseId,warehouseName,
 		stat,statName,create_time,create_by,update_by,update_time,makerName,makerId)
@@ -94,9 +94,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="find" parameterType="Map" resultMap="PurchaseResult">
 		SELECT p.billDate,p.billNo,p.id,p.stat,s.name AS statName,p.supplierId,ss.supplierName,p.total,p.warehouseId,w.name AS warehouseName 
 		FROM tb_purchase p 
-		JOIN tb_billstat s ON p.stat=s.id 
-		JOIN tb_supplier ss ON  p.supplierId = ss.id 
-		JOIN tb_warehouse w ON p.warehouseId= w.id
+		LEFT JOIN tb_billstat s ON p.stat=s.id 
+		LEFT JOIN tb_supplier ss ON  p.supplierId = ss.id 
+		LEFT JOIN tb_warehouse w ON p.warehouseId= w.id
 		<where>
 			<if test="supplierName !=null and supplierName !='' ">
 				and supplierName like #{supplierName}
@@ -128,9 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from tb_purchase
 		where id =#{id}
 	</select>
-
-
-
+	
 	<select id="getTotal" parameterType="Map" resultType="Long">
 		select count(*) from tb_purchase
 		<where>
@@ -153,4 +151,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		id=#{id}
 	</delete>
 
+	<update id="finish">
+        UPDATE tb_purchase set stat = 1 WHERE id IN
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    
+    <update id="unfinish">
+        UPDATE tb_purchase set stat = 0 WHERE id IN
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    
 </mapper> 

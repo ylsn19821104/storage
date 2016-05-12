@@ -7,58 +7,81 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.l1.dao.PurchaseDtlDao;
 import com.l1.entity.PurchaseDtl;
 import com.l1.service.PurchaseDtlService;
 
 @Service("purchaseDtlService")
 public class PurchaseDtlServiceImpl implements PurchaseDtlService {
-	@Resource
-	private PurchaseDtlDao purchaseDtlDao;
-
-	@Override
-	public List<PurchaseDtl> find(Map<String, Object> map) {
-		return purchaseDtlDao.find(map);
-	}
-
-	@Override
-	public Long getTotal(Map<String, Object> map) {
-		return purchaseDtlDao.getTotal(map);
-	}
-
-	@Override
-	public Integer add(PurchaseDtl purchaseDtl) {
-		return purchaseDtlDao.add(purchaseDtl);
-	}
-
-	@Override
-	public Integer update(PurchaseDtl purchaseDtl) {
-		return purchaseDtlDao.update(purchaseDtl);
-	}
-
-	@Override
-	public Integer deleteById(Integer id) {
-		return purchaseDtlDao.deleteById(id);
-	}
-
-	@Override
-	public List<PurchaseDtl> findByIds(String ids) {
-		return purchaseDtlDao.findByIds(ids);
-	}
-
-	@Override
-	public List<String> findNamesByIds(String ids) {
-		return purchaseDtlDao.findNamesByIds(ids);
-	}
-
-	@Override
-  public PurchaseDtl findById(Integer id) {
-		return purchaseDtlDao.findById(id);
-	}
+  @Resource
+  private PurchaseDtlDao purchaseDtlDao;
 
   @Override
-  public void delete(String[] ids) {
-      purchaseDtlDao.delete(ids);
+  public List<PurchaseDtl> find(Map<String, Object> map) {
+    return purchaseDtlDao.find(map);
   }
+
+
+  @Override
+  public Long getTotalByPurchaseId(Integer id) {
+    return purchaseDtlDao.getTotalByPurchaseId(id);
+  }
+
+
+
+  @Override
+  public Integer add(PurchaseDtl purchaseDtl) {
+    return purchaseDtlDao.add(purchaseDtl);
+  }
+
+  @Override
+  public Integer update(PurchaseDtl purchaseDtl) {
+    return purchaseDtlDao.update(purchaseDtl);
+  }
+
+
+  @Override
+  public int batchSave(List<PurchaseDtl> dtls) {
+    return purchaseDtlDao.batchSave(dtls);
+  }
+
+
+  @Override
+  public List<PurchaseDtl> findByDtlIds(Integer[] dtlIds) {
+    return purchaseDtlDao.findByDtlIds(dtlIds);
+  }
+
+
+  @Override
+  public List<PurchaseDtl> findByPurchaseId(Integer id) {
+    return purchaseDtlDao.findByPurchaseId(id);
+  }
+
+
+  @Override
+  public PurchaseDtl findByDtlId(Integer dtlId) {
+    return purchaseDtlDao.findByDtlId(dtlId);
+  }
+
+
+  @Override
+  public Integer deleteByDtlId(Integer id) {
+    return purchaseDtlDao.deleteByDtlId(id);
+  }
+
+
+  @Override
+  public void deleteByDtlIds(Integer[] ids) {
+    purchaseDtlDao.deleteByDtlIds(ids);
+  }
+
+
+  @Override
+  public void deleteByPuchaseId(Integer purchaseId) {
+    purchaseDtlDao.deleteByPuchaseId(purchaseId);
+  }
+
+
 
 }

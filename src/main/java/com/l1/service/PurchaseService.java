@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.l1.entity.Purchase;
+import com.l1.entity.PurchaseDtl;
 
 public interface PurchaseService {
   public List<Purchase> find(Map<String, Object> map);
@@ -22,7 +23,15 @@ public interface PurchaseService {
 
   public Integer deleteById(Integer id);
 
-  public void save(Purchase rent);
+  public int save(Purchase purchase );
 
-  public Integer delete(String[] ids);
+  public Integer delete(Integer[] ids);
+  
+  public int savePurchaseWithDetails(Purchase purchase,List<PurchaseDtl> dtls);
+  public int updatePurchaseWithDetails(Purchase purchase,List<PurchaseDtl> dtls);
+
+  public int finish(Integer[] ids, Integer[] warehouseIds);
+
+  int unfinish(Integer[] ids, Integer[] warehouseIds);
+  
 }

@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(null,#{skuId},#{colorId},#{warehouseId},#{sizeId},#{style},#{amount},#{locationId})
 	</insert>
 
-	<select id="findBySkuAndWarehouse" parameterType="Map">
+	<select id="findBySkuAndWarehouse" parameterType="Map" resultMap="InventoryResult">
 		select * from tb_inventory 
 		<where>
 			<if test="skuId !=null and skuId >0 ">
@@ -44,9 +44,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update" parameterType="Inventory">
 		update tb_inventory
 		<set>
-			<if test="skuId !=null ">
-				billNo=#{billNo},
-			</if>
 			<if test="colorId !=null">
 				colorId=#{colorId},
 			</if>

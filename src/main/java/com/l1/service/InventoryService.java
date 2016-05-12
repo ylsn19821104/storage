@@ -8,13 +8,9 @@ import com.l1.entity.Inventory;
 public interface InventoryService {
   public List<Inventory> find(Map<String, Object> map);
 
-  public List<Inventory> findByIds(String[] ids);
-
   public Inventory findById(Integer id);
 
   public Long getTotal(Map<String, Object> map);
-
-  public Integer add(Inventory inventory);
 
   public Integer update(Inventory inventory);
 
@@ -23,4 +19,6 @@ public interface InventoryService {
   public void save(Inventory inventory);
 
   public Integer delete(String[] ids);
+
+  public Inventory findBySkuAndWarehouse(Map<String, Object> params);
 }

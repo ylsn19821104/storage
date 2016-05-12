@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class Inventory {
   private Integer id;
   private Integer skuId;
-  private BigDecimal amount;
+  private Integer amount;
   private Integer sizeId;
   private Integer colorId;
   private Integer warehouseId;
@@ -35,11 +35,11 @@ public class Inventory {
     this.skuId = skuId;
   }
 
-  public BigDecimal getAmount() {
+  public Integer getAmount() {
     return amount;
   }
 
-  public void setAmount(BigDecimal amount) {
+  public void setAmount(Integer amount) {
     this.amount = amount;
   }
 

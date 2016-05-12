@@ -19,6 +19,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(null,#{id},#{skuId},#{itemName},#{itemPrice},#{itemAmount},#{itemTotal})
 	</insert>
 	
+	<insert id="batchSave" parameterType="list">
+		insert into tb_purchasedtl(dtlid,id,skuId,itemName,itemPrice,itemAmount,itemTotal) 
+		values
+		<foreach item="item" index="index" collection="list"  separator=",">
+			(null,#{item.id},#{item.skuId},#{item.itemName},#{item.itemPrice},#{item.itemAmount},#{item.itemTotal})
+		</foreach>
+	</insert>
+	
 	<update id="update" parameterType="PurchaseDtl">
 		update tb_purchasedtl
 		<set>
@@ -70,37 +78,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	
-	<select id="findByIds" resultMap="PurchaseDtlResult">
+	<select id="findByDtlIds" resultMap="PurchaseDtlResult">
 		select * from tb_purchasedtl where dtlId in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
 			#{item}
 		</foreach>
 	</select>
 	
-	<select id="findById" parameterType="int" resultMap="PurchaseDtlResult">
+	<select id="findByPurchaseId" parameterType="int" resultMap="PurchaseDtlResult">
 		select * from tb_purchasedtl
-		where dtlId =#{dtlId}
+		where id =#{id}
+	</select>
+	
+	<select id="findByDtlId" parameterType="int" resultMap="PurchaseDtlResult">
+		select * from tb_purchasedtl
+		where dtlid =#{dtlId}
 	</select>
 	
 	
-	
-	<select id="getTotal" parameterType="Map" resultType="Long">
+	<select id="getTotalByPurchaseId" parameterType="int" resultType="Long">
 		select count(*) from tb_purchasedtl
-		<where>
-			<if test="id!=null and id!='' ">
-				and id =#{id}
-			</if>
-		</where>
+		where id = #{id}
 	</select>
 	
-	<delete id="delete">
+	<delete id="deleteByDtlIds">
 		DELETE FROM tb_purchasedtl where dtlId IN
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
 			#{item}
 		</foreach>
 	</delete>
 	
-	<delete id="deleteById" parameterType="int">
+	<delete id="deleteByDtlId" parameterType="int">
 		DELETE FROM tb_purchasedtl where dtlId=#{dtlId}
 	</delete>
+	
+	<delete id="deleteByPuchaseId" parameterType="int">
+		DELETE FROM tb_purchasedtl where id=#{id}
+	</delete>
+	
 </mapper> 
