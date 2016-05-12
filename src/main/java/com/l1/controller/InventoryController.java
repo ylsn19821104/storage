@@ -33,6 +33,7 @@ public class InventoryController {
         Map<String,Object> params = new HashMap<String, Object>();
         params.put("start",page);
         params.put("size",rows);
+        
         List<Inventory> list = inventoryService.find(params);
         Long total = inventoryService.getTotal(null);
         ret.put("total",total);

@@ -20,7 +20,7 @@ import java.util.Map;
 public class DicController {
     @Autowired
     private DicService dicService;
-    @RequestMapping(value = "/{key}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{key}")
     @ResponseBody
     public List<Dic> query(@PathVariable("key") String key){
         return dicService.query(key);
