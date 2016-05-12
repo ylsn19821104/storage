@@ -20,7 +20,7 @@ public class SeqServiceImpl implements SeqService {
     @Autowired
     private SeqDao seqDao;
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy");
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRES_NEW)
     @Override
